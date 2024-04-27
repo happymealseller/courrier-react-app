@@ -1,4 +1,4 @@
-export function ParcelInformationForm() {
+export default function ParcelInformationForm() {
     return (
         <>
         
