@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react"
-import { ParcelInformationForm } from "../components/ParcelInformationForm"
+// import { ParcelInformationForm } from "../components/ParcelInformationForm"
 import { ShipFromForm } from "../components/ShipFromForm"
 import { ShipToForm } from "../components/ShipToForm"
 import { useMultistepForm } from "../useMultistepForm"
@@ -39,10 +39,10 @@ export function ShippingFormPage() {
     })
   }
 
-  const { currentStepIndex, isFirstStep, isLastStep, step, steps, next, back, goTo} = useMultistepForm([
+  const { currentStepIndex, isFirstStep, isLastStep, step, steps, next, back } = useMultistepForm([
     <ShipFromForm {...data} updateFields={updateFields} />,
     <ShipToForm {...data} updateFields={updateFields} />,
-    <ParcelInformationForm {...data} updateFields={updateFields} />,
+//    <ParcelInformationForm {...data} updateFields={updateFields} />,
     <div>Four</div>
   ])
 
