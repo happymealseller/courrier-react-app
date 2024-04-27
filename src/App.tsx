@@ -1,15 +1,57 @@
+import { FormEvent, useState } from "react"
 import { ParcelInformationForm } from "./ParcelInformationForm"
 import { ShipFromForm } from "./ShipFromForm"
 import { ShipToForm } from "./ShipToForm"
 import { useMultistepForm } from "./useMultistepForm"
 
+type FormData = {
+  fromCompanyName: string,
+  fromAddress: string,
+  fromContactName: string,
+  fromEmail: string,
+  fromPhone: string,
+  toCompanyName: string,
+  toAddress: string,
+  toContactName: string,
+  toEmail: string,
+  toPhone: string
+}
+
+const INITIAL_DATA: FormData = {
+  fromCompanyName: "",
+  fromAddress: "",
+  fromContactName: "",
+  fromEmail: "",
+  fromPhone: "",
+  toCompanyName: "",
+  toAddress: "",
+  toContactName: "",
+  toEmail: "",
+  toPhone: ""
+}
+
 function App() {
+  const [data, setData] = useState(INITIAL_DATA)
+
+  function updateFields(fields: Partial<FormData>) {
+    setData( prev => {
+      return { ...prev, ...fields }
+    })
+  }
+
   const { currentStepIndex, isFirstStep, isLastStep, step, steps, next, back, goTo} = useMultistepForm([
-    <ShipFromForm />,
-    <ShipToForm />,
-    <ParcelInformationForm />,
+    <ShipFromForm {...data} updateFields={updateFields} />,
+    <ShipToForm {...data} updateFields={updateFields} />,
+    <ParcelInformationForm {...data} updateFields={updateFields} />,
     <div>Four</div>
   ])
+
+  function onSubmit(e: FormEvent) {
+    e.preventDefault()
+    if (!isLastStep) return next()
+    alert("make a POST request to parcels/{orderId} api")
+  }
+
   return (
     <>
       <div style={{
@@ -19,9 +61,10 @@ function App() {
         padding: "2rem",
         margin: "1rem",
         borderRadius: "0.5rem",
-        fontFamily: "Arial"
+        fontFamily: "Arial",
+        maxWidth: "max-content"
       }}>
-        <form>
+        <form onSubmit={onSubmit}>
           <div style={{
             position: "absolute",
             top: "0.5rem",
@@ -41,7 +84,7 @@ function App() {
                 Back
               </button>
             )}
-            <button type="button" onClick={next}>
+            <button type="submit">
               {isLastStep ? "Finish" : "Next"}
             </button>
           </div>
