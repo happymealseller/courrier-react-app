@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react"
 // import { ParcelInformationForm } from "../components/ParcelInformationForm"
-import { ShipFromForm } from "../components/ShipFromForm"
-import { ShipToForm } from "../components/ShipToForm"
+import { ShipFromForm } from "../components/shipping-form-page/ShipFromForm"
+import { ShipToForm } from "../components/shipping-form-page/ShipToForm"
 import { useMultistepForm } from "../useMultistepForm"
 
 type FormData = {
