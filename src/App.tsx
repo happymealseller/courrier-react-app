@@ -1,9 +1,9 @@
-import { ShippingFormPage } from "./pages/ShippingFormPage"
+import { LoginPage } from "./pages/LoginPage"
 
 
 function App() {
   return (
-    <ShippingFormPage />
+    <LoginPage />
   )
 }
 
