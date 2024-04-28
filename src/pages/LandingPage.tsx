@@ -22,7 +22,7 @@ function LandingPage() {
                         onChange={(e) => setTrackingNo(e.target.value)}
                     /><br />
                     <button
-                        className="w-20 border-2 border-l-0 border-black p-2 hover:bg-orange-400"
+                        className="w-20 border-2 border-l-0 border-black p-2 hover:bg-violet-400"
                         type="submit">
                         Track
                     </button>
