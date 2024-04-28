@@ -11,7 +11,7 @@ function LandingPage() {
     return (<>
         <div className="flex justify-center items-center w-full h-[100svh] bg-gray-200">
             <form onSubmit={handleSubmit}>
-                <label className="flex justify-center border-b-4 border-orange-400 text-lg p-1" htmlFor="trackingNo">Track</label><br />
+                <label className="flex justify-center border-b-4 border-violet-400 text-lg p-1" htmlFor="trackingNo">Track</label><br />
                 <div className="flex justify-between">
                     <input
                         className="w-60 border-2 border-black p-2"
