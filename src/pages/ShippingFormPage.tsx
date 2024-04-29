@@ -80,11 +80,11 @@ export function ShippingFormPage() {
             justifyContent: "flex-end"
           }}>
             {!isFirstStep && (
-              <button type="button" onClick={back}>
+              <button type="button" onClick={back} className="border-2 px-2 py-1 rounded-md hover:bg-violet-300 hover:text-gray-500 hover:border-violet-300">
                 Back
               </button>
             )}
-            <button type="submit">
+            <button type="submit" className="border-2 px-2 py-1 rounded-md hover:bg-violet-300 hover:text-gray-500 hover:border-violet-300">
               {isLastStep ? "Finish" : "Next"}
             </button>
           </div>
