@@ -7,10 +7,12 @@ type FormWrapperProps = {
 
 export function FormWrapper({ title, children}: FormWrapperProps) {
     return <>
-        <h2 style={{
-            textAlign: "center",
-            margin: 0,
-            marginBottom: "2rem"
+        <h2 
+            className="text-2xl font-bold tracking-wider"
+            style={{
+                textAlign: "center",
+                margin: 0,
+                marginBottom: "2rem"
         }}>
             {title}
         </h2>
