@@ -1,6 +1,6 @@
 import React from 'react';
 
-function LandingPage() {
+function TrackSearchBarPage() {
     const [trackingNo, setTrackingNo] = React.useState('');
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -32,4 +32,4 @@ function LandingPage() {
     </>);
 }
 
-export default LandingPage;
+export default TrackSearchBarPage;

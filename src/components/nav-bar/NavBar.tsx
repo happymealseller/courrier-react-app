@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 export function NavBar() {
 
-    const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+    const [isNavbarOpen, setIsNavbarOpen] = useState(true);
     
     const toggleOpenNavbar = () => {
         setIsNavbarOpen(!isNavbarOpen);
@@ -36,12 +37,12 @@ export function NavBar() {
         <>
             <nav className="bg-violet-700">
                 <div className="container px-4 flex flex-wrap mx-auto py-2 lg:space-x-4">
-                    <a 
-                        href="#"
+                    <NavLink 
+                        to="/"
                         className="inline-flex p-2 text-white text-2xl font-bold uppercase tracking-widest"
                     >
                         FDM Express
-                    </a>
+                    </NavLink>
                     <button 
                         className="inline-flex items-center justify-center text-white border h-10 w-10 ml-auto rounded-md outline-none focus:outline-none lg:hidden"
                         onClick={toggleOpenNavbar}
@@ -54,15 +55,15 @@ export function NavBar() {
                         <div className={`w-full lg:inline-flex lg:w-auto lg:mt-0 my-2 ${!isNavbarOpen ? 'hidden' : ''}`}>
                             <ul className="w-full lg:w-auto flex flex-col lg:flex-row space-x-2 space-y-2 lg:space-y-0">
                                 <li>
-                                    <a 
-                                        href="#" 
+                                    <NavLink 
+                                        to="about" 
                                         className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-violet-800 ml-2">
                                             About FDMx
-                                    </a>
+                                    </NavLink>
                                 </li>
                                 <li className="relative">
                                     <button 
-                                        href="#" 
+                                        type="button"
                                         className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-violet-800"
                                         onClick={toggleOpenShippingDropdown}
                                     >
@@ -72,44 +73,44 @@ export function NavBar() {
                                         <div className="lg:absolute bg-white right-0 rounded-md p-2">
                                             <ul className="space-y-2  lg:w-max">
                                                 <li>
-                                                    <a 
-                                                        href="#"
+                                                    <NavLink 
+                                                        to="create-a-shipment"
                                                         className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
                                                     >
                                                         Create a Shipment
-                                                    </a>
+                                                    </NavLink>
                                                 </li>
                                                 <li>
-                                                    <a 
-                                                        href="#"
+                                                    <NavLink 
+                                                        to="schedule-a-collection"
                                                         className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
                                                     >
                                                         Schedule a Collection
-                                                    </a>
+                                                    </NavLink>
                                                 </li>
                                                 <li>
-                                                    <a 
-                                                        href="#"
+                                                    <NavLink 
+                                                        to="how-to-ship-a-parcel"
                                                         className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
                                                     >
                                                         How To Ship a Parcel
-                                                    </a>
+                                                    </NavLink>
                                                 </li>
                                                 <li>
-                                                    <a 
-                                                        href="#"
+                                                    <NavLink 
+                                                        to="calculate-shipping-cost"
                                                         className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
                                                     >
                                                         Calculate Shipping Cost
-                                                    </a>
+                                                    </NavLink>
                                                 </li>
                                                 <li>
-                                                    <a 
-                                                        href="#"
+                                                    <NavLink 
+                                                        to="find-a-location"
                                                         className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
                                                     >
                                                         Find a Location
-                                                    </a>
+                                                    </NavLink>
                                                 </li>
                                             </ul>
                                         </div>
@@ -117,7 +118,7 @@ export function NavBar() {
                                 </li>
                                 <li className="relative">
                                     <button 
-                                        href="#" 
+                                        type="button" 
                                         className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-violet-800"
                                         onClick={toggleOpenTrackingDropdown}
                                     >
@@ -127,20 +128,20 @@ export function NavBar() {
                                         <div className="lg:absolute bg-white right-0 rounded-md p-2">
                                             <ul className="space-y-2  lg:w-max">
                                                 <li>
-                                                    <a 
-                                                        href="#"
+                                                    <NavLink 
+                                                        to="track-a-package"
                                                         className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
                                                     >
                                                         Track a Package
-                                                    </a>
+                                                    </NavLink>
                                                 </li>
                                                 <li>
-                                                    <a 
-                                                        href="#"
+                                                    <NavLink 
+                                                        to="change-a-delivery"
                                                         className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
                                                     >
                                                         Change a Delivery
-                                                    </a>
+                                                    </NavLink>
                                                 </li>
                                             </ul>
                                         </div>
@@ -148,7 +149,7 @@ export function NavBar() {
                                 </li>
                                 <li className="relative">
                                     <button
-                                        href="#" 
+                                        type="button"
                                         className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-violet-800"
                                         onClick={toggleOpenSolutionDropdown}
                                     >
@@ -158,20 +159,20 @@ export function NavBar() {
                                         <div className="lg:absolute bg-white right-0 rounded-md p-2">
                                             <ul className="space-y-2  lg:w-max">
                                                 <li>
-                                                    <a 
-                                                        href="#"
+                                                    <NavLink 
+                                                        to="open-an-account"
                                                         className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
                                                     >
                                                         Open an Account
-                                                    </a>
+                                                    </NavLink>
                                                 </li>
                                                 <li>
-                                                    <a 
-                                                        href="#"
+                                                    <NavLink 
+                                                        to="collections-and-drop-offs"
                                                         className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
                                                     >
                                                         Collections and Drop-Offs
-                                                    </a>
+                                                    </NavLink>
                                                 </li>
                                             </ul>
                                         </div>
@@ -179,7 +180,7 @@ export function NavBar() {
                                 </li>
                                 <li className="relative">
                                     <button 
-                                        href="#" 
+                                        type="button" 
                                         className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-violet-800"
                                         onClick={toggleOpenSupportDropdown}
                                     >
@@ -189,33 +190,41 @@ export function NavBar() {
                                         <div className="lg:absolute bg-white right-0 rounded-md p-2">
                                             <ul className="space-y-2  lg:w-max">
                                                 <li>
-                                                    <a 
-                                                        href="#"
+                                                    <NavLink 
+                                                        to="shipping-support"
                                                         className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
                                                     >
                                                         Shipping Support
-                                                    </a>
+                                                    </NavLink>
                                                 </li>
                                                 <li>
-                                                    <a 
-                                                        href="#"
+                                                    <NavLink 
+                                                        to="tracking-support"
                                                         className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
                                                     >
                                                         Tracking Support
-                                                    </a>
+                                                    </NavLink>
                                                 </li>
                                                 <li>
-                                                    <a 
-                                                        href="#"
+                                                    <NavLink 
+                                                        to="contact-us"
                                                         className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
                                                     >
                                                         Contact Us
-                                                    </a>
+                                                    </NavLink>
                                                 </li>
                                             </ul>
                                         </div>
                                     )}
                                     
+                                </li>
+                                <li className="relative">
+                                    <NavLink
+                                        to="login"
+                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-violet-800"
+                                    >
+                                            Login
+                                    </NavLink>
                                 </li>
                             </ul>
                         </div>
