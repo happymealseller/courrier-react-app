@@ -1,16 +1,5 @@
 import { FormWrapper } from "./FormWrapper";
-
-type ShipFromData = {
-    fromCompanyName: string,
-    fromAddress: string,
-    fromContactName: string,
-    fromEmail: string,
-    fromPhone: string
-}
-
-type ShipFromFormProps = ShipFromData & {
-    updateFields: (fields: Partial<ShipFromData>) => void
-}
+import { ShipFromFormProps } from "../../utilities/type-aliases/ShipFromFormProps";
 
 export function ShipFromForm({ fromCompanyName, fromAddress, fromContactName, fromEmail, fromPhone, updateFields }: ShipFromFormProps) {
     return (

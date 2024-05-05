@@ -1,9 +1,9 @@
-import React from 'react';
+import { FormEvent, useState} from 'react';
 
 function TrackSearchBarPage() {
-    const [trackingNo, setTrackingNo] = React.useState('');
+    const [trackingNo, setTrackingNo] = useState("");
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("tracking: ", trackingNo);
     };
@@ -20,7 +20,8 @@ function TrackSearchBarPage() {
                         placeholder="Tracking No"
                         value={trackingNo}
                         onChange={(e) => setTrackingNo(e.target.value)}
-                    /><br />
+                    />
+                    <br />
                     <button
                         className="w-20 border-2 border-l-0 border-black p-2 hover:bg-violet-400"
                         type="submit">

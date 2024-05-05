@@ -1,16 +1,5 @@
 import { FormWrapper } from "./FormWrapper";
-
-type ShipToData = {
-    toCompanyName: string,
-    toAddress: string,
-    toContactName: string,
-    toEmail: string,
-    toPhone: string
-}
-
-type ShipToFormProps = ShipToData & {
-    updateFields: (fields: Partial<ShipToData>) => void
-}
+import { ShipToFormProps } from "../../utilities/type-aliases/ShipToFormProps";
 
 export function ShipToForm({ toCompanyName, toAddress, toContactName, toEmail, toPhone, updateFields }: ShipToFormProps) {
     return (
