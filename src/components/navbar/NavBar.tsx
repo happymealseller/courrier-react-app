@@ -35,7 +35,7 @@ export function NavBar() {
 
     return (
         <>
-            <nav className="bg-violet-700">
+            <nav className="bg-slate-500">
                 <div className="container px-4 flex flex-wrap mx-auto py-2 lg:space-x-4">
                     <NavLink 
                         to="/"
@@ -57,14 +57,14 @@ export function NavBar() {
                                 <li>
                                     <NavLink 
                                         to="about" 
-                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-violet-800 ml-2">
+                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-slate-800 ml-2">
                                             About FDMx
                                     </NavLink>
                                 </li>
                                 <li className="relative">
                                     <button 
                                         type="button"
-                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-violet-800"
+                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-slate-800"
                                         onClick={toggleOpenShippingDropdown}
                                     >
                                             Shipping
@@ -119,7 +119,7 @@ export function NavBar() {
                                 <li className="relative">
                                     <button 
                                         type="button" 
-                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-violet-800"
+                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-slate-800"
                                         onClick={toggleOpenTrackingDropdown}
                                     >
                                             Tracking
@@ -150,7 +150,7 @@ export function NavBar() {
                                 <li className="relative">
                                     <button
                                         type="button"
-                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-violet-800"
+                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-slate-800"
                                         onClick={toggleOpenSolutionDropdown}
                                     >
                                             Business Solutions
@@ -181,7 +181,7 @@ export function NavBar() {
                                 <li className="relative">
                                     <button 
                                         type="button" 
-                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-violet-800"
+                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-slate-800"
                                         onClick={toggleOpenSupportDropdown}
                                     >
                                             Support
@@ -221,7 +221,7 @@ export function NavBar() {
                                 <li className="relative">
                                     <NavLink
                                         to="login"
-                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-violet-800"
+                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-slate-800"
                                     >
                                             Login
                                     </NavLink>

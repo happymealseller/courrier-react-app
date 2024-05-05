@@ -15,5 +15,5 @@ export type FormData = {
     length: string,
     width: string,
     height: string,
-    weight: string
+    weight: string,
   }

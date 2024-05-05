@@ -23,7 +23,7 @@ const INITIAL_DATA: FormData = {
   length: "",
   width: "",
   height: "",
-  weight: ""
+  weight: "",
 }
 
 export function ShippingFormPage() {
@@ -77,11 +77,11 @@ export function ShippingFormPage() {
             justifyContent: "flex-end"
           }}>
             {!isFirstStep && (
-              <button type="button" onClick={back} className="border-2 px-2 py-1 rounded-md hover:bg-violet-300 hover:text-gray-500 hover:border-violet-300">
+              <button type="button" onClick={back} className="border-2 px-2 py-1 rounded-md hover:bg-slate-300 hover:text-gray-500 hover:border-slate-300">
                 Back
               </button>
             )}
-            <button type="submit" className="border-2 px-2 py-1 rounded-md hover:bg-violet-300 hover:text-gray-500 hover:border-violet-300">
+            <button type="submit" className="border-2 px-2 py-1 rounded-md hover:bg-slate-300 hover:text-gray-500 hover:border-slate-300">
               {isLastStep ? "Finish" : "Next"}
             </button>
           </div>
