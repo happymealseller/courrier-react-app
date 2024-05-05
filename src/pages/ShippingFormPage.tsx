@@ -1,21 +1,12 @@
 import { FormEvent, useState } from "react"
-// import { ParcelInformationForm } from "../components/ParcelInformationForm"
-import { ShipFromForm } from "../components/shipping-form-page/ShipFromForm"
-import { ShipToForm } from "../components/shipping-form-page/ShipToForm"
+import { ShipFromForm } from "../components/order-form/ShipFromForm"
+import { ShipToForm } from "../components/order-form/ShipToForm"
+import { ParcelInformationForm } from "../components/order-form/ParcelInformationForm"
+import { ShippingServiceForm } from "../components/order-form/ShippingServiceForm"
+import { PaymentForm } from "../components/order-form/PaymentForm"
 import { useMultistepForm } from "../useMultistepForm"
-
-type FormData = {
-  fromCompanyName: string,
-  fromAddress: string,
-  fromContactName: string,
-  fromEmail: string,
-  fromPhone: string,
-  toCompanyName: string,
-  toAddress: string,
-  toContactName: string,
-  toEmail: string,
-  toPhone: string
-}
+import { FormData } from "../utilities/type-aliases/FormData"
+import { ParcelType } from "../utilities/enums/ParcelType"
 
 const INITIAL_DATA: FormData = {
   fromCompanyName: "",
@@ -27,7 +18,12 @@ const INITIAL_DATA: FormData = {
   toAddress: "",
   toContactName: "",
   toEmail: "",
-  toPhone: ""
+  toPhone: "",
+  parcelType: ParcelType.Custom,
+  length: "",
+  width: "",
+  height: "",
+  weight: "",
 }
 
 export function ShippingFormPage() {
@@ -42,8 +38,9 @@ export function ShippingFormPage() {
   const { currentStepIndex, isFirstStep, isLastStep, step, steps, next, back } = useMultistepForm([
     <ShipFromForm {...data} updateFields={updateFields} />,
     <ShipToForm {...data} updateFields={updateFields} />,
-//    <ParcelInformationForm {...data} updateFields={updateFields} />,
-    <div>Four</div>
+    <ParcelInformationForm {...data} updateFields={updateFields} />,
+    <ShippingServiceForm />,
+    <PaymentForm />
   ])
 
   function onSubmit(e: FormEvent) {
@@ -80,11 +77,11 @@ export function ShippingFormPage() {
             justifyContent: "flex-end"
           }}>
             {!isFirstStep && (
-              <button type="button" onClick={back} className="border-2 px-2 py-1 rounded-md hover:bg-violet-300 hover:text-gray-500 hover:border-violet-300">
+              <button type="button" onClick={back} className="border-2 px-2 py-1 rounded-md hover:bg-slate-300 hover:text-gray-500 hover:border-slate-300">
                 Back
               </button>
             )}
-            <button type="submit" className="border-2 px-2 py-1 rounded-md hover:bg-violet-300 hover:text-gray-500 hover:border-violet-300">
+            <button type="submit" className="border-2 px-2 py-1 rounded-md hover:bg-slate-300 hover:text-gray-500 hover:border-slate-300">
               {isLastStep ? "Finish" : "Next"}
             </button>
           </div>

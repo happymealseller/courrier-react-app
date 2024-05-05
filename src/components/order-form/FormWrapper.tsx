@@ -1,9 +1,4 @@
-import { ReactNode } from "react"
-
-type FormWrapperProps = {
-    title: string
-    children: ReactNode
-}
+import { FormWrapperProps } from "../../utilities/type-aliases/FormWrapperProps"
 
 export function FormWrapper({ title, children}: FormWrapperProps) {
     return <>
