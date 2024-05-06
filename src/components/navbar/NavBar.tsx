@@ -1,7 +1,35 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { DropdownItemData } from "../../utilities/type-aliases/DropdownProps";
+import { NavBarItemWithoutDropdown } from "./NavBarItemWithoutDropdown";
+import { NavBarItemWithDropdownData } from "../../utilities/type-aliases/NavBarItemWithDropdownProps";
+import { NavBarItemWithDropdown } from "./NavBarItemWithDropdown";
 
 export function NavBar() {
+
+    const shippingData: DropdownItemData[] = [
+        {title: "Create a Shipment", navLink: "create-a-shipment"},
+        {title: "Schedule a Collection", navLink: "schedule-a-collection"},
+        {title: "How To Ship a Parcel", navLink: "how-to-ship-a-parcel"},
+        {title: "Calculate Shipping Cost", navLink: "calculate-shipping-cost"},
+        {title: "Find a Location", navLink: "find-a-location"},
+    ]
+
+    const trackingData: DropdownItemData[] = [
+        {title: "Track a Package", navLink: "track-a-package"},
+        {title: "Change a Delivery", navLink: "change-a-delivery"},
+    ]
+
+    const solutionsData: DropdownItemData[] = [
+        {title: "Open an Account", navLink: "open-an-account"},
+        {title: "Collections and Drop-Offs", navLink: "collections-and-drop-offs"},
+    ]
+
+    const supportData: DropdownItemData[] = [
+        {title: "Shipping Support", navLink: "shipping-support"},
+        {title: "Tracking Support", navLink: "tracking-support"},
+        {title: "Contact Us", navLink: "contact-us"},
+    ]
 
     const [isNavbarOpen, setIsNavbarOpen] = useState(true);
     
@@ -33,6 +61,33 @@ export function NavBar() {
         setIsSupportDropdownOpen(!isSupportDropdownOpen);
     }
 
+    const navBarItemsWithDropdown: NavBarItemWithDropdownData[] = [
+        {
+            title: "Shipping",
+            dropdownData: shippingData,
+            onClick: toggleOpenShippingDropdown,
+            isDropdownOpen: isShippingDropdownOpen,
+        },
+        {
+            title: "Tracking",
+            dropdownData: trackingData,
+            onClick: toggleOpenTrackingDropdown,
+            isDropdownOpen: isTrackingDropdownOpen,
+        },
+        {
+            title: "Business Solutions",
+            dropdownData: solutionsData,
+            onClick: toggleOpenSolutionDropdown,
+            isDropdownOpen: isSolutionDropdownOpen,
+        },
+        {
+            title: "Support",
+            dropdownData: supportData,
+            onClick: toggleOpenSupportDropdown,
+            isDropdownOpen: isSupportDropdownOpen,
+        },
+    ]
+
     return (
         <>
             <nav className="bg-slate-500">
@@ -54,178 +109,9 @@ export function NavBar() {
                     { isNavbarOpen && (
                         <div className={`w-full lg:inline-flex lg:w-auto lg:mt-0 my-2 ${!isNavbarOpen ? 'hidden' : ''}`}>
                             <ul className="w-full lg:w-auto flex flex-col lg:flex-row space-x-2 space-y-2 lg:space-y-0">
-                                <li>
-                                    <NavLink 
-                                        to="about" 
-                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-slate-800 ml-2">
-                                            About FDMx
-                                    </NavLink>
-                                </li>
-                                <li className="relative">
-                                    <button 
-                                        type="button"
-                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-slate-800"
-                                        onClick={toggleOpenShippingDropdown}
-                                    >
-                                            Shipping
-                                    </button>
-                                    { isShippingDropdownOpen && (
-                                        <div className="lg:absolute bg-white right-0 rounded-md p-2">
-                                            <ul className="space-y-2  lg:w-max">
-                                                <li>
-                                                    <NavLink 
-                                                        to="create-a-shipment"
-                                                        className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
-                                                    >
-                                                        Create a Shipment
-                                                    </NavLink>
-                                                </li>
-                                                <li>
-                                                    <NavLink 
-                                                        to="schedule-a-collection"
-                                                        className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
-                                                    >
-                                                        Schedule a Collection
-                                                    </NavLink>
-                                                </li>
-                                                <li>
-                                                    <NavLink 
-                                                        to="how-to-ship-a-parcel"
-                                                        className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
-                                                    >
-                                                        How To Ship a Parcel
-                                                    </NavLink>
-                                                </li>
-                                                <li>
-                                                    <NavLink 
-                                                        to="calculate-shipping-cost"
-                                                        className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
-                                                    >
-                                                        Calculate Shipping Cost
-                                                    </NavLink>
-                                                </li>
-                                                <li>
-                                                    <NavLink 
-                                                        to="find-a-location"
-                                                        className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
-                                                    >
-                                                        Find a Location
-                                                    </NavLink>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    )}
-                                </li>
-                                <li className="relative">
-                                    <button 
-                                        type="button" 
-                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-slate-800"
-                                        onClick={toggleOpenTrackingDropdown}
-                                    >
-                                            Tracking
-                                    </button>
-                                    { isTrackingDropdownOpen && (
-                                        <div className="lg:absolute bg-white right-0 rounded-md p-2">
-                                            <ul className="space-y-2  lg:w-max">
-                                                <li>
-                                                    <NavLink 
-                                                        to="track-a-package"
-                                                        className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
-                                                    >
-                                                        Track a Package
-                                                    </NavLink>
-                                                </li>
-                                                <li>
-                                                    <NavLink 
-                                                        to="change-a-delivery"
-                                                        className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
-                                                    >
-                                                        Change a Delivery
-                                                    </NavLink>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    )}
-                                </li>
-                                <li className="relative">
-                                    <button
-                                        type="button"
-                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-slate-800"
-                                        onClick={toggleOpenSolutionDropdown}
-                                    >
-                                            Business Solutions
-                                    </button>
-                                    { isSolutionDropdownOpen && (
-                                        <div className="lg:absolute bg-white right-0 rounded-md p-2">
-                                            <ul className="space-y-2  lg:w-max">
-                                                <li>
-                                                    <NavLink 
-                                                        to="open-an-account"
-                                                        className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
-                                                    >
-                                                        Open an Account
-                                                    </NavLink>
-                                                </li>
-                                                <li>
-                                                    <NavLink 
-                                                        to="collections-and-drop-offs"
-                                                        className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
-                                                    >
-                                                        Collections and Drop-Offs
-                                                    </NavLink>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    )}
-                                </li>
-                                <li className="relative">
-                                    <button 
-                                        type="button" 
-                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-slate-800"
-                                        onClick={toggleOpenSupportDropdown}
-                                    >
-                                            Support
-                                    </button>
-                                    { isSupportDropdownOpen && (
-                                        <div className="lg:absolute bg-white right-0 rounded-md p-2">
-                                            <ul className="space-y-2  lg:w-max">
-                                                <li>
-                                                    <NavLink 
-                                                        to="shipping-support"
-                                                        className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
-                                                    >
-                                                        Shipping Support
-                                                    </NavLink>
-                                                </li>
-                                                <li>
-                                                    <NavLink 
-                                                        to="tracking-support"
-                                                        className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
-                                                    >
-                                                        Tracking Support
-                                                    </NavLink>
-                                                </li>
-                                                <li>
-                                                    <NavLink 
-                                                        to="contact-us"
-                                                        className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"
-                                                    >
-                                                        Contact Us
-                                                    </NavLink>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    )}
-                                    
-                                </li>
-                                <li className="relative">
-                                    <NavLink
-                                        to="login"
-                                        className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-slate-800"
-                                    >
-                                            Login
-                                    </NavLink>
-                                </li>
+                                {<NavBarItemWithoutDropdown navBarItems={[{title: "About FDMx", navLink: "about"}]}/>}
+                                {<NavBarItemWithDropdown navBarItems={navBarItemsWithDropdown} />}
+                                {<NavBarItemWithoutDropdown navBarItems={[{title: "Login", navLink: "login"}]}/>}
                             </ul>
                         </div>
                     )}
