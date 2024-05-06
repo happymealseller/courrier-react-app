@@ -1,7 +1,7 @@
 import { useState, ChangeEvent } from "react";
 import { HandoffType } from "../../utilities/enums/HandoffType";
 import { FormWrapper } from "./FormWrapper";
-import { DeliveryServiceCard } from "./DeliveryServiceCard";
+import { DeliveryServiceCardContainer } from "./DeliveryServiceCardContainer";
 
 export function ShippingServiceForm() {
 
@@ -29,11 +29,7 @@ export function ShippingServiceForm() {
                 </div>
                 <br />
                 <div>
-                    <h3 className="font-semibold">When would you like it delivered?</h3>
-                    <div className="flex flex-row gap-4 m-2">
-                        <DeliveryServiceCard title="Normal" estimatedTimeArrival="Wednesday 01/05" deliveryCharge="20.00"/>
-                        <DeliveryServiceCard title="Express" estimatedTimeArrival="Thursday 25/04" deliveryCharge="50.00" />
-                    </div>
+                    <DeliveryServiceCardContainer />
                 </div>
             </div>
         </FormWrapper>

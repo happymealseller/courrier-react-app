@@ -1,0 +1,7 @@
+.card:hover .hover-inherit {
+    color: inherit;
+}
+
+.selected {
+    background-color: #4a5568;
+}
