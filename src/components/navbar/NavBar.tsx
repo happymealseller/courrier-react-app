@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
-import { DropdownItemData } from "../../utilities/type-aliases/DropdownProps";
+import { Logo } from "./Logo";
+import { DropdownItemData } from "../../utilities/type-aliases/navbar/DropdownProps";
 import { NavBarItemWithoutDropdown } from "./NavBarItemWithoutDropdown";
-import { NavBarItemWithDropdownData } from "../../utilities/type-aliases/NavBarItemWithDropdownProps";
+import { NavBarItemWithDropdownData } from "../../utilities/type-aliases/navbar/NavBarItemWithDropdownProps";
 import { NavBarItemWithDropdown } from "./NavBarItemWithDropdown";
+import { HamburgerMenu } from "./HamburgerMenu";
 
 export function NavBar() {
 
@@ -92,20 +93,8 @@ export function NavBar() {
         <>
             <nav className="bg-slate-500">
                 <div className="container px-4 flex flex-wrap mx-auto py-2 lg:space-x-4">
-                    <NavLink 
-                        to="/"
-                        className="inline-flex p-2 text-white text-2xl font-bold uppercase tracking-widest"
-                    >
-                        FDM Express
-                    </NavLink>
-                    <button 
-                        className="inline-flex items-center justify-center text-white border h-10 w-10 ml-auto rounded-md outline-none focus:outline-none lg:hidden"
-                        onClick={toggleOpenNavbar}
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                        </svg>
-                    </button>
+                    <Logo />
+                    <HamburgerMenu toggleOpenNavbar={toggleOpenNavbar}/>
                     { isNavbarOpen && (
                         <div className={`w-full lg:inline-flex lg:w-auto lg:mt-0 my-2 ${!isNavbarOpen ? 'hidden' : ''}`}>
                             <ul className="w-full lg:w-auto flex flex-col lg:flex-row space-x-2 space-y-2 lg:space-y-0">

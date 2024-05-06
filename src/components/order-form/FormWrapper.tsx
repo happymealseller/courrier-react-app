@@ -1,4 +1,4 @@
-import { FormWrapperProps } from "../../utilities/type-aliases/FormWrapperProps"
+import { FormWrapperProps } from "../../utilities/type-aliases/order-form/FormWrapperProps"
 
 export function FormWrapper({ title, children}: FormWrapperProps) {
     return <>

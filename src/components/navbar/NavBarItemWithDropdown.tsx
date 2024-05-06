@@ -1,5 +1,5 @@
 import { Dropdown } from "./Dropdown"
-import { NavBarItemWithDropdownProps } from "../../utilities/type-aliases/NavBarItemWithDropdownProps"
+import { NavBarItemWithDropdownProps } from "../../utilities/type-aliases/navbar/NavBarItemWithDropdownProps"
 
 export function NavBarItemWithDropdown({ navBarItems }: NavBarItemWithDropdownProps) {
     return (

@@ -1,5 +1,5 @@
 import { FormWrapper } from "./FormWrapper";
-import { ShipToFormProps } from "../../utilities/type-aliases/ShipToFormProps";
+import { ShipToFormProps } from "../../utilities/type-aliases/order-form/ShipToFormProps";
 
 export function ShipToForm({ toCompanyName, toAddress, toContactName, toEmail, toPhone, updateFields }: ShipToFormProps) {
     return (
