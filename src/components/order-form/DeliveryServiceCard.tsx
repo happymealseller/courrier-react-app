@@ -18,7 +18,7 @@ export function DeliveryServiceCard({ title, estimatedTimeArrival, deliveryCharg
     };
     return (
         <div 
-            className={`card ${selected ? 'selected': ''} relative flex flex-col rounded-md h-60 w-60 bg-slate-200 p-4 hover:bg-slate-600 hover:text-white`}
+            className={`card ${selected ? 'selected': ''} relative flex flex-col rounded-md h-60 w-60 ${selected ? 'bg-slate-600' : 'bg-slate-200'} p-4 hover:bg-slate-600 hover:text-white`}
             onClick={handleClick}
         >
             <span className={`hover-inherit text-xl font-semibold ${selected ? 'text-white' : 'text-slate-700'}`}>{title}</span>

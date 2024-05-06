@@ -16,4 +16,8 @@ export type FormData = {
     width: string,
     height: string,
     weight: string,
+    nameOnCard: string,
+    cardNumber: string,
+    expiryDate: string,
+    securityCode: string
   }

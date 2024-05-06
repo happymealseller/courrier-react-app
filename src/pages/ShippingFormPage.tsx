@@ -24,6 +24,10 @@ const INITIAL_DATA: FormData = {
   width: "",
   height: "",
   weight: "",
+  nameOnCard: "",
+  cardNumber: "",
+  expiryDate: "",
+  securityCode: "",
 }
 
 export function ShippingFormPage() {
@@ -40,7 +44,7 @@ export function ShippingFormPage() {
     <ShipToForm {...data} updateFields={updateFields} />,
     <ParcelInformationForm {...data} updateFields={updateFields} />,
     <ShippingServiceForm />,
-    <PaymentForm />
+    <PaymentForm {...data} updateFields={updateFields} />
   ])
 
   function onSubmit(e: FormEvent) {
