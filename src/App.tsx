@@ -19,6 +19,7 @@ function App() {
             <Route path="track-a-package" element={<TrackSearchBarPage />} />
             <Route path="open-an-account" element={<RegisterPage />} />
             <Route path="login" element={<LoginPage />} />
+            <Route path="register" element={<RegisterPage />} />
           </Routes>
         </div>
       </main>
