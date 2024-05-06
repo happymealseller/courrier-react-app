@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom"
-import { DropdownProps } from "../../utilities/type-aliases/DropdownProps"
+import { DropdownProps } from "../../utilities/type-aliases/navbar/DropdownProps"
 
 export function Dropdown({ dropdownItems }: DropdownProps) {
     return (

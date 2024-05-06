@@ -1,4 +1,4 @@
-import { ParcelType } from "../enums/ParcelType"
+import { ParcelType } from "../../enums/ParcelType"
 
 type ParcelInformationData = {
     parcelType: ParcelType,

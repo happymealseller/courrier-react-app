@@ -1,5 +1,5 @@
 import { ParcelType } from "../../utilities/enums/ParcelType";
-import { ParcelInformationFormProps } from "../../utilities/type-aliases/ParcelInformationFormProps";
+import { ParcelInformationFormProps } from "../../utilities/type-aliases/order-form/ParcelInformationFormProps";
 import { FormWrapper } from "./FormWrapper";
 
 export function ParcelInformationForm({ length, width, height, weight, updateFields}: ParcelInformationFormProps) {

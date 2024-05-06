@@ -1,4 +1,4 @@
-import { ParcelType } from "../enums/ParcelType"
+import { ParcelType } from "../../enums/ParcelType"
 
 export type FormData = {
     fromCompanyName: string,

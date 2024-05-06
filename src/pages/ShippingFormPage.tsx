@@ -5,7 +5,7 @@ import { ParcelInformationForm } from "../components/order-form/ParcelInformatio
 import { ShippingServiceForm } from "../components/order-form/ShippingServiceForm"
 import { PaymentForm } from "../components/order-form/PaymentForm"
 import { useMultistepForm } from "../utilities/hooks/useMultistepForm"
-import { FormData } from "../utilities/type-aliases/FormData"
+import { FormData } from "../utilities/type-aliases/order-form/FormData"
 import { ParcelType } from "../utilities/enums/ParcelType"
 
 const INITIAL_DATA: FormData = {

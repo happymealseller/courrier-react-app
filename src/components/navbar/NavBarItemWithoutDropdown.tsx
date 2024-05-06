@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom"
-import { NavBarItemWithoutDropdownProps } from "../../utilities/type-aliases/NavBarItemWithoutDropdownProps"
+import { NavBarItemWithoutDropdownProps } from "../../utilities/type-aliases/navbar/NavBarItemWithoutDropdownProps"
 
 export function NavBarItemWithoutDropdown({ navBarItems }: NavBarItemWithoutDropdownProps) {
     return (<>
