@@ -1,5 +1,5 @@
 import { DeliveryServiceType } from "../../utilities/enums/DeliveryServiceType";
-import "../../Card.css"
+import "../../css/Card.css"
 
 type DeliveryServiceCardData = {
     title: string,

@@ -4,7 +4,7 @@ import { ShipToForm } from "../components/order-form/ShipToForm"
 import { ParcelInformationForm } from "../components/order-form/ParcelInformationForm"
 import { ShippingServiceForm } from "../components/order-form/ShippingServiceForm"
 import { PaymentForm } from "../components/order-form/PaymentForm"
-import { useMultistepForm } from "../useMultistepForm"
+import { useMultistepForm } from "../utilities/hooks/useMultistepForm"
 import { FormData } from "../utilities/type-aliases/FormData"
 import { ParcelType } from "../utilities/enums/ParcelType"
 
