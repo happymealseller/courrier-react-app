@@ -41,24 +41,44 @@ export function NavBar() {
     const [isShippingDropdownOpen, setIsShippingDropdownOpen] = useState(false);
 
     const toggleOpenShippingDropdown = () => {
+        if (!isShippingDropdownOpen) {
+            setIsTrackingDropdownOpen(false);
+            setIsSolutionDropdownOpen(false);
+            setIsSupportDropdownOpen(false);
+        }
         setIsShippingDropdownOpen(!isShippingDropdownOpen);
     }
 
     const [isTrackingDropdownOpen, setIsTrackingDropdownOpen] = useState(false);
 
     const toggleOpenTrackingDropdown = () => {
+        if (!isTrackingDropdownOpen) {
+            setIsShippingDropdownOpen(false);
+            setIsSolutionDropdownOpen(false);
+            setIsSupportDropdownOpen(false);
+        }
         setIsTrackingDropdownOpen(!isTrackingDropdownOpen);
     }
 
     const [isSolutionDropdownOpen, setIsSolutionDropdownOpen] = useState(false);
 
     const toggleOpenSolutionDropdown = () => {
+        if (!isSolutionDropdownOpen) {
+            setIsShippingDropdownOpen(false);
+            setIsTrackingDropdownOpen(false);
+            setIsSupportDropdownOpen(false);
+        }
         setIsSolutionDropdownOpen(!isSolutionDropdownOpen);
     }
 
     const [isSupportDropdownOpen, setIsSupportDropdownOpen] = useState(false);
 
     const toggleOpenSupportDropdown = () => {
+        if (!isSupportDropdownOpen) {
+            setIsShippingDropdownOpen(false);
+            setIsTrackingDropdownOpen(false);
+            setIsSolutionDropdownOpen(false);
+        }
         setIsSupportDropdownOpen(!isSupportDropdownOpen);
     }
 
