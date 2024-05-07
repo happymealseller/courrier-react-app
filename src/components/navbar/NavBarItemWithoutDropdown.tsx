@@ -5,7 +5,10 @@ export function NavBarItemWithoutDropdown({ navBarItems }: NavBarItemWithoutDrop
     return (<>
         {navBarItems.map((navBarItem) => {
             return (
-                <li className="relative">
+                <li
+                    key={navBarItem.title} 
+                    className="relative"
+                >
                     <NavLink
                         to={navBarItem.navLink}
                         className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-slate-800"

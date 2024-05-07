@@ -1,5 +1,5 @@
 export enum ParcelType {
-    Custom,
+    Custom = "custom",
     Small = "s",
     Medium = "m",
     Large = "l"
