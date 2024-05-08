@@ -7,7 +7,7 @@ export function Dropdown({ dropdownItems }: DropdownProps) {
             <ul className="space-y-2  lg:w-max">
                 {dropdownItems.map(dropdownItem => {
                     return (
-                        <li>
+                        <li key={dropdownItem.title}>
                             <NavLink 
                                 to={dropdownItem.navLink}
                                 className="flex p-2 font-medium text-gray-600 rounded-md hover:bg-gray-100 hover:text-black"

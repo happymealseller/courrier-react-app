@@ -1,7 +1,7 @@
 import { FormWrapper } from "./FormWrapper";
 import { ShipFromFormProps } from "../../utilities/type-aliases/order-form/ShipFromFormProps";
 
-export function ShipFromForm({ fromCompanyName, fromAddress, fromContactName, fromEmail, fromPhone, updateFields }: ShipFromFormProps) {
+export function ShipFromForm({ fromCompanyName, fromAddress, fromFullName, fromEmail, fromPhone, updateFields }: ShipFromFormProps) {
     return (
         <FormWrapper title="Ship From">
             <label className="font-bold">Full Name or Company Name</label>
@@ -13,13 +13,13 @@ export function ShipFromForm({ fromCompanyName, fromAddress, fromContactName, fr
                 onChange={e => updateFields({ fromCompanyName: e.target.value })}
                 className="border-2 px-2 rounded-md bg-gray-200" 
             />
-            <label className="font-bold">Contact Name</label>
+            <label className="font-bold">Full Name</label>
             <input 
                 autoFocus 
                 required 
                 type="text" 
-                value={fromContactName}
-                onChange={e => updateFields({ fromContactName: e.target.value })}
+                value={fromFullName}
+                onChange={e => updateFields({ fromFullName: e.target.value })}
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
             <label className="font-bold">Address</label>

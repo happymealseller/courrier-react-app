@@ -1,7 +1,7 @@
 import { FormWrapper } from "./FormWrapper";
 import { ShipToFormProps } from "../../utilities/type-aliases/order-form/ShipToFormProps";
 
-export function ShipToForm({ toCompanyName, toAddress, toContactName, toEmail, toPhone, updateFields }: ShipToFormProps) {
+export function ShipToForm({ toCompanyName, toAddress, toFullName, toEmail, toPhone, updateFields }: ShipToFormProps) {
     return (
         <FormWrapper title="Ship To">
             <label className="font-bold">Full Name or Company Name</label>
@@ -18,8 +18,8 @@ export function ShipToForm({ toCompanyName, toAddress, toContactName, toEmail, t
                 autoFocus 
                 required 
                 type="text" 
-                value={toContactName} 
-                onChange={e => updateFields({ toContactName: e.target.value })} 
+                value={toFullName} 
+                onChange={e => updateFields({ toFullName: e.target.value })} 
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
             <label className="font-bold">Address</label>

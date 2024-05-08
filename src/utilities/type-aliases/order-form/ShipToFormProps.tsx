@@ -1,7 +1,7 @@
 type ShipToData = {
     toCompanyName: string,
     toAddress: string,
-    toContactName: string,
+    toFullName: string,
     toEmail: string,
     toPhone: string
 }
