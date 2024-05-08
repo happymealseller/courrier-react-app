@@ -8,31 +8,33 @@ enum AccountType {
 export function RegisterForm() {
     const [accountType, setAccountType] = useState(AccountType.Sender);
     const [fullName, setFullName] = useState("");
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
+    const [phoneNo, setPhoneNo] = useState("");
     const [vehicleCapacity, setVehicleCapacity] = useState("");
 
-    const [isCourierView, setIsCourierView] = useState(false)
+    const [isSenderView, setIsSenderView] = useState(true)
 
     const handleAccountTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setIsCourierView(event.target.value === AccountType.Courier);
+        setIsSenderView(event.target.value === AccountType.Sender);
         setAccountType(event.target.value === AccountType.Courier ? AccountType.Courier : AccountType.Sender);
       };
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault()
-        const registrationInformation = { accountType, fullName, email, password, phoneNumber, vehicleCapacity }
-        fetch(
-            "http://localhost:8081/register",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(registrationInformation)
-            }
-        )
+        const senderRegistrationInformation = { fullName, username, email, password, phoneNo };
+        const courierRegistrationInformation = { fullName, username, password, vehicleCapacity };
+        const registrationInformation = accountType === AccountType.Sender ? senderRegistrationInformation : courierRegistrationInformation;
+        const url = "http://localhost:8081/register" + (accountType === AccountType.Sender ? "" : "Courier");
+        const options = {
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": JSON.stringify(registrationInformation)
+        }
+        fetch(url, options)
         .then(response => response.json())
         .then(data => console.log("registered successfully", data))
         .catch(error => console.log("error", error))
@@ -71,7 +73,21 @@ export function RegisterForm() {
                     onChange={e => setFullName(e.target.value)}
                 >
                 </input>
-                { !isCourierView && (
+                <div>
+                    <label className="text-base font-normal">Username:</label>
+                </div>
+                <input 
+                    type="text"
+                    value={username}
+                    style={{border: '1px solid black', padding: '5px'}} 
+                    id="username" 
+                    name="username" 
+                    placeholder="Userame" 
+                    required 
+                    onChange={e => setUsername(e.target.value)}
+                >
+                </input>
+                { isSenderView && (
                     <>
                         <div>
                             <label className="text-base font-normal">Email:</label>
@@ -86,37 +102,41 @@ export function RegisterForm() {
                             required
                             onChange={e => setEmail(e.target.value)}
                         ></input>
-                        <div>
-                            <label className="text-base font-normal">Password:</label>
-                        </div>
-                        <input 
-                            type="password" 
-                            value={password}
-                            style={{ border: '1px solid black', padding: '5px' }}
-                            id="password" 
-                            name="password" 
-                            placeholder="Password" 
-                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                            title="Must contain minimum 8 characters, at least 1 number, 1 uppercase and 1 lowercase letter" 
-                            required
-                            onChange={e => setPassword(e.target.value)}
-                        ></input>
+                    </>
+                )}
+                <div>
+                    <label className="text-base font-normal">Password:</label>
+                </div>
+                <input 
+                    type="password" 
+                    value={password}
+                    style={{ border: '1px solid black', padding: '5px' }}
+                    id="password" 
+                    name="password" 
+                    placeholder="Password" 
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    title="Must contain minimum 8 characters, at least 1 number, 1 uppercase and 1 lowercase letter" 
+                    required
+                    onChange={e => setPassword(e.target.value)}
+                ></input>
+                { isSenderView && (
+                    <>
                         <div>
                             <label className="text-base font-normal">Phone Number:</label>
                         </div>
                         <input 
                             type="tel" 
-                            value={phoneNumber}
+                            value={phoneNo}
                             style={{ border: '1px solid black', padding: '5px' }}
                             id="phone-number" 
                             name="phone-number" 
                             placeholder="Phone Number" 
                             required
-                            onChange={e => setPhoneNumber(e.target.value)}
+                            onChange={e => setPhoneNo(e.target.value)}
                         ></input>
                     </>
                 )}
-                { isCourierView && (
+                { !isSenderView && (
                     <>
                         <div> 
                             <label className="text-base font-normal">Vehicle Capacity (kg):</label> 
