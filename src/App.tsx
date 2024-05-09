@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { LoginPage } from "./pages/LoginPage"
 import { ShippingFormPage } from "./pages/ShippingFormPage"
 import { RegisterPage } from "./pages/RegisterPage"
+import { NotFound } from "./pages/NotFoundPage"
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="track-a-package" element={<TrackSearchBarPage />} />
             <Route path="open-an-account" element={<RegisterPage />} />
             <Route path="login" element={<LoginPage />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </main>

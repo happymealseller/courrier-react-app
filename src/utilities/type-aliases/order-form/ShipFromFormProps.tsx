@@ -1,5 +1,5 @@
 type ShipFromData = {
-    fromCompanyName: string,
+    // fromCompanyName: string,
     fromAddress: string,
     fromFullName: string,
     fromEmail: string,

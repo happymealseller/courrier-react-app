@@ -1,9 +1,5 @@
 import React, { useState, FormEvent } from 'react';
-
-enum AccountType {
-    Courier = "courier",
-    Sender = "sender"
-}
+import { AccountType } from '../../utilities/enums/AccountType';
 
 export function RegisterForm() {
     const [accountType, setAccountType] = useState(AccountType.Sender);
