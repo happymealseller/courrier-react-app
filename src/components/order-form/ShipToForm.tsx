@@ -1,9 +1,10 @@
 import { FormWrapper } from "./FormWrapper";
 import { ShipToFormProps } from "../../utilities/type-aliases/order-form/ShipToFormProps";
 
-export function ShipToForm({ toCompanyName, toAddress, toFullName, toEmail, toPhone, updateFields }: ShipToFormProps) {
+export function ShipToForm({ toAddress, toFullName, toEmail, toPhone, updateFields }: ShipToFormProps) {
     return (
         <FormWrapper title="Ship To">
+            {/*
             <label className="font-bold">Full Name or Company Name</label>
             <input 
                 autoFocus 
@@ -13,6 +14,7 @@ export function ShipToForm({ toCompanyName, toAddress, toFullName, toEmail, toPh
                 onChange={e => updateFields({ toCompanyName: e.target.value })} 
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
+            */}
             <label className="font-bold">Contact Name</label>
             <input 
                 autoFocus 
@@ -44,7 +46,8 @@ export function ShipToForm({ toCompanyName, toAddress, toFullName, toEmail, toPh
             <input 
                 autoFocus 
                 required 
-                type="contact" 
+                pattern="^[89]\d{7}$"
+                title="Please enter an 8-digit number starting with 8 or 9."
                 value={toPhone} 
                 onChange={e => updateFields({ toPhone: e.target.value })} 
                 className="border-2 px-2 rounded-md bg-gray-200"

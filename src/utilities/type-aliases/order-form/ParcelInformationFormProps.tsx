@@ -1,11 +1,12 @@
-import { ParcelType } from "../../enums/ParcelType"
+//import { ParcelType } from "../../enums/ParcelType"
 
 type ParcelInformationData = {
-    parcelType: ParcelType,
+    //parcelType: ParcelType,
     length: string,
     width: string,
     height: string,
-    weight: string
+    weight: string,
+    parcelDescription: string
 }
 
 export type ParcelInformationFormProps = ParcelInformationData & {

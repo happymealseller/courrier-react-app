@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react"
 import { ShipFromForm } from "../components/order-form/ShipFromForm"
 import { ShipToForm } from "../components/order-form/ShipToForm"
 import { ParcelInformationForm } from "../components/order-form/ParcelInformationForm"
-import { ShippingServiceForm } from "../components/order-form/ShippingServiceForm"
+//import { ShippingServiceForm } from "../components/order-form/ShippingServiceForm"
 //import { PaymentForm } from "../components/order-form/PaymentForm"
 import { useMultistepForm } from "../utilities/hooks/useMultistepForm"
 import { FormData } from "../utilities/type-aliases/order-form/FormData"
@@ -24,6 +24,7 @@ const INITIAL_DATA: FormData = {
 	width: "",
 	height: "",
 	weight: "",
+	parcelDescription: ""
 	/*nameOnCard: "",
 	cardNumber: "",
 	expiryDate: "",
@@ -43,7 +44,7 @@ export function ShippingFormPage() {
 		<ShipFromForm {...data} updateFields={updateFields} />,
 		<ShipToForm {...data} updateFields={updateFields} />,
 		<ParcelInformationForm {...data} updateFields={updateFields} />,
-		<ShippingServiceForm />,
+		//<ShippingServiceForm />,
 		//<PaymentForm {...data} updateFields={updateFields} />
 	])
 
@@ -53,7 +54,7 @@ export function ShippingFormPage() {
 			return next()
 		} else {
 			fetch(
-				"http://localhost:8081/order", 
+				"http://localhost:8081/orders/create-order", 
 				{
 					method: "POST",
 					headers: { 
@@ -61,7 +62,7 @@ export function ShippingFormPage() {
 					},
 					body: JSON.stringify(data)
 				})
-			.then(response => { response.body })
+			.then(response => { response.json() })
 			.then(data => { console.log("created order successfully", data); })
 			.catch(error => { console.error("error creating order", error); })
 		}
