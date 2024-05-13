@@ -5,6 +5,7 @@ import { LoginPage } from "./pages/LoginPage"
 import { ShippingFormPage } from "./pages/ShippingFormPage"
 import { RegisterPage } from "./pages/RegisterPage"
 import { NotFound } from "./pages/NotFoundPage"
+import { CourierDashboardPage } from "./pages/CourierDashboardPage"
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="open-an-account" element={<RegisterPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="courier-dashboard" element={<CourierDashboardPage />} />
           </Routes>
         </div>
       </main>

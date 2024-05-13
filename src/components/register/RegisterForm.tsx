@@ -1,5 +1,6 @@
 import React, { useState, FormEvent } from 'react';
 import { AccountType } from '../../utilities/enums/AccountType';
+import { useNavigate } from 'react-router-dom';
 
 export function RegisterForm() {
     const [accountType, setAccountType] = useState(AccountType.Sender);
@@ -11,6 +12,8 @@ export function RegisterForm() {
     const [vehicleCapacity, setVehicleCapacity] = useState("");
 
     const [isSenderView, setIsSenderView] = useState(true)
+
+    const navigate = useNavigate();
 
     const handleAccountTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setIsSenderView(event.target.value === AccountType.Sender);
@@ -32,7 +35,10 @@ export function RegisterForm() {
         }
         fetch(url, options)
         .then(response => response.json())
-        .then(data => console.log("registered successfully", data))
+        .then(data => {
+            console.log("registered successfully", data);
+            navigate('/');
+        })
         .catch(error => console.log("error", error))
     }
 
