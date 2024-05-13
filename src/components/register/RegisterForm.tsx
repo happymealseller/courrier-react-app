@@ -1,6 +1,8 @@
 import React, { useState, FormEvent } from 'react';
 import { AccountType } from '../../utilities/enums/AccountType';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { ResponseStatus } from '../../utilities/enums/ResponseStatus';
+import { useNavigate } from "react-router-dom";
 
 export function RegisterForm() {
     const [accountType, setAccountType] = useState(AccountType.Sender);
@@ -10,10 +12,9 @@ export function RegisterForm() {
     const [password, setPassword] = useState("");
     const [phoneNo, setPhoneNo] = useState("");
     const [vehicleCapacity, setVehicleCapacity] = useState("");
+    const navigate = useNavigate();
 
     const [isSenderView, setIsSenderView] = useState(true)
-
-    const navigate = useNavigate();
 
     const handleAccountTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setIsSenderView(event.target.value === AccountType.Sender);
@@ -21,11 +22,12 @@ export function RegisterForm() {
       };
 
     function handleSubmit(e: FormEvent) {
-        e.preventDefault()
+        e.preventDefault();
         const senderRegistrationInformation = { fullName, username, email, password, phoneNo };
         const courierRegistrationInformation = { fullName, username, password, vehicleCapacity };
         const registrationInformation = accountType === AccountType.Sender ? senderRegistrationInformation : courierRegistrationInformation;
         const url = "http://localhost:8081/register" + (accountType === AccountType.Sender ? "" : "Courier");
+        /*
         const options = {
             "method": "POST",
             "headers": {
@@ -40,6 +42,34 @@ export function RegisterForm() {
             navigate('/');
         })
         .catch(error => console.log("error", error))
+        */
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': 'http://localhost:3000'
+            }
+        }
+        axios.post(url, JSON.stringify(registrationInformation), config)
+            .then(response => {
+                if (response.data.status === ResponseStatus.Success) {
+                    alert("Registered Successfully!")
+                    switch (accountType) {
+                        case AccountType.Sender:
+                            navigate(`/dashboard/sender`);
+                            break;
+                        case AccountType.Courier:
+                            navigate(`/dashboard/courier`);
+                            break;
+                        default:
+                            navigate("/login");
+                    }                    
+                } else if (response.data.status === ResponseStatus.Failure) {
+                    alert(`Unable to register\nReason: ${response.data.message}`)
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 
     return (

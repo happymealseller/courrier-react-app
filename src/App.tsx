@@ -22,7 +22,7 @@ function App() {
             <Route path="open-an-account" element={<RegisterPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="*" element={<NotFound />} />
-            <Route path="courier-dashboard" element={<CourierDashboardPage />} />
+            <Route path="dashboard/courier" element={<CourierDashboardPage />} />
           </Routes>
         </div>
       </main>
