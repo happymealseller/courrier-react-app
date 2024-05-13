@@ -48,7 +48,7 @@ export function ShippingFormPage() {
 		//<PaymentForm {...data} updateFields={updateFields} />
 	])
 
-	function onSubmit(e: FormEvent) {
+	function handleSubmit(e: FormEvent) {
 		e.preventDefault()
 		if (!isLastStep) {
 			return next()
@@ -62,9 +62,9 @@ export function ShippingFormPage() {
 					},
 					body: JSON.stringify(data)
 				})
-			.then(response => { response.json() })
-			.then(data => { console.log("created order successfully", data); })
-			.catch(error => { console.error("error creating order", error); })
+			.then(response => response.json())
+			.then(data => console.log("created order successfully", data))
+			.catch(error => console.error("error creating order", error))
 		}
 	}	
 
@@ -80,7 +80,7 @@ export function ShippingFormPage() {
 			fontFamily: "Arial",
 			maxWidth: "max-content"
 			}}>
-				<form onSubmit={onSubmit}>
+				<form onSubmit={handleSubmit}>
 					<div style={{
 					position: "absolute",
 					top: "0.5rem",
