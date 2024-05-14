@@ -1,4 +1,4 @@
 export enum AccountType {
-    Courier = "ROLE_COURIER",
-    Sender = "ROLE_SENDER"
+    Courier = "[ROLE_COURIER]",
+    Sender = "[ROLE_SENDER]"
 }
