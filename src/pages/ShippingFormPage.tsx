@@ -7,6 +7,8 @@ import { ParcelInformationForm } from "../components/order-form/ParcelInformatio
 import { useMultistepForm } from "../utilities/hooks/useMultistepForm"
 import { FormData } from "../utilities/type-aliases/order-form/FormData"
 import { ParcelType } from "../utilities/enums/ParcelType"
+import { axiosInstance } from "../components/security/axiosInstance"
+import { ResponseStatus } from "../utilities/enums/ResponseStatus"
 
 const INITIAL_DATA: FormData = {
 	fromCompanyName: "",
@@ -53,18 +55,21 @@ export function ShippingFormPage() {
 		if (!isLastStep) {
 			return next()
 		} else {
-			fetch(
-				"http://localhost:8081/orders/create-order", 
-				{
-					method: "POST",
-					headers: { 
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(data)
+			const endpoint = "/orders/create-order";
+			const config = {
+				headers: {
+					"Content-Type": "application/json",
+					"Access-Control-Allow-Origin": "http://localhost:3000"
+				}
+			};
+			axiosInstance.post(endpoint, JSON.stringify(data), config)
+				.then(response => {
+					if (response.data.status === ResponseStatus.Success) {
+						alert(`${response.data.message} ${JSON.stringify(response.data.orderDetails)}`)
+					} else if (response.data.status === ResponseStatus.Failure) {
+						//
+					}
 				})
-			.then(response => response.json())
-			.then(data => console.log("created order successfully", data))
-			.catch(error => console.error("error creating order", error))
 		}
 	}	
 

@@ -1,8 +1,8 @@
 import React, { useState, FormEvent } from 'react';
 import { AccountType } from '../../utilities/enums/AccountType';
-import axios from 'axios';
 import { ResponseStatus } from '../../utilities/enums/ResponseStatus';
 import { useNavigate } from "react-router-dom";
+import { axiosInstance } from '../security/axiosInstance';
 
 export function RegisterForm() {
     const [accountType, setAccountType] = useState(AccountType.Sender);
@@ -29,29 +29,13 @@ export function RegisterForm() {
         const courierRegistrationInformation = { fullName, username, password, vehicleCapacity };
         const registrationInformation = accountType === AccountType.Sender ? senderRegistrationInformation : courierRegistrationInformation;
         const url = "http://localhost:8081/register" + (accountType === AccountType.Sender ? "" : "Courier");
-        /*
-        const options = {
-            "method": "POST",
-            "headers": {
-                "Content-Type": "application/json"
-            },
-            "body": JSON.stringify(registrationInformation)
-        }
-        fetch(url, options)
-        .then(response => response.json())
-        .then(data => {
-            console.log("registered successfully", data);
-            navigate('/');
-        })
-        .catch(error => console.log("error", error))
-        */
         const config = {
             headers: {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "http://localhost:3000"
             }
         }
-        axios.post(url, JSON.stringify(registrationInformation), config)
+        axiosInstance.post(url, JSON.stringify(registrationInformation), config)
             .then(response => {
                 if (response.data.status === ResponseStatus.Success) {
                     navigate("/login", { state: { "prepopulatedUsername": username, "prepopulatedPassword": password } });
