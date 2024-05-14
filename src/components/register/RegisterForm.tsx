@@ -12,14 +12,16 @@ export function RegisterForm() {
     const [password, setPassword] = useState("");
     const [phoneNo, setPhoneNo] = useState("");
     const [vehicleCapacity, setVehicleCapacity] = useState("");
-    const navigate = useNavigate();
 
-    const [isSenderView, setIsSenderView] = useState(true)
+    const [isSenderView, setIsSenderView] = useState(true);
+    const [error, setError] = useState("");
+
+    const navigate = useNavigate();
 
     const handleAccountTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setIsSenderView(event.target.value === AccountType.Sender);
         setAccountType(event.target.value === AccountType.Courier ? AccountType.Courier : AccountType.Sender);
-      };
+    };
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
@@ -45,8 +47,8 @@ export function RegisterForm() {
         */
         const config = {
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': 'http://localhost:3000'
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "http://localhost:3000"
             }
         }
         axios.post(url, JSON.stringify(registrationInformation), config)
@@ -55,20 +57,20 @@ export function RegisterForm() {
                     alert("Registered Successfully!")
                     switch (accountType) {
                         case AccountType.Sender:
-                            navigate(`/dashboard/sender`);
+                            navigate("/dashboard/sender");
                             break;
                         case AccountType.Courier:
-                            navigate(`/dashboard/courier`);
+                            navigate("/dashboard/courier");
                             break;
                         default:
                             navigate("/login");
                     }                    
                 } else if (response.data.status === ResponseStatus.Failure) {
-                    alert(`Unable to register\nReason: ${response.data.message}`)
+                    setError(response.data.message);
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
+                alert(`Error: ${error.message}`);
             });
     }
 
@@ -183,8 +185,10 @@ export function RegisterForm() {
                             onChange={e => setVehicleCapacity(e.target.value)}
                         ></input>
                     </>
-                ) 
-                }
+                )}
+                { error && (
+                    <p className="text-red-500">{error}</p>
+                )}
                 <div className="mt-8 flex flex-col gap-y-4">
                     <button 
                         type="submit"
