@@ -1,7 +1,50 @@
+import axios from "axios";
+import { FormEvent, useState } from "react"
+import { useNavigate } from "react-router-dom";
+import { ResponseStatus } from "../../utilities/enums/ResponseStatus";
+import { AccountType } from "../../utilities/enums/AccountType";
 
 export function LoginForm() {
-    function handleSubmit() {
-        alert("send info to POST login api")
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+
+    const navigate = useNavigate();
+
+    function handleSubmit(e: FormEvent) {
+        e.preventDefault();
+        console.log("username", username);
+        console.log("password", password);
+        const loginInformation = { username, password }
+        console.log("loginInformation", loginInformation)
+        const url = "http://localhost:8081/login"
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "http://localhost:3000"
+            }
+        }
+        axios.post(url, JSON.stringify(loginInformation), config)
+            .then(response => {
+                if (response.data.status === ResponseStatus.Success) {
+                    console.log(response.data.role[0]);
+                    switch (response.data.role[0]) {
+                        case AccountType.Sender:
+                            navigate("dashboard/sender");
+                            break;
+                        case AccountType.Courier:
+                            navigate("dashboard/courier");
+                            break;
+                    }
+                    localStorage.setItem("accountType", response.data.role[0] === AccountType.Sender ? AccountType.Sender : AccountType.Courier)
+                    localStorage.setItem("jwt", response.data.jwt)
+                } else if (response.data.status === ResponseStatus.Failure) {
+                    setError(response.data.message);
+                }
+            })
+            .catch(error => {
+                alert(`Error: ${error.message}`);
+            });
     }
     return (
         <div className="bg-white px-10 py-20 rounded-3xl border-2 border-gray-200">
@@ -10,11 +53,13 @@ export function LoginForm() {
             <div className="mt-8">
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label className="text-lg font-medium">Email</label>
+                        <label className="text-lg font-medium">Username</label>
                         <input 
                             className="w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
-                            placeholder="Enter your email"
-                            type="email"
+                            placeholder="Enter your username"
+                            type="text"
+                            value={username}
+                            onChange={e => setUsername(e.target.value)}
                             required 
                         />
                     </div>
@@ -24,6 +69,8 @@ export function LoginForm() {
                             className="w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
                             placeholder="Enter your password"
                             type="password" 
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
                             required
                         />
                     </div>
@@ -37,6 +84,9 @@ export function LoginForm() {
                         </div>
                         <button className="font-medium text-base text-slate-500">Forgot password</button>
                     </div>
+                    { error && (
+                        <p className="text-red-500">{error}</p>
+                    )}
                     <div className="mt-8 flex flex-col gap-y-4">
                         <button 
                             type="submit"
