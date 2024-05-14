@@ -54,17 +54,7 @@ export function RegisterForm() {
         axios.post(url, JSON.stringify(registrationInformation), config)
             .then(response => {
                 if (response.data.status === ResponseStatus.Success) {
-                    alert("Registered Successfully!")
-                    switch (accountType) {
-                        case AccountType.Sender:
-                            navigate("/dashboard/sender");
-                            break;
-                        case AccountType.Courier:
-                            navigate("/dashboard/courier");
-                            break;
-                        default:
-                            navigate("/login");
-                    }                    
+                    navigate("/login", { state: { "prepopulatedUsername": username, "prepopulatedPassword": password } });
                 } else if (response.data.status === ResponseStatus.Failure) {
                     setError(response.data.message);
                 }

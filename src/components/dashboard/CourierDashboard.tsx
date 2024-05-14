@@ -29,6 +29,7 @@ export function CourierDashboard() {
     // }
 
     function handleSubmit(e: FormEvent) {
+        e.preventDefault();
         console.log("Courier assigned to order successfully!")
         navigate('/');
     }
