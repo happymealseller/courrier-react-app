@@ -1,9 +1,9 @@
-import axios from "axios";
 import { FormEvent, useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom";
 import { ResponseStatus } from "../../utilities/enums/ResponseStatus";
 import { AccountType } from "../../utilities/enums/AccountType";
 import { GmailIcon } from "../icons/GmailIcon";
+import { axiosInstance } from "../security/axiosInstance";
 
 export function LoginForm() {
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ export function LoginForm() {
                 "Access-Control-Allow-Origin": "http://localhost:3000"
             }
         }
-        axios.post(url, JSON.stringify(loginInformation), config)
+        axiosInstance.post(url, JSON.stringify(loginInformation), config)
             .then(response => {
                 if (response.data.status === ResponseStatus.Success) {
                     switch (response.data.role) {
