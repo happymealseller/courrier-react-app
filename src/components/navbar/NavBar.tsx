@@ -5,6 +5,7 @@ import { NavBarItemWithoutDropdown } from "./NavBarItemWithoutDropdown";
 import { NavBarItemWithDropdownData } from "../../utilities/type-aliases/navbar/NavBarItemWithDropdownProps";
 import { NavBarItemWithDropdown } from "./NavBarItemWithDropdown";
 import { HamburgerMenu } from "./HamburgerMenu";
+import "../../css/Navbar.css"
 
 export function NavBar() {
 
@@ -40,84 +41,84 @@ export function NavBar() {
 
     const [isShippingDropdownOpen, setIsShippingDropdownOpen] = useState(false);
 
-    const toggleOpenShippingDropdown = () => {
-        if (!isShippingDropdownOpen) {
-            setIsTrackingDropdownOpen(false);
-            setIsSolutionDropdownOpen(false);
-            setIsSupportDropdownOpen(false);
-        }
-        setIsShippingDropdownOpen(!isShippingDropdownOpen);
+    const handleMouseEnterShippingDropdown = () => {
+        setIsShippingDropdownOpen(true);
+    }
+
+    const handleMouseLeaveShippingDropdown = () => {
+        setIsShippingDropdownOpen(false);
     }
 
     const [isTrackingDropdownOpen, setIsTrackingDropdownOpen] = useState(false);
 
-    const toggleOpenTrackingDropdown = () => {
-        if (!isTrackingDropdownOpen) {
-            setIsShippingDropdownOpen(false);
-            setIsSolutionDropdownOpen(false);
-            setIsSupportDropdownOpen(false);
-        }
-        setIsTrackingDropdownOpen(!isTrackingDropdownOpen);
+    const handleMouseEnterTrackingDropdown = () => {
+        setIsTrackingDropdownOpen(true);
+    }
+
+    const handleMouseLeaveTrackingDropdown = () => {
+        setIsTrackingDropdownOpen(false);
     }
 
     const [isSolutionDropdownOpen, setIsSolutionDropdownOpen] = useState(false);
 
-    const toggleOpenSolutionDropdown = () => {
-        if (!isSolutionDropdownOpen) {
-            setIsShippingDropdownOpen(false);
-            setIsTrackingDropdownOpen(false);
-            setIsSupportDropdownOpen(false);
-        }
-        setIsSolutionDropdownOpen(!isSolutionDropdownOpen);
+    const handleMouseEnterSolutionDropdown = () => {
+        setIsSolutionDropdownOpen(true);
+    }
+
+    const handleMouseLeaveSolutionDropdown = () => {
+        setIsSolutionDropdownOpen(false);
     }
 
     const [isSupportDropdownOpen, setIsSupportDropdownOpen] = useState(false);
 
-    const toggleOpenSupportDropdown = () => {
-        if (!isSupportDropdownOpen) {
-            setIsShippingDropdownOpen(false);
-            setIsTrackingDropdownOpen(false);
-            setIsSolutionDropdownOpen(false);
-        }
-        setIsSupportDropdownOpen(!isSupportDropdownOpen);
+    const handleMouseEnterSupportDropdown = () => {
+        setIsSupportDropdownOpen(true);
+    }
+
+    const handleMouseLeaveSupportDropdown = () => {
+        setIsSupportDropdownOpen(false);
     }
 
     const navBarItemsWithDropdown: NavBarItemWithDropdownData[] = [
         {
             title: "Shipping",
             dropdownData: shippingData,
-            onClick: toggleOpenShippingDropdown,
+            onMouseEnter: handleMouseEnterShippingDropdown,
+            onMouseLeave: handleMouseLeaveShippingDropdown,
             isDropdownOpen: isShippingDropdownOpen,
         },
         {
             title: "Tracking",
             dropdownData: trackingData,
-            onClick: toggleOpenTrackingDropdown,
+            onMouseEnter: handleMouseEnterTrackingDropdown,
+            onMouseLeave: handleMouseLeaveTrackingDropdown,
             isDropdownOpen: isTrackingDropdownOpen,
         },
         {
             title: "Business Solutions",
             dropdownData: solutionsData,
-            onClick: toggleOpenSolutionDropdown,
+            onMouseEnter: handleMouseEnterSolutionDropdown,
+            onMouseLeave: handleMouseLeaveSolutionDropdown,
             isDropdownOpen: isSolutionDropdownOpen,
         },
         {
             title: "Support",
             dropdownData: supportData,
-            onClick: toggleOpenSupportDropdown,
+            onMouseEnter: handleMouseEnterSupportDropdown,
+            onMouseLeave: handleMouseLeaveSupportDropdown,
             isDropdownOpen: isSupportDropdownOpen,
         },
     ]
 
     return (
         <>
-            <nav className="bg-slate-500">
+            <nav className="navbar bg-slate-500">
                 <div className="container px-4 flex flex-wrap mx-auto py-2 lg:space-x-4">
                     <Logo />
                     <HamburgerMenu toggleOpenNavbar={toggleOpenNavbar}/>
                     { isNavbarOpen && (
                         <div className={`w-full lg:inline-flex lg:w-auto lg:mt-0 my-2 ${!isNavbarOpen ? 'hidden' : ''}`}>
-                            <ul className="w-full lg:w-auto flex flex-col lg:flex-row space-x-2 space-y-2 lg:space-y-0">
+                            <ul className="nav-list w-full lg:w-auto flex flex-col lg:flex-row space-x-2 space-y-2 lg:space-y-0">
                                 {<NavBarItemWithoutDropdown navBarItems={[{title: "About FDMx", navLink: "about"}]}/>}
                                 {<NavBarItemWithDropdown navBarItems={navBarItemsWithDropdown} />}
                                 {<NavBarItemWithoutDropdown navBarItems={[{title: "Login", navLink: "login"}]}/>}

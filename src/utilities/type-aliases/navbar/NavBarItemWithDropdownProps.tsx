@@ -3,7 +3,8 @@ import { DropdownItemData } from "./DropdownProps"
 export type NavBarItemWithDropdownData = {
     title: string,
     dropdownData: DropdownItemData[],
-    onClick: () => void,
+    onMouseEnter: () => void,
+    onMouseLeave: () => void,
     isDropdownOpen: boolean,
 }
 

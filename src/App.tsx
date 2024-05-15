@@ -6,14 +6,17 @@ import { ShippingFormPage } from "./pages/ShippingFormPage"
 import { RegisterPage } from "./pages/RegisterPage"
 import { NotFound } from "./pages/NotFoundPage"
 import { CourierDashboardPage } from "./pages/CourierDashboardPage"
+import "./css/Navbar.css"
 
 function App() {
   return (
     <Router>
-      <header>
-        <NavBar />
-      </header>
-      <main>
+      <div>
+        <header>
+          <NavBar />
+        </header>
+      </div>
+      <main className="main-content">
         <div className="flex justify-center">
           <Routes>
             <Route index element={<TrackSearchBarPage />} />
