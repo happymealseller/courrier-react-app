@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom"
 import { NavBarItemWithoutDropdownProps } from "../../utilities/type-aliases/navbar/NavBarItemWithoutDropdownProps"
+import "../../css/Navbar.css"
 
 export function NavBarItemWithoutDropdown({ navBarItems }: NavBarItemWithoutDropdownProps) {
     return (<>
@@ -7,7 +8,7 @@ export function NavBarItemWithoutDropdown({ navBarItems }: NavBarItemWithoutDrop
             return (
                 <li
                     key={navBarItem.title} 
-                    className="relative"
+                    className="nav-item relative"
                 >
                     <NavLink
                         to={navBarItem.navLink}

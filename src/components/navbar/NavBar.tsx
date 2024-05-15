@@ -5,6 +5,7 @@ import { NavBarItemWithoutDropdown } from "./NavBarItemWithoutDropdown";
 import { NavBarItemWithDropdownData } from "../../utilities/type-aliases/navbar/NavBarItemWithDropdownProps";
 import { NavBarItemWithDropdown } from "./NavBarItemWithDropdown";
 import { HamburgerMenu } from "./HamburgerMenu";
+import "../../css/Navbar.css"
 
 export function NavBar() {
 
@@ -111,13 +112,13 @@ export function NavBar() {
 
     return (
         <>
-            <nav className="bg-slate-500">
+            <nav className="navbar bg-slate-500">
                 <div className="container px-4 flex flex-wrap mx-auto py-2 lg:space-x-4">
                     <Logo />
                     <HamburgerMenu toggleOpenNavbar={toggleOpenNavbar}/>
                     { isNavbarOpen && (
                         <div className={`w-full lg:inline-flex lg:w-auto lg:mt-0 my-2 ${!isNavbarOpen ? 'hidden' : ''}`}>
-                            <ul className="w-full lg:w-auto flex flex-col lg:flex-row space-x-2 space-y-2 lg:space-y-0">
+                            <ul className="nav-list w-full lg:w-auto flex flex-col lg:flex-row space-x-2 space-y-2 lg:space-y-0">
                                 {<NavBarItemWithoutDropdown navBarItems={[{title: "About FDMx", navLink: "about"}]}/>}
                                 {<NavBarItemWithDropdown navBarItems={navBarItemsWithDropdown} />}
                                 {<NavBarItemWithoutDropdown navBarItems={[{title: "Login", navLink: "login"}]}/>}

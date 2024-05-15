@@ -1,12 +1,13 @@
 import { Dropdown } from "./Dropdown"
 import { NavBarItemWithDropdownProps } from "../../utilities/type-aliases/navbar/NavBarItemWithDropdownProps"
+import "../../css/Navbar.css"
 
 export function NavBarItemWithDropdown({ navBarItems }: NavBarItemWithDropdownProps) {
     return (
         navBarItems.map((navBarItem) => {
             return (
                 <li key={navBarItem.title}
-                    className="relative"
+                    className="nav-item relative"
                     onMouseEnter={navBarItem.onMouseEnter}
                     onMouseLeave={navBarItem.onMouseLeave}
                 >
