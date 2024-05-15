@@ -7,11 +7,12 @@ export function NavBarItemWithDropdown({ navBarItems }: NavBarItemWithDropdownPr
             return (
                 <li key={navBarItem.title}
                     className="relative"
+                    onMouseEnter={navBarItem.onMouseEnter}
+                    onMouseLeave={navBarItem.onMouseLeave}
                 >
                     <button 
                         type="button"
                         className="flex outline-none focus:outline-none px-4 py-2 rounded-md font-medium text-white hover:bg-slate-800"
-                        onClick={navBarItem.onClick}
                     >
                             {navBarItem.title}
                     </button>

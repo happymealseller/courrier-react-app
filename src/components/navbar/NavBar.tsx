@@ -40,71 +40,71 @@ export function NavBar() {
 
     const [isShippingDropdownOpen, setIsShippingDropdownOpen] = useState(false);
 
-    const toggleOpenShippingDropdown = () => {
-        if (!isShippingDropdownOpen) {
-            setIsTrackingDropdownOpen(false);
-            setIsSolutionDropdownOpen(false);
-            setIsSupportDropdownOpen(false);
-        }
-        setIsShippingDropdownOpen(!isShippingDropdownOpen);
+    const handleMouseEnterShippingDropdown = () => {
+        setIsShippingDropdownOpen(true);
+    }
+
+    const handleMouseLeaveShippingDropdown = () => {
+        setIsShippingDropdownOpen(false);
     }
 
     const [isTrackingDropdownOpen, setIsTrackingDropdownOpen] = useState(false);
 
-    const toggleOpenTrackingDropdown = () => {
-        if (!isTrackingDropdownOpen) {
-            setIsShippingDropdownOpen(false);
-            setIsSolutionDropdownOpen(false);
-            setIsSupportDropdownOpen(false);
-        }
-        setIsTrackingDropdownOpen(!isTrackingDropdownOpen);
+    const handleMouseEnterTrackingDropdown = () => {
+        setIsTrackingDropdownOpen(true);
+    }
+
+    const handleMouseLeaveTrackingDropdown = () => {
+        setIsTrackingDropdownOpen(false);
     }
 
     const [isSolutionDropdownOpen, setIsSolutionDropdownOpen] = useState(false);
 
-    const toggleOpenSolutionDropdown = () => {
-        if (!isSolutionDropdownOpen) {
-            setIsShippingDropdownOpen(false);
-            setIsTrackingDropdownOpen(false);
-            setIsSupportDropdownOpen(false);
-        }
-        setIsSolutionDropdownOpen(!isSolutionDropdownOpen);
+    const handleMouseEnterSolutionDropdown = () => {
+        setIsSolutionDropdownOpen(true);
+    }
+
+    const handleMouseLeaveSolutionDropdown = () => {
+        setIsSolutionDropdownOpen(false);
     }
 
     const [isSupportDropdownOpen, setIsSupportDropdownOpen] = useState(false);
 
-    const toggleOpenSupportDropdown = () => {
-        if (!isSupportDropdownOpen) {
-            setIsShippingDropdownOpen(false);
-            setIsTrackingDropdownOpen(false);
-            setIsSolutionDropdownOpen(false);
-        }
-        setIsSupportDropdownOpen(!isSupportDropdownOpen);
+    const handleMouseEnterSupportDropdown = () => {
+        setIsSupportDropdownOpen(true);
+    }
+
+    const handleMouseLeaveSupportDropdown = () => {
+        setIsSupportDropdownOpen(false);
     }
 
     const navBarItemsWithDropdown: NavBarItemWithDropdownData[] = [
         {
             title: "Shipping",
             dropdownData: shippingData,
-            onClick: toggleOpenShippingDropdown,
+            onMouseEnter: handleMouseEnterShippingDropdown,
+            onMouseLeave: handleMouseLeaveShippingDropdown,
             isDropdownOpen: isShippingDropdownOpen,
         },
         {
             title: "Tracking",
             dropdownData: trackingData,
-            onClick: toggleOpenTrackingDropdown,
+            onMouseEnter: handleMouseEnterTrackingDropdown,
+            onMouseLeave: handleMouseLeaveTrackingDropdown,
             isDropdownOpen: isTrackingDropdownOpen,
         },
         {
             title: "Business Solutions",
             dropdownData: solutionsData,
-            onClick: toggleOpenSolutionDropdown,
+            onMouseEnter: handleMouseEnterSolutionDropdown,
+            onMouseLeave: handleMouseLeaveSolutionDropdown,
             isDropdownOpen: isSolutionDropdownOpen,
         },
         {
             title: "Support",
             dropdownData: supportData,
-            onClick: toggleOpenSupportDropdown,
+            onMouseEnter: handleMouseEnterSupportDropdown,
+            onMouseLeave: handleMouseLeaveSupportDropdown,
             isDropdownOpen: isSupportDropdownOpen,
         },
     ]
