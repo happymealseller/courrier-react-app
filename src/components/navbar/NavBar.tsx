@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Logo } from "./Logo";
 import { DropdownItemData } from "../../utilities/type-aliases/navbar/DropdownProps";
 import { NavBarItemWithoutDropdown } from "./NavBarItemWithoutDropdown";
@@ -7,15 +7,24 @@ import { NavBarItemWithDropdown } from "./NavBarItemWithDropdown";
 import { HamburgerMenu } from "./HamburgerMenu";
 import "../../css/Navbar.css"
 
-export function NavBar() {
+type NavBarProps = {
+    isCourier: boolean,
+    isSender: boolean
+}
 
-    const shippingData: DropdownItemData[] = [
-        {title: "Create a Shipment", navLink: "create-a-shipment"},
-        {title: "Schedule a Collection", navLink: "schedule-a-collection"},
-        {title: "How To Ship a Parcel", navLink: "how-to-ship-a-parcel"},
-        {title: "Calculate Shipping Cost", navLink: "calculate-shipping-cost"},
-        {title: "Find a Location", navLink: "find-a-location"},
-    ]
+export function NavBar({ isCourier, isSender}: NavBarProps) {
+    const [isLogout, setIsLogout] = useState(true);
+
+    useEffect(() => {
+            setIsLogout(!isCourier && !isSender);
+    }, [isCourier, isSender])
+
+    const initialShippingData: DropdownItemData[] = [
+        { title: "Schedule a Collection", navLink: "schedule-a-collection" },
+        { title: "How To Ship a Parcel", navLink: "how-to-ship-a-parcel" },
+        { title: "Calculate Shipping Cost", navLink: "calculate-shipping-cost" },
+        { title: "Find a Location", navLink: "find-a-location" },
+    ];
 
     const trackingData: DropdownItemData[] = [
         {title: "Track a Package", navLink: "track-a-package"},
@@ -33,6 +42,23 @@ export function NavBar() {
         {title: "Contact Us", navLink: "contact-us"},
     ]
 
+    const [shippingData, setShippingData] = useState<DropdownItemData[]>(initialShippingData);
+
+    useEffect(() => {
+        if (!isLogout) {
+            const jwtToken = localStorage.getItem("jwt");
+            console.log(jwtToken);
+            if (jwtToken) {
+                setShippingData((prevShippingData) => [
+                    ...prevShippingData,
+                    { title: "Create a Shipment", navLink: "create-a-shipment" },
+                ]);
+            }
+            console.log("create shipment added")
+        }
+        
+    }, [isLogout]);
+    
     const [isNavbarOpen, setIsNavbarOpen] = useState(true);
     
     const toggleOpenNavbar = () => {
@@ -113,15 +139,19 @@ export function NavBar() {
     return (
         <>
             <nav className="navbar bg-slate-500">
-                <div className="container px-4 flex flex-wrap mx-auto py-2 lg:space-x-4">
+                <div className="container px-4 flex flex-wrap py-2 lg:space-x-4">
                     <Logo />
                     <HamburgerMenu toggleOpenNavbar={toggleOpenNavbar}/>
                     { isNavbarOpen && (
-                        <div className={`w-full lg:inline-flex lg:w-auto lg:mt-0 my-2 ${!isNavbarOpen ? 'hidden' : ''}`}>
+                        <div className={`w-full lg:inline-flex lg:w-auto my-2 ${!isNavbarOpen ? 'hidden' : ''}`}>
                             <ul className="nav-list w-full lg:w-auto flex flex-col lg:flex-row space-x-2 space-y-2 lg:space-y-0">
                                 {<NavBarItemWithoutDropdown navBarItems={[{title: "About FDMx", navLink: "about"}]}/>}
                                 {<NavBarItemWithDropdown navBarItems={navBarItemsWithDropdown} />}
-                                {<NavBarItemWithoutDropdown navBarItems={[{title: "Login", navLink: "login"}]}/>}
+                                {isLogout ? (
+                                    <NavBarItemWithoutDropdown navBarItems={[{title: "Login", navLink: "login"}]}/>
+                                ) : (
+                                    <NavBarItemWithoutDropdown navBarItems={[{title: "Logout", navLink: "/"}]}/>
+                                )}
                             </ul>
                         </div>
                     )}

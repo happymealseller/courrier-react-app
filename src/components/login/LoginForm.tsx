@@ -4,6 +4,7 @@ import { ResponseStatus } from "../../utilities/enums/ResponseStatus";
 import { AccountType } from "../../utilities/enums/AccountType";
 import { GmailIcon } from "../icons/GmailIcon";
 import { axiosInstance } from "../security/axiosInstance";
+import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
 
 export function LoginForm() {
     const navigate = useNavigate();
@@ -26,16 +27,35 @@ export function LoginForm() {
         axiosInstance.post(url, JSON.stringify(loginInformation), config)
             .then(response => {
                 if (response.data.status === ResponseStatus.Success) {
+                    localStorage.setItem(LocalStorageKey.Jwt, response.data.jwt)
+                    localStorage.setItem(LocalStorageKey.AccountType, response.data.role === AccountType.Sender ? AccountType.Sender : AccountType.Courier)
+                    localStorage.setItem(LocalStorageKey.Username, username);
                     switch (response.data.role) {
                         case AccountType.Sender:
-                            navigate("/dashboard/sender");
+                            navigate(
+                                "/dashboard/sender", 
+                                { state: 
+                                    { 
+                                        "jwt" : localStorage.getItem(LocalStorageKey.Jwt), 
+                                        "accountType": localStorage.getItem(LocalStorageKey.AccountType),
+                                        "username": localStorage.getItem(LocalStorageKey.Username)
+                                    }
+                                }
+                            );
                             break;
                         case AccountType.Courier:
-                            navigate("/dashboard/courier");
+                            navigate(
+                                "/dashboard/courier",
+                                { state: 
+                                    { 
+                                        "jwt" : localStorage.getItem(LocalStorageKey.Jwt), 
+                                        "accountType": localStorage.getItem(LocalStorageKey.AccountType),
+                                        "username": localStorage.getItem(LocalStorageKey.Username)
+                                    }
+                                }
+                            );
                             break;
                     }
-                    localStorage.setItem("accountType", response.data.role[0] === AccountType.Sender ? AccountType.Sender : AccountType.Courier)
-                    localStorage.setItem("jwt", response.data.jwt)
                 } else if (response.data.status === ResponseStatus.Failure) {
                     setError(response.data.message);
                 }
