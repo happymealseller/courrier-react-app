@@ -1,9 +1,9 @@
-import { CourierDashboard } from '../components/dashboard/CourierDashboard';
+import { CourierDashboard, CourierDashboardProps } from '../components/dashboard/CourierDashboard';
 
-export function CourierDashboardPage() {
+export function CourierDashboardPage({sendDataToApp}: CourierDashboardProps) {
     return (
         <>
-            <CourierDashboard />
+            <CourierDashboard sendDataToApp={sendDataToApp} />
         </>
     )
 }

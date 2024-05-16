@@ -1,7 +1,13 @@
-import React, { useState, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, FormEvent, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { LocalStorageData } from '../../App';
 
-export function CourierDashboard() {
+export type CourierDashboardProps = {
+    sendDataToApp: (data: LocalStorageData) => void
+}
+
+export function CourierDashboard({sendDataToApp}: CourierDashboardProps) {
+    const [courierId, setCourierId] = useState("");
     const [orderId, setOrderId] = useState("");
 
     const people = [
@@ -13,6 +19,12 @@ export function CourierDashboard() {
       ];  // to update with actual data from db
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const { jwt, accountType, username } = location.state || {};
+    useEffect(() => {
+        sendDataToApp({ jwt, accountType, username });
+    }, []);
+    
 
   //overall function need to update
   // function handleSubmit(e: FormEvent) {
