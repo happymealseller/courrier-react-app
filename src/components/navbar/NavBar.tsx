@@ -47,12 +47,10 @@ export function NavBar({ isCourier, isSender}: NavBarProps) {
     useEffect(() => {
         const jwtToken = localStorage.getItem("jwt");
         if (isSender && jwtToken) {
-            console.log(jwtToken)
             setShippingData((prevShippingData) => [
                 ...prevShippingData,
                 { title: "Create a Shipment", navLink: "create-a-shipment" },
             ]);
-            console.log("create shipment added")
         }
         
     }, [isSender]);
@@ -148,7 +146,7 @@ export function NavBar({ isCourier, isSender}: NavBarProps) {
                                 {isLogout ? (
                                     <NavBarItemWithoutDropdown navBarItems={[{title: "Login", navLink: "login"}]}/>
                                 ) : (
-                                    <NavBarItemWithoutDropdown navBarItems={[{title: "Logout", navLink: "/"}]}/>
+                                    <NavBarItemWithoutDropdown navBarItems={[{title: "Logout", navLink: "logout"}]}/>
                                 )}
                             </ul>
                         </div>

@@ -70,7 +70,7 @@ export function CourierDashboard({sendDataToApp}: CourierDashboardProps) {
       <tbody>
         {people.map((item) => {
           return (
-            <tr>
+            <tr key={item.order_id}>
               <td>  {item.order_id}  </td>
               <td>  {item.name}  </td>
               <td>  {item.date}  </td>

@@ -15,6 +15,6 @@ export function SenderDashboardPage({sendDataToApp}: SenderDashboardProps) {
     }, []);
 
     return (<>
-    <p>🚧 sender dashboard: building in progress 🚧</p>
+        <p>🚧 sender dashboard: building in progress 🚧</p>
     </>)
 }
