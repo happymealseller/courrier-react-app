@@ -9,6 +9,7 @@ import { CourierDashboardPage } from "./pages/CourierDashboardPage"
 import "./css/Navbar.css"
 import { useEffect, useState } from "react"
 import { areAllKeysEmptyStrings } from "./utilities/areAllValuesEmptyString"
+import { SenderDashboardPage } from "./pages/SenderDashboardPage"
 
 export type LocalStorageData = {
   jwt: string,
@@ -66,6 +67,7 @@ function App() {
             <Route path="login" element={<LoginPage />} />
             <Route path="*" element={<NotFound />} />
             <Route path="dashboard/courier" element={(<CourierDashboardPage sendDataToApp={handleDataFromCourierDashboard}/>)} />
+            <Route path="dashboard/sender" element={(<SenderDashboardPage sendDataToApp={handleDataFromSenderDashboard}/>)} />
           </Routes>
         </div>
       </main>

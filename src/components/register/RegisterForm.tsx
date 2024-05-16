@@ -177,6 +177,8 @@ export function RegisterForm() {
                 id="phone-number"
                 name="phone-number"
                 placeholder="Phone Number"
+                pattern="^[89]\d{7}$"
+                title="Please enter an 8-digit number starting with 8 or 9."
                 required
                 onChange={(e) => setPhoneNo(e.target.value)}
               ></input>

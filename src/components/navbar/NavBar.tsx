@@ -45,19 +45,17 @@ export function NavBar({ isCourier, isSender}: NavBarProps) {
     const [shippingData, setShippingData] = useState<DropdownItemData[]>(initialShippingData);
 
     useEffect(() => {
-        if (!isLogout) {
-            const jwtToken = localStorage.getItem("jwt");
-            console.log(jwtToken);
-            if (jwtToken) {
-                setShippingData((prevShippingData) => [
-                    ...prevShippingData,
-                    { title: "Create a Shipment", navLink: "create-a-shipment" },
-                ]);
-            }
+        const jwtToken = localStorage.getItem("jwt");
+        if (isSender && jwtToken) {
+            console.log(jwtToken)
+            setShippingData((prevShippingData) => [
+                ...prevShippingData,
+                { title: "Create a Shipment", navLink: "create-a-shipment" },
+            ]);
             console.log("create shipment added")
         }
         
-    }, [isLogout]);
+    }, [isSender]);
     
     const [isNavbarOpen, setIsNavbarOpen] = useState(true);
     
