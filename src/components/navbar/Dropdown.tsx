@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom"
 import { DropdownProps } from "../../utilities/type-aliases/navbar/DropdownProps"
 import "../../css/Navbar.css"
-
 export function Dropdown({ dropdownItems }: DropdownProps) {
     return (
         <ul className="dropdown space-y-2 lg:w-max lg:absolute bg-white right-0 rounded-md p-2">
