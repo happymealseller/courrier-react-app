@@ -6,18 +6,32 @@ import { NavBarItemWithDropdownData } from "../../utilities/type-aliases/navbar/
 import { NavBarItemWithDropdown } from "./NavBarItemWithDropdown";
 import { HamburgerMenu } from "./HamburgerMenu";
 import "../../css/Navbar.css"
+import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
 
 type NavBarProps = {
-    isCourier: boolean,
-    isSender: boolean
+    isCourierLoggedIn: boolean,
+    isSenderLoggedIn: boolean
 }
 
-export function NavBar({ isCourier, isSender}: NavBarProps) {
+export function NavBar({ isCourierLoggedIn, isSenderLoggedIn }: NavBarProps) {
     const [isLogout, setIsLogout] = useState(true);
 
     useEffect(() => {
-            setIsLogout(!isCourier && !isSender);
-    }, [isCourier, isSender])
+            setIsLogout(!isCourierLoggedIn && !isSenderLoggedIn);
+    }, [isCourierLoggedIn, isSenderLoggedIn])
+
+    useEffect(() => {
+        const jwtToken = localStorage.getItem(LocalStorageKey.Jwt);
+        if (isSenderLoggedIn && jwtToken) {
+            setShippingData((prevShippingData) => [
+                ...prevShippingData,
+                { title: "Create a Shipment", navLink: "create-a-shipment" },
+            ]);
+        } else if (!isSenderLoggedIn) {
+            setShippingData(initialShippingData);
+        }
+        
+    }, [isSenderLoggedIn]);
 
     const initialShippingData: DropdownItemData[] = [
         { title: "Schedule a Collection", navLink: "schedule-a-collection" },
@@ -25,6 +39,8 @@ export function NavBar({ isCourier, isSender}: NavBarProps) {
         { title: "Calculate Shipping Cost", navLink: "calculate-shipping-cost" },
         { title: "Find a Location", navLink: "find-a-location" },
     ];
+
+    const [shippingData, setShippingData] = useState<DropdownItemData[]>(initialShippingData);
 
     const trackingData: DropdownItemData[] = [
         {title: "Track a Package", navLink: "track-a-package"},
@@ -41,19 +57,6 @@ export function NavBar({ isCourier, isSender}: NavBarProps) {
         {title: "Tracking Support", navLink: "tracking-support"},
         {title: "Contact Us", navLink: "contact-us"},
     ]
-
-    const [shippingData, setShippingData] = useState<DropdownItemData[]>(initialShippingData);
-
-    useEffect(() => {
-        const jwtToken = localStorage.getItem("jwt");
-        if (isSender && jwtToken) {
-            setShippingData((prevShippingData) => [
-                ...prevShippingData,
-                { title: "Create a Shipment", navLink: "create-a-shipment" },
-            ]);
-        }
-        
-    }, [isSender]);
     
     const [isNavbarOpen, setIsNavbarOpen] = useState(true);
     

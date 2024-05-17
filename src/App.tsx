@@ -25,8 +25,8 @@ const initialLocalStorageData: LocalStorageData = {
 function App() {
 	const [dataFromCourierDashboard, setDataFromCourierDashboard] = useState<LocalStorageData>(initialLocalStorageData);
 	const [dataFromSenderDashboard, setDataFromSenderDashboard] = useState<LocalStorageData>(initialLocalStorageData);
-	const [isCourier, setIsCourier] = useState(false);
-	const [isSender, setIsSender] = useState(false);
+	const [isCourierLoggedIn, setIsCourierLoggedIn] = useState(false);
+	const [isSenderLoggedIn, setIsSenderLoggedIn] = useState(false);
 
 	const handleDataFromCourierDashboard = (data: LocalStorageData) => {
 		setDataFromCourierDashboard({
@@ -42,27 +42,23 @@ function App() {
 		});
 	};
 
-	const handleDataFromLogout = (isCourier: boolean, data: LocalStorageData) => {
-		if (isCourier) {
-			setDataFromCourierDashboard(data);
-		} else {
-			setDataFromSenderDashboard(data);
-		}
+	const handleDataFromLogout = (isCourier: boolean, data: LocalStorageData = initialLocalStorageData) => {
+		isCourier ? setDataFromCourierDashboard(data) : setDataFromSenderDashboard(data);
 	}
 
 	useEffect(() => {
-		setIsCourier(!areAllKeysEmptyStrings(dataFromCourierDashboard));
+		setIsCourierLoggedIn(!areAllKeysEmptyStrings(dataFromCourierDashboard));
 	}, [dataFromCourierDashboard])
 
 	useEffect(() => {
-		setIsSender(!areAllKeysEmptyStrings(dataFromSenderDashboard));
+		setIsSenderLoggedIn(!areAllKeysEmptyStrings(dataFromSenderDashboard));
 	}, [dataFromSenderDashboard])
 
 	return (
 		<Router>
 			<div>
 			<header>
-				<NavBar isCourier={isCourier} isSender={isSender}/>
+				<NavBar isCourierLoggedIn={isCourierLoggedIn} isSenderLoggedIn={isSenderLoggedIn}/>
 			</header>
 			</div>
 			<main className="main-content">

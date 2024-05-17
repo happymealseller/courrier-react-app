@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
 import { ParcelBoxIcon } from "../icons/ParcelBoxIcon";
 import { LocalStorageData } from "../../App";
@@ -9,6 +9,8 @@ type LogoutProps = {
 }
 
 export function Logout({ sendDataToApp }: LogoutProps) {
+    const username = useRef(localStorage.getItem(LocalStorageKey.Username));
+
     useEffect(() => {
         sendDataToApp(
             localStorage.getItem(LocalStorageKey.AccountType) === AccountType.Courier,
@@ -25,7 +27,7 @@ export function Logout({ sendDataToApp }: LogoutProps) {
             <br />
             <ParcelBoxIcon />
             <br />
-            <h3 className="text-2xl font-medium text-slate-500">You have successfully logged out, {localStorage.getItem(LocalStorageKey.Username)}</h3>
+            <h3 className="text-2xl font-medium text-slate-500">You have successfully logged out, {username.current}</h3>
         </div>
     )
 }
