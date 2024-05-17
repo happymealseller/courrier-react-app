@@ -9,6 +9,7 @@ import { FormData } from "../utilities/type-aliases/order-form/FormData"
 import { ParcelType } from "../utilities/enums/ParcelType"
 import { axiosInstance } from "../components/security/axiosInstance"
 import { ResponseStatus } from "../utilities/enums/ResponseStatus"
+import { LocalStorageKey } from "../utilities/enums/LocalStorageKey"
 
 const INITIAL_DATA: FormData = {
 	fromCompanyName: "",
@@ -59,7 +60,8 @@ export function ShippingFormPage() {
 			const config = {
 				headers: {
 					"Content-Type": "application/json",
-					"Access-Control-Allow-Origin": "http://localhost:3000"
+					"Access-Control-Allow-Origin": "http://localhost:3000",
+					"username": localStorage.getItem(LocalStorageKey.Username)
 				}
 			};
 			axiosInstance.post(endpoint, JSON.stringify(data), config)
@@ -67,7 +69,7 @@ export function ShippingFormPage() {
 					if (response.data.status === ResponseStatus.Success) {
 						alert(`${response.data.message} ${JSON.stringify(response.data.orderDetails)}`)
 					} else if (response.data.status === ResponseStatus.Failure) {
-						//
+						alert(`Error ${response.data.message}`)
 					}
 				})
 		}

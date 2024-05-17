@@ -9,7 +9,7 @@ import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
 export function LoginForm() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { prepopulatedUsername, prepopulatedPassword } = location.state || {};
+    const { prepopulatedUsername, prepopulatedPassword } = location.state || { prepopulatedUsername: "", prepopulatedPassword: ""};
     const [username, setUsername] = useState(prepopulatedUsername);
     const [password, setPassword] = useState(prepopulatedPassword);
     const [error, setError] = useState("");

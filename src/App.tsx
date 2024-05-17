@@ -9,71 +9,78 @@ import { CourierDashboardPage } from "./pages/CourierDashboardPage"
 import "./css/Navbar.css"
 import { useEffect, useState } from "react"
 import { areAllKeysEmptyStrings } from "./utilities/areAllValuesEmptyString"
+import { SenderDashboardPage } from "./pages/SenderDashboardPage"
+import { Logout } from "./components/logout/Logout"
 
 export type LocalStorageData = {
-  jwt: string,
-  accountType: string,
-  username: string
+	jwt: string,
+	accountType: string,
+	username: string
 }
 const initialLocalStorageData: LocalStorageData = {
-  jwt: "",
-  accountType: "",
-  username: ""
+	jwt: "",
+	accountType: "",
+	username: ""
 }
 function App() {
-  const [dataFromCourierDashboard, setDataFromCourierDashboard] = useState<LocalStorageData>(initialLocalStorageData);
-  const [dataFromSenderDashboard, setDataFromSenderDashboard] = useState<LocalStorageData>(initialLocalStorageData);
-  const [isCourier, setIsCourier] = useState(false);
-  const [isSender, setIsSender] = useState(false);
+	const [dataFromCourierDashboard, setDataFromCourierDashboard] = useState<LocalStorageData>(initialLocalStorageData);
+	const [dataFromSenderDashboard, setDataFromSenderDashboard] = useState<LocalStorageData>(initialLocalStorageData);
+	const [isCourierLoggedIn, setIsCourierLoggedIn] = useState(false);
+	const [isSenderLoggedIn, setIsSenderLoggedIn] = useState(false);
 
-  const handleDataFromCourierDashboard = (data: LocalStorageData) => {
-    setDataFromCourierDashboard({
-      ...dataFromCourierDashboard,
-      ...data
-    });
-  };
+	const handleDataFromCourierDashboard = (data: LocalStorageData) => {
+		setDataFromCourierDashboard({
+			...dataFromCourierDashboard,
+			...data
+		});
+	};
 
-  const handleDataFromSenderDashboard = (data: LocalStorageData) => {
-    setDataFromSenderDashboard({
-      ...dataFromSenderDashboard,
-      ...data
-    });
-  };
+	const handleDataFromSenderDashboard = (data: LocalStorageData) => {
+		setDataFromSenderDashboard({
+			...dataFromSenderDashboard,
+			...data
+		});
+	};
 
-  useEffect(() => {
-    setIsCourier(!areAllKeysEmptyStrings(dataFromCourierDashboard));
-    
-  }, [dataFromCourierDashboard])
+	const handleDataFromLogout = (isCourier: boolean, data: LocalStorageData = initialLocalStorageData) => {
+		isCourier ? setDataFromCourierDashboard(data) : setDataFromSenderDashboard(data);
+	}
 
-  useEffect(() => {
-    setIsSender(!areAllKeysEmptyStrings(dataFromSenderDashboard));
-  }, [dataFromSenderDashboard])
+	useEffect(() => {
+		setIsCourierLoggedIn(!areAllKeysEmptyStrings(dataFromCourierDashboard));
+	}, [dataFromCourierDashboard])
 
-  return (
-    <Router>
-      <div>
-        <header>
-          <NavBar isCourier={isCourier} isSender={isSender}/>
-        </header>
-      </div>
-      <main className="main-content">
-        <div className="flex justify-center">
-          <Routes>
-            <Route index element={<TrackSearchBarPage />} />
-            <Route path="create-a-shipment" element={<ShippingFormPage />} />
-            <Route path="track-a-package" element={<TrackSearchBarPage />} />
-            <Route path="open-an-account" element={<RegisterPage />} />
-            <Route path="login" element={<LoginPage />} />
-            <Route path="*" element={<NotFound />} />
-            <Route path="dashboard/courier" element={(<CourierDashboardPage sendDataToApp={handleDataFromCourierDashboard}/>)} />
-          </Routes>
-        </div>
-      </main>
-      <footer>
+	useEffect(() => {
+		setIsSenderLoggedIn(!areAllKeysEmptyStrings(dataFromSenderDashboard));
+	}, [dataFromSenderDashboard])
 
-      </footer>
-    </Router>
-  )
+	return (
+		<Router>
+			<div>
+			<header>
+				<NavBar isCourierLoggedIn={isCourierLoggedIn} isSenderLoggedIn={isSenderLoggedIn}/>
+			</header>
+			</div>
+			<main className="main-content">
+			<div className="flex justify-center">
+				<Routes>
+				<Route index element={<TrackSearchBarPage />} />
+				<Route path="create-a-shipment" element={<ShippingFormPage />} />
+				<Route path="track-a-package" element={<TrackSearchBarPage />} />
+				<Route path="open-an-account" element={<RegisterPage />} />
+				<Route path="login" element={<LoginPage />} />
+				<Route path="logout" element={<Logout sendDataToApp={handleDataFromLogout}/>} />
+				<Route path="*" element={<NotFound />} />
+				<Route path="dashboard/courier" element={(<CourierDashboardPage sendDataToApp={handleDataFromCourierDashboard}/>)} />
+				<Route path="dashboard/sender" element={(<SenderDashboardPage sendDataToApp={handleDataFromSenderDashboard}/>)} />
+				</Routes>
+			</div>
+			</main>
+			<footer className="">
+
+			</footer>
+		</Router>
+	)
 }
 
 export default App
