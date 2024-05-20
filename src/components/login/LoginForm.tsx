@@ -28,10 +28,10 @@ export function LoginForm() {
             .then(response => {
                 if (response.data.status === ResponseStatus.Success) {
                     localStorage.setItem(LocalStorageKey.Jwt, response.data.jwt)
-                    localStorage.setItem(LocalStorageKey.AccountType, response.data.role === AccountType.Sender ? AccountType.Sender : AccountType.Courier)
+                    localStorage.setItem(LocalStorageKey.AccountType, response.data.role === AccountType.Customer ? AccountType.Customer : AccountType.Courier)
                     localStorage.setItem(LocalStorageKey.Username, username);
                     switch (response.data.role) {
-                        case AccountType.Sender:
+                        case AccountType.Customer:
                             navigate(
                                 "/dashboard/sender", 
                                 { state: 

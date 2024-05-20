@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../security/axiosInstance";
 
 export function RegisterForm() {
-	const [accountType, setAccountType] = useState(AccountType.Sender);
+	const [accountType, setAccountType] = useState(AccountType.Customer);
 	const [fullName, setFullName] = useState("");
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
@@ -19,16 +19,16 @@ export function RegisterForm() {
 	const navigate = useNavigate();
 
 	const handleAccountTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-		setIsSenderView(event.target.value === AccountType.Sender);
-		setAccountType(event.target.value === AccountType.Courier ? AccountType.Courier : AccountType.Sender);
+		setIsSenderView(event.target.value === AccountType.Customer);
+		setAccountType(event.target.value === AccountType.Courier ? AccountType.Courier : AccountType.Customer);
 	};
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 		const senderRegistrationInformation = { fullName, username, email, password, phoneNo };
 		const courierRegistrationInformation = { fullName, username, password, vehicleCapacity };
-		const registrationInformation = accountType === AccountType.Sender ? senderRegistrationInformation : courierRegistrationInformation;
-		const url = "http://localhost:8081/register" + (accountType === AccountType.Sender ? "" : "Courier");
+		const registrationInformation = accountType === AccountType.Customer ? senderRegistrationInformation : courierRegistrationInformation;
+		const url = "http://localhost:8081/register" + (accountType === AccountType.Customer ? "" : "Courier");
 		const config = {
 			headers: {
 			"Content-Type": "application/json",
@@ -76,7 +76,7 @@ export function RegisterForm() {
 					value={accountType}
 					onChange={handleAccountTypeChange}
 				>
-					<option value={AccountType.Sender}>Sender</option>
+					<option value={AccountType.Customer}>Sender</option>
 					<option value={AccountType.Courier}>Courier</option>
 				</select>
 				{/* <label className="text-lg font-medium">Username</label>

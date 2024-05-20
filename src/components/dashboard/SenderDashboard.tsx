@@ -2,13 +2,26 @@ import { useState, FormEvent, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LocalStorageData } from "../../App";
 import { axiosInstance } from "../security/axiosInstance";
+import { format } from "date-fns";
 
 export type SenderDashboardProps = {
   sendDataToApp: (data: LocalStorageData) => void;
 };
 
+const filterData = (data: any[], keys: any[]) => {
+  return data.map((item) => {
+    const filteredItem: any = {}; // Add type annotation here
+    keys.forEach((key) => {
+      filteredItem[key] = key.includes("Date")
+        ? format(new Date(item[key]), "yyyy-MM-dd")
+        : item[key];
+    });
+    return filteredItem as OrderHistoryItem;
+  });
+};
+
 export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
-  const [people, setPeople] = useState([]);
+  const [orders, setOrders] = useState<OrderHistoryItem[]>([]);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -47,9 +60,10 @@ export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
   useEffect(() => {
     axiosInstance
       .get("/customer/orders", config)
-      .then((res) => setPeople(res.data.orderHistoryList))
+      .then((res) => filterData(res.data.orderHistoryList, displayKeys))
+      .then((data: OrderHistoryItem[]) => setOrders(data))
       .catch((err) => console.log(err));
-  }, [setPeople]);
+  }, [setOrders]);
 
   //overall function need to update
   //   function handleClick(e: FormEvent) {
@@ -102,18 +116,15 @@ export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
           </tr>
         </thead>
         <tbody>
-          {people.map((item, index) => (
-            <tr
-              key={index}
-              className="bg-white border border-black px-5 py-2 border-solid"
-            >
-              {displayKeys.map((key, idx) => (
+          {orders.map((item, index) => (
+            <tr key={index} className="bg-white border border-black px-5 py-2 border-solid">
+              {Object.entries(item).map(([key, value], idx) => (
                 <td
                   key={idx}
                   className="border border-black px-5 py-2 border-solid"
                   style={{ textAlign: "center" }}
                 >
-                  {item[key]}
+                  {value}
                 </td>
               ))}
               <td
