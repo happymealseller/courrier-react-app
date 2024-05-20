@@ -1,10 +1,8 @@
 import React, { useState, FormEvent, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { LocalStorageData } from '../../App';
+import { CourierDashboardProps } from '../../utilities/type-aliases/dashboard/CourierDashboardProps';
 
-export type CourierDashboardProps = {
-    sendDataToApp: (data: LocalStorageData) => void
-}
+
 
 export function CourierDashboard({sendDataToApp}: CourierDashboardProps) {
   const [courierId, setCourierId] = useState("");

@@ -12,12 +12,9 @@ import { areAllKeysEmptyStrings } from "./utilities/areAllValuesEmptyString"
 import { SenderDashboardPage } from "./pages/SenderDashboardPage"
 import { Logout } from "./components/logout/Logout"
 import { ProtectedRoutes } from "./components/security/ProtectedRoutes"
+import { NewOrderSummaryPage } from "./pages/NewOrderSummaryPage"
+import { LocalStorageData } from "./utilities/type-aliases/app/LocalStorageData"
 
-export type LocalStorageData = {
-	jwt: string,
-	accountType: string,
-	username: string
-}
 const initialLocalStorageData: LocalStorageData = {
 	jwt: "",
 	accountType: "",
@@ -69,6 +66,7 @@ function App() {
 						<Route path="create-a-shipment" element={<ShippingFormPage />} />
 						<Route path="dashboard/courier" element={(<CourierDashboardPage sendDataToApp={handleDataFromCourierDashboard}/>)} />
 						<Route path="dashboard/sender" element={(<SenderDashboardPage sendDataToApp={handleDataFromSenderDashboard}/>)} />
+						<Route path="dashboard/sender/new-order-summary" element={(<NewOrderSummaryPage />)} />
 						<Route path="logout" element={<Logout sendDataToApp={handleDataFromLogout}/>} />
 					</Route>
 					<Route index element={<TrackSearchBarPage />} />
@@ -76,7 +74,6 @@ function App() {
 					<Route path="open-an-account" element={<RegisterPage />} />
 					<Route path="login" element={<LoginPage />} />
 					<Route path="*" element={<NotFound />} />
-					
 				</Routes>
 			</div>
 			</main>

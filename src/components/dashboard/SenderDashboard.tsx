@@ -1,11 +1,8 @@
 import { useState, FormEvent, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { LocalStorageData } from "../../App";
 import { axiosInstance } from "../security/axiosInstance";
-
-export type SenderDashboardProps = {
-  sendDataToApp: (data: LocalStorageData) => void;
-};
+import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
+import { SenderDashboardProps } from "../../pages/SenderDashboardPage";
 
 export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
   const [people, setPeople] = useState([]);
@@ -39,8 +36,7 @@ export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "http://localhost:3000",
-      jwt: localStorage.getItem("jwt"),
-      username: localStorage.getItem("username"),
+      username: localStorage.getItem(LocalStorageKey.Username),
     },
   };
 
@@ -50,30 +46,6 @@ export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
       .then((res) => setPeople(res.data.orderHistoryList))
       .catch((err) => console.log(err));
   }, [setPeople]);
-
-  //overall function need to update
-  //   function handleClick(e: FormEvent) {
-  //     e.preventDefault();
-  //     const orderInformation = { courierId, orderId };
-  //     const url = "/customer/orders";
-  //     const options = {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(orderInformation),
-  //     };
-  //     axiosInstance
-  //       .get(url)
-  //       .then((response) => {
-  //         alert(
-  //           `${response.data.message} ${JSON.stringify(response.data.orderHistoryList)}`
-  //         );
-  //       })
-  //       .catch((error) => {
-  //         alert(`Error: ${error.message}`);
-  //       });
-  //   }
 
   function handleClick(e: FormEvent) {
     e.preventDefault();

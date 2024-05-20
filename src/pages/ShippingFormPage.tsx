@@ -10,6 +10,8 @@ import { ParcelType } from "../utilities/enums/ParcelType"
 import { axiosInstance } from "../components/security/axiosInstance"
 import { ResponseStatus } from "../utilities/enums/ResponseStatus"
 import { LocalStorageKey } from "../utilities/enums/LocalStorageKey"
+import { useNavigate } from "react-router-dom"
+import { NewOrderSummary } from "../utilities/api-models/NewOrderSummary"
 
 const INITIAL_DATA: FormData = {
 	fromCompanyName: "",
@@ -35,12 +37,13 @@ const INITIAL_DATA: FormData = {
 }
 
 export function ShippingFormPage() {
-	const [data, setData] = useState(INITIAL_DATA)
+	const navigate = useNavigate();
+	const [data, setData] = useState(INITIAL_DATA);
 
 	function updateFields(fields: Partial<FormData>) {
 		setData( prev => {
-			return { ...prev, ...fields }
-		})
+			return { ...prev, ...fields };
+		});
 	}
 
 	const { currentStepIndex, isFirstStep, isLastStep, step, steps, next, back } = useMultistepForm([
@@ -67,6 +70,11 @@ export function ShippingFormPage() {
 			axiosInstance.post(endpoint, JSON.stringify(data), config)
 				.then(response => {
 					if (response.data.status === ResponseStatus.Success) {
+						navigate(
+							"/dashboard/sender/new-order-summary",
+							{ state: response.data.orderDetails as NewOrderSummary}
+						)
+						console.log(response.data.orderDetails)
 						alert(`${response.data.message} ${JSON.stringify(response.data.orderDetails)}`)
 					} else if (response.data.status === ResponseStatus.Failure) {
 						alert(`Error ${response.data.message}`)
