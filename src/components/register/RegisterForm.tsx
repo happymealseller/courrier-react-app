@@ -3,6 +3,9 @@ import { AccountType } from "../../utilities/enums/AccountType";
 import { ResponseStatus } from "../../utilities/enums/ResponseStatus";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../security/axiosInstance";
+import { AuthenticationEndpoint } from "../../utilities/enums/Route";
+import { AuthenticationUrl } from "../../utilities/enums/Url";
+import { config } from "../../utilities/constants/config";
 
 export function RegisterForm() {
 	const [accountType, setAccountType] = useState(AccountType.Customer);
@@ -28,19 +31,13 @@ export function RegisterForm() {
 		const senderRegistrationInformation = { fullName, username, email, password, phoneNo };
 		const courierRegistrationInformation = { fullName, username, password, vehicleCapacity };
 		const registrationInformation = accountType === AccountType.Customer ? senderRegistrationInformation : courierRegistrationInformation;
-		const url = "http://localhost:8081/register" + (accountType === AccountType.Customer ? "" : "Courier");
-		const config = {
-			headers: {
-			"Content-Type": "application/json",
-			"Access-Control-Allow-Origin": "http://localhost:3000",
-			},
-		};
+		const url = AuthenticationEndpoint.REGISTER + (accountType === AccountType.Customer ? "" : "Courier");
 		axiosInstance
 			.post(url, JSON.stringify(registrationInformation), config)
 			.then((response) => {
 				if (response.data.status === ResponseStatus.Success) {
 					navigate(
-						"/login", 
+						AuthenticationUrl.LOGIN, 
 						{
 							state: {
 								prepopulatedUsername: username, 

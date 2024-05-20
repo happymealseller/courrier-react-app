@@ -5,6 +5,9 @@ import { AccountType } from "../../utilities/enums/AccountType";
 import { GmailIcon } from "../icons/GmailIcon";
 import { axiosInstance } from "../security/axiosInstance";
 import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
+import { CourierUrl, CustomerUrl } from "../../utilities/enums/Url";
+import { AuthenticationEndpoint } from "../../utilities/enums/Route";
+import { config } from "../../utilities/constants/config";
 
 export function LoginForm() {
     const navigate = useNavigate();
@@ -17,13 +20,7 @@ export function LoginForm() {
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
         const loginInformation = { username, password }
-        const url = "http://localhost:8081/login"
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "http://localhost:3000"
-            }
-        }
+        const url = AuthenticationEndpoint.LOGIN
         axiosInstance.post(url, JSON.stringify(loginInformation), config)
             .then(response => {
                 if (response.data.status === ResponseStatus.Success) {
@@ -33,7 +30,7 @@ export function LoginForm() {
                     switch (response.data.role) {
                         case AccountType.Customer:
                             navigate(
-                                "/dashboard/sender", 
+                                CustomerUrl.DASHBOARD, 
                                 { state: 
                                     { 
                                         "jwt" : localStorage.getItem(LocalStorageKey.Jwt), 
@@ -45,7 +42,7 @@ export function LoginForm() {
                             break;
                         case AccountType.Courier:
                             navigate(
-                                "/dashboard/courier",
+                                CourierUrl.DASHBOARD,
                                 { state: 
                                     { 
                                         "jwt" : localStorage.getItem(LocalStorageKey.Jwt), 

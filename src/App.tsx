@@ -14,6 +14,7 @@ import { Logout } from "./components/logout/Logout"
 import { ProtectedRoutes } from "./components/security/ProtectedRoutes"
 import { NewOrderSummaryPage } from "./pages/NewOrderSummaryPage"
 import { LocalStorageData } from "./utilities/type-aliases/app/LocalStorageData"
+import { AuthenticationUrl, CourierUrl, CustomerUrl, PublicUrl } from "./utilities/enums/Url"
 
 const initialLocalStorageData: LocalStorageData = {
 	jwt: "",
@@ -63,16 +64,16 @@ function App() {
 			<div className="flex justify-center">
 				<Routes>
 					<Route element={<ProtectedRoutes />}>
-						<Route path="create-a-shipment" element={<ShippingFormPage />} />
-						<Route path="dashboard/courier" element={(<CourierDashboardPage sendDataToApp={handleDataFromCourierDashboard}/>)} />
-						<Route path="dashboard/sender" element={(<SenderDashboardPage sendDataToApp={handleDataFromSenderDashboard}/>)} />
-						<Route path="dashboard/sender/new-order-summary" element={(<NewOrderSummaryPage />)} />
-						<Route path="logout" element={<Logout sendDataToApp={handleDataFromLogout}/>} />
+						<Route path={CustomerUrl.CREATE_A_SHIPMENT} element={<ShippingFormPage />} />
+						<Route path={CourierUrl.DASHBOARD} element={(<CourierDashboardPage sendDataToApp={handleDataFromCourierDashboard}/>)} />
+						<Route path={CustomerUrl.DASHBOARD} element={(<SenderDashboardPage sendDataToApp={handleDataFromSenderDashboard}/>)} />
+						<Route path={CustomerUrl.NEW_ORDER_SUMMARY} element={(<NewOrderSummaryPage />)} />
+						<Route path={AuthenticationUrl.LOGOUT} element={<Logout sendDataToApp={handleDataFromLogout}/>} />
 					</Route>
 					<Route index element={<TrackSearchBarPage />} />
-					<Route path="track-a-package" element={<TrackSearchBarPage />} />
-					<Route path="open-an-account" element={<RegisterPage />} />
-					<Route path="login" element={<LoginPage />} />
+					<Route path={PublicUrl.TRACK_A_PACKAGE} element={<TrackSearchBarPage />} />
+					<Route path={AuthenticationUrl.OPEN_AN_ACCOUNT} element={<RegisterPage />} />
+					<Route path={AuthenticationUrl.LOGIN} element={<LoginPage />} />
 					<Route path="*" element={<NotFound />} />
 				</Routes>
 			</div>
