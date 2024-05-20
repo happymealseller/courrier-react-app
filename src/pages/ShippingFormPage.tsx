@@ -9,9 +9,11 @@ import { FormData } from "../utilities/type-aliases/order-form/FormData"
 import { ParcelType } from "../utilities/enums/ParcelType"
 import { axiosInstance } from "../components/security/axiosInstance"
 import { ResponseStatus } from "../utilities/enums/ResponseStatus"
-import { LocalStorageKey } from "../utilities/enums/LocalStorageKey"
 import { useNavigate } from "react-router-dom"
 import { NewOrderSummary } from "../utilities/api-models/NewOrderSummary"
+import { CustomerEndpoint } from "../utilities/enums/Route"
+import { config } from "../utilities/constants/config"
+import { CustomerUrl } from "../utilities/enums/Url"
 
 const INITIAL_DATA: FormData = {
 	fromCompanyName: "",
@@ -59,23 +61,14 @@ export function ShippingFormPage() {
 		if (!isLastStep) {
 			return next()
 		} else {
-			const endpoint = "/orders/create-order";
-			const config = {
-				headers: {
-					"Content-Type": "application/json",
-					"Access-Control-Allow-Origin": "http://localhost:3000",
-					"username": localStorage.getItem(LocalStorageKey.Username)
-				}
-			};
+			const endpoint = CustomerEndpoint.NEW_ORDER;
 			axiosInstance.post(endpoint, JSON.stringify(data), config)
 				.then(response => {
 					if (response.data.status === ResponseStatus.Success) {
 						navigate(
-							"/dashboard/sender/new-order-summary",
+							CustomerUrl.NEW_ORDER_SUMMARY,
 							{ state: response.data.orderDetails as NewOrderSummary}
 						)
-						console.log(response.data.orderDetails)
-						alert(`${response.data.message} ${JSON.stringify(response.data.orderDetails)}`)
 					} else if (response.data.status === ResponseStatus.Failure) {
 						alert(`Error ${response.data.message}`)
 					}
