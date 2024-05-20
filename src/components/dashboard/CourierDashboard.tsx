@@ -1,12 +1,8 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { LocalStorageData } from "../../App";
 import { axiosInstance } from "../security/axiosInstance";
 import { format } from "date-fns";
-
-export type CourierDashboardProps = {
-  sendDataToApp: (data: LocalStorageData) => void;
-};
+import { CourierDashboardProps } from "../../utilities/type-aliases/dashboard/CourierDashboardProps";
 
 const filterData = (data: any[], keys: any[]) => {
   return data.map((item) => {

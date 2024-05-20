@@ -7,11 +7,7 @@ import { NavBarItemWithDropdown } from "./NavBarItemWithDropdown";
 import { HamburgerMenu } from "./HamburgerMenu";
 import "../../css/Navbar.css"
 import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
-
-type NavBarProps = {
-    isCourierLoggedIn: boolean,
-    isSenderLoggedIn: boolean
-}
+import { NavBarProps } from "../../utilities/type-aliases/navbar/NavBarProps";
 
 export function NavBar({ isCourierLoggedIn, isSenderLoggedIn }: NavBarProps) {
     const [isLogout, setIsLogout] = useState(true);
