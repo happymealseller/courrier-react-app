@@ -11,6 +11,7 @@ import { useEffect, useState } from "react"
 import { areAllKeysEmptyStrings } from "./utilities/areAllValuesEmptyString"
 import { SenderDashboardPage } from "./pages/SenderDashboardPage"
 import { Logout } from "./components/logout/Logout"
+import { ProtectedRoutes } from "./components/security/ProtectedRoutes"
 
 export type LocalStorageData = {
 	jwt: string,
@@ -64,15 +65,18 @@ function App() {
 			<main className="main-content">
 			<div className="flex justify-center">
 				<Routes>
-				<Route index element={<TrackSearchBarPage />} />
-				<Route path="create-a-shipment" element={<ShippingFormPage />} />
-				<Route path="track-a-package" element={<TrackSearchBarPage />} />
-				<Route path="open-an-account" element={<RegisterPage />} />
-				<Route path="login" element={<LoginPage />} />
-				<Route path="logout" element={<Logout sendDataToApp={handleDataFromLogout}/>} />
-				<Route path="*" element={<NotFound />} />
-				<Route path="dashboard/courier" element={(<CourierDashboardPage sendDataToApp={handleDataFromCourierDashboard}/>)} />
-				<Route path="dashboard/sender" element={(<SenderDashboardPage sendDataToApp={handleDataFromSenderDashboard}/>)} />
+					<Route element={<ProtectedRoutes />}>
+						<Route path="create-a-shipment" element={<ShippingFormPage />} />
+						<Route path="dashboard/courier" element={(<CourierDashboardPage sendDataToApp={handleDataFromCourierDashboard}/>)} />
+						<Route path="dashboard/sender" element={(<SenderDashboardPage sendDataToApp={handleDataFromSenderDashboard}/>)} />
+						<Route path="logout" element={<Logout sendDataToApp={handleDataFromLogout}/>} />
+					</Route>
+					<Route index element={<TrackSearchBarPage />} />
+					<Route path="track-a-package" element={<TrackSearchBarPage />} />
+					<Route path="open-an-account" element={<RegisterPage />} />
+					<Route path="login" element={<LoginPage />} />
+					<Route path="*" element={<NotFound />} />
+					
 				</Routes>
 			</div>
 			</main>
