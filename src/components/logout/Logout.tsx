@@ -1,12 +1,8 @@
 import { useEffect, useRef } from "react";
 import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
 import { ParcelBoxIcon } from "../icons/ParcelBoxIcon";
-import { LocalStorageData } from "../../App";
 import { AccountType } from "../../utilities/enums/AccountType";
-
-type LogoutProps = {
-    sendDataToApp: (isCourier: boolean, data: LocalStorageData) => void
-}
+import { LogoutProps } from "../../utilities/type-aliases/logout/LogoutProps";
 
 export function Logout({ sendDataToApp }: LogoutProps) {
     const username = useRef(localStorage.getItem(LocalStorageKey.Username));

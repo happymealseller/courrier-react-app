@@ -61,7 +61,7 @@ export function ParcelInformationForm({ length, width, height, weight, parcelDes
                     onChange={e => updateFields({ weight: e.target.value })}
                     className="border-2 px-2 rounded-md bg-gray-200 w-5/6" 
                 />
-                <span className="px-2 text-gray-500">{MeasurementUnit.kilogram}</span>
+                <span className="px-2 text-gray-500">{MeasurementUnit.gram}</span>
             </div>
             <label className="font-bold">Description</label>
             <div>

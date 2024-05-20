@@ -1,4 +1,4 @@
 export enum MeasurementUnit {
-    kilogram = "kg",
+    gram = "gram",
     centimetre = "cm",
 }
