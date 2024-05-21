@@ -6,7 +6,7 @@ import { GmailIcon } from "../icons/GmailIcon";
 import { axiosInstance } from "../security/axiosInstance";
 import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
 import { CourierUrl, CustomerUrl } from "../../utilities/enums/Url";
-import { AuthenticationEndpoint } from "../../utilities/enums/Route";
+import { AuthenticationEndpoint } from "../../utilities/enums/Endpoint";
 import { config } from "../../utilities/constants/config";
 
 export function LoginForm() {
