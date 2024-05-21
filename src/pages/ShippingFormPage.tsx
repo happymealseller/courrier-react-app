@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 import { ShipFromForm } from "../components/order-form/ShipFromForm"
 import { ShipToForm } from "../components/order-form/ShipToForm"
 import { ParcelInformationForm } from "../components/order-form/ParcelInformationForm"
@@ -11,9 +11,10 @@ import { axiosInstance } from "../components/security/axiosInstance"
 import { ResponseStatus } from "../utilities/enums/ResponseStatus"
 import { useNavigate } from "react-router-dom"
 import { NewOrderSummary } from "../utilities/api-models/NewOrderSummary"
-import { CustomerEndpoint } from "../utilities/enums/Route"
+import { CustomerEndpoint } from "../utilities/enums/Endpoint"
 import { config } from "../utilities/constants/config"
 import { CustomerUrl } from "../utilities/enums/Url"
+import { LocalStorageKey } from "../utilities/enums/LocalStorageKey"
 
 const INITIAL_DATA: FormData = {
 	fromCompanyName: "",
@@ -39,6 +40,11 @@ const INITIAL_DATA: FormData = {
 }
 
 export function ShippingFormPage() {
+
+	useEffect(() => {
+		config.headers[LocalStorageKey.Username] = localStorage.getItem(LocalStorageKey.Username) || ""
+	}, [])
+
 	const navigate = useNavigate();
 	const [data, setData] = useState(INITIAL_DATA);
 

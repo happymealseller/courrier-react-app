@@ -3,7 +3,7 @@ import { AccountType } from "../../utilities/enums/AccountType";
 import { ResponseStatus } from "../../utilities/enums/ResponseStatus";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../security/axiosInstance";
-import { AuthenticationEndpoint } from "../../utilities/enums/Route";
+import { AuthenticationEndpoint } from "../../utilities/enums/Endpoint";
 import { AuthenticationUrl } from "../../utilities/enums/Url";
 import { config } from "../../utilities/constants/config";
 
