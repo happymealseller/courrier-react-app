@@ -27,28 +27,27 @@ export function CourierDashboard({ sendDataToApp }: CourierDashboardProps) {
   }, []);
 
   const order_headers = [
-    "order_id",
-    "sender_name",
-    "receipient_name",
-    "delivery_address",
-    "delivery_date",
-    "status",
+    "Tracking ID",
+    "Sender Name",
+    "Receipient Name",
+    "Date of Deilvery",
+    "Delivery Address",
+    "Order Status",
   ];
 
   const displayKeys = [
     "orderId",
     "fromFullName",
     "toFullName",
-    "toAddress",
     "deliveryDate",
-    "orderStatus",
+    "toAddress",
+    "currentStatus",
   ];
 
   const config = {
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "http://localhost:3000",
-      jwt: localStorage.getItem("jwt"),
       username: localStorage.getItem("username"),
     },
   };
@@ -95,7 +94,7 @@ export function CourierDashboard({ sendDataToApp }: CourierDashboardProps) {
       </h1>
       <br></br>
       <h2 className="text-lg font-semibold px-4 py-2 text-bright-red">
-        Welcome User
+        Welcome {localStorage.getItem("username")} !
       </h2>
       <br></br>
       <table className="table-auto w-full">
@@ -129,13 +128,20 @@ export function CourierDashboard({ sendDataToApp }: CourierDashboardProps) {
                 className="border px-5 py-2 border-black"
                 style={{ textAlign: "center" }}
               >
-                <div style={{ padding: "10px 15px", alignItems: "center" }}>
+                <div style={{ padding: "10px", alignItems: "center" }}>
+                <button
+                    type="button"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5" //, marginRight:"10px"
+                    onClick={() => navigate("/orders")}
+                  >
+                    View
+                  </button>
                   <button
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-                    onClick={handleClick}
+                    onClick={() => navigate("/update")}
                   >
-                    View
+                    Update
                   </button>
                 </div>
               </td>
