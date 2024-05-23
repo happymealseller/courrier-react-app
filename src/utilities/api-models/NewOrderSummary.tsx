@@ -1,54 +1,73 @@
-export class NewOrderSummary {
-    deliveryDate: string
-    fromAddress: string
-    fromEmail: string
-    fromPhoneNo: string
-    height: number
-    length: number
-    orderDate: string
-    orderId: number
-    orderStatus: string
-    parcelDescription: string
-    toAddress: string
-    toEmail: string
-    toFullName: string
-    toPhoneNo: string
-    weight: number
-    width: number
+class OrderStatus {
+	status: string
+	remarks: string
+	statusUpdateDate: string
 
 	constructor(
+		status: string,
+		remarks: string,
+		statusUpdateDate: string
+	) {
+		this.status = status
+		this.remarks = remarks
+		this.statusUpdateDate = statusUpdateDate
+	}
+}
+export class NewOrderSummary {
+
+    orderId: number
+	orderStatus: OrderStatus[]
+	deliveryDate: string
+	orderDate: string
+	fromAddress: string
+	fromFullName: string
+	fromEmail: string
+	fromPhoneNo: string
+	toAddress: string
+	toFullName: string
+	toEmail: string
+	toPhoneNo: string
+	weight: number
+	width: number
+	height: number
+	length: number
+	parcelDescription: string
+
+	constructor(
+		orderId: number,
+		orderStatus: OrderStatus[],
 		deliveryDate: string,
+		orderDate: string,
 		fromAddress: string,
+		fromFullName: string,
 		fromEmail: string,
 		fromPhoneNo: string,
-		height: number,
-		length: number,
-		orderDate: string,
-		orderId: number,
-		orderStatus: string,
-		parcelDescription: string,
 		toAddress: string,
-		toEmail: string,
 		toFullName: string,
+		toEmail: string,
 		toPhoneNo: string,
 		weight: number,
-		width: number
+		width: number,
+		height: number,
+		length: number,
+		parcelDescription: string
 	) {
-		this.deliveryDate = deliveryDate
-		this.fromAddress = fromAddress
-		this.fromEmail = fromEmail
-		this.fromPhoneNo = fromPhoneNo
-		this.height =  height
-		this.length = length
-		this.orderDate = orderDate
 		this.orderId = orderId
 		this.orderStatus = orderStatus
-		this.parcelDescription = parcelDescription
+		this.deliveryDate = deliveryDate
+		this.orderDate = orderDate
+		this.fromAddress = fromAddress
+		this.fromFullName = fromFullName
+		this.fromEmail = fromEmail
+		this.fromPhoneNo = fromPhoneNo
 		this.toAddress = toAddress
-		this.toEmail = toEmail
 		this.toFullName = toFullName
+		this.toEmail = toEmail
 		this.toPhoneNo = toPhoneNo
 		this.weight = weight
 		this.width = width
+		this.height = height
+		this.length = length
+		this.parcelDescription = parcelDescription
 	}
 }
