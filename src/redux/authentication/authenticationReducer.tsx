@@ -1,7 +1,12 @@
 import { AuthenticationAction } from "./authenticationActions"
 import { LOGIN, LOGOUT } from "./authenticationTypes"
 
-type Authenti
+type AuthenticationState = {
+    isLogin: boolean,
+    jwt: string,
+    username: string,
+    role: string
+}
 
 const initialState = {
     isLogin: false,
@@ -10,7 +15,7 @@ const initialState = {
     role: ""
 }
 
-export const authenticationReducer = (state = initialState, action: AuthenticationAction) => {
+export const authenticationReducer = (state: AuthenticationState = initialState, action: AuthenticationAction) => {
     switch (action.type) {
         case LOGIN:
             return {

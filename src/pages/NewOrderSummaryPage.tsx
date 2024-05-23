@@ -13,7 +13,7 @@ export function NewOrderSummaryPage() {
               <h2>Order Information</h2>
               <p><strong>Order ID:</strong> {order.orderId}</p>
               <p><strong>Order Date:</strong> {new Date(order.orderDate).toLocaleString()}</p>
-              <p><strong>Order Status:</strong> {order.orderStatus}</p>
+              <p><strong>Order Status:</strong> {order.orderStatus[0].status}</p>
               <p><strong>Parcel Description:</strong> {order.parcelDescription}</p>
               <p><strong>Weight:</strong> {order.weight}{MeasurementUnit.gram}</p>
               <p><strong>Dimensions:</strong> {order.length} x {order.width} x {order.height} {MeasurementUnit.centimetre}</p>
