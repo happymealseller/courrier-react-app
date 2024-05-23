@@ -4,6 +4,7 @@ import { axiosInstance } from "../security/axiosInstance";
 import { format } from "date-fns";
 import { SenderDashboardProps } from "../../pages/SenderDashboardPage";
 import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
+import { config } from "../../utilities/constants/config";
 
 const filterData = (data: any[], keys: any[]) => {
   return data.map((item) => {
@@ -45,13 +46,9 @@ export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
     "currentStatus",
   ];
 
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "http://localhost:3000",
-      username: localStorage.getItem(LocalStorageKey.Username),
-    },
-  };
+	useEffect(() => {
+		config.headers[LocalStorageKey.Username] = localStorage.getItem(LocalStorageKey.Username) || ""
+	}, [])
 
   useEffect(() => {
     axiosInstance
@@ -73,7 +70,7 @@ export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
       </h1>
       <br></br>
       <h2 className="text-lg font-semibold px-4 py-2 text-bright-red">
-        Welcome {localStorage.getItem("username")} !
+        Welcome {localStorage.getItem(LocalStorageKey.Username)} !
       </h2>
       <br></br>
       <table className="table-auto w-full">

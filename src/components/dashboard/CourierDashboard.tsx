@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { axiosInstance } from "../security/axiosInstance";
 import { format } from "date-fns";
 import { CourierDashboardProps } from "../../utilities/type-aliases/dashboard/CourierDashboardProps";
+import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
+import { config } from "../../utilities/constants/config";
 
 const filterData = (data: any[], keys: any[]) => {
   return data.map((item) => {
@@ -44,13 +46,9 @@ export function CourierDashboard({ sendDataToApp }: CourierDashboardProps) {
     "currentStatus",
   ];
 
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "http://localhost:3000",
-      username: localStorage.getItem("username"),
-    },
-  };
+	useEffect(() => {
+		config.headers[LocalStorageKey.Username] = localStorage.getItem(LocalStorageKey.Username) || ""
+	}, [])
 
   useEffect(() => {
     axiosInstance
@@ -94,7 +92,7 @@ export function CourierDashboard({ sendDataToApp }: CourierDashboardProps) {
       </h1>
       <br></br>
       <h2 className="text-lg font-semibold px-4 py-2 text-bright-red">
-        Welcome {localStorage.getItem("username")} !
+      Welcome {localStorage.getItem(LocalStorageKey.Username)} !
       </h2>
       <br></br>
       <table className="table-auto w-full">
