@@ -21,12 +21,12 @@ export function SenderDashboard() {
   const navigate = useNavigate();
 
   const order_headers = [
-    "order_id",
-    "receipient_name",
-    "order_date",
-    "delivery_date",
-    "delivery_address",
-    "status",
+    "Tracking ID",
+    "Receipient Name",
+    "Date of Order",
+    "Date of Deilvery",
+    "Delivery Address",
+    "Order Status",
   ];
 
   const displayKeys = [
@@ -35,7 +35,7 @@ export function SenderDashboard() {
     "orderDate",
     "deliveryDate",
     "toAddress",
-    "orderStatus",
+    "currentStatus",
   ];
 
   const config = {
@@ -65,7 +65,7 @@ export function SenderDashboard() {
       </h1>
       <br></br>
       <h2 className="text-lg font-semibold px-4 py-2 text-bright-red">
-        Welcome User
+        Welcome {localStorage.getItem("username")} !
       </h2>
       <br></br>
       <table className="table-auto w-full">
@@ -95,13 +95,20 @@ export function SenderDashboard() {
                 className="px-5 py-2 border-none"
                 style={{ textAlign: "center" }}
               >
-                <div style={{ padding: "10px 15px", alignItems: "center" }}>
+                <div style={{ padding: "10px", alignItems: "center"}}>
+                  <button
+                    type="button"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5"
+                    onClick={() => navigate("/orders")}
+                  >
+                    View
+                  </button>
                   <button
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-                    onClick={handleClick}
+                    onClick={() => navigate("/update")}
                   >
-                    View
+                    Update
                   </button>
                 </div>
               </td>
