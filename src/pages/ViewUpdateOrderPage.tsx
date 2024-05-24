@@ -12,7 +12,9 @@ import { NewOrderSummary } from "../utilities/api-models/NewOrderSummary"
 import { CustomerEndpoint } from "../utilities/enums/Endpoint"
 import { config } from "../utilities/constants/config"
 import { CustomerUrl } from "../utilities/enums/Url"
-import { LocalStorageKey } from "../utilities/enums/LocalStorageKey"
+import { useSelector } from "react-redux"
+import { RootState } from "../App"
+import { RequestHeaderKey } from "../utilities/enums/RequestHeaderKey"
 
 const INITIAL_DATA: FormData = {
 	fromCompanyName: "",
@@ -36,8 +38,10 @@ const INITIAL_DATA: FormData = {
 
 export function ViewUpdateOrderPage() {
 
+	const username = useSelector((state: RootState) => state.authentication.username)
+	
 	useEffect(() => {
-		config.headers[LocalStorageKey.Username] = localStorage.getItem(LocalStorageKey.Username) || ""
+		config.headers[RequestHeaderKey.Username] = username
 	}, [])
 
 	const navigate = useNavigate();
