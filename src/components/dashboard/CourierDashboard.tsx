@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { CourierDashboardProps } from "../../utilities/type-aliases/dashboard/CourierDashboardProps";
 import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
 import { config } from "../../utilities/constants/config";
+import { CourierUrl } from "../../utilities/enums/Url";
 
 const filterData = (data: any[], keys: any[]) => {
   return data.map((item) => {
@@ -23,6 +24,7 @@ export function CourierDashboard({ sendDataToApp }: CourierDashboardProps) {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const [allowUpdate, setAllowUpdate] = useState(false);
   const { jwt, accountType, username } = location.state || {};
   useEffect(() => {
     sendDataToApp({ jwt, accountType, username });
@@ -57,27 +59,6 @@ export function CourierDashboard({ sendDataToApp }: CourierDashboardProps) {
       .then((data: OrderHistoryItem[]) => setOrders(data))
       .catch((err) => console.log(err));
   }, [setOrders]); // to filter only for undelivered items next time
-
-  //overall function need to update
-  // function handleSubmit(e: FormEvent) {
-  //     e.preventDefault()
-  //     const orderInformation = { courierId, orderId };
-  //     const url = "http://localhost:8081/courier";  //update this url
-  //     const options = {
-  //         "method": "POST",
-  //         "headers": {
-  //             "Content-Type": "application/json"
-  //         },
-  //         "body": JSON.stringify(orderInformation)
-  //     }
-  //     fetch(url, options)
-  //     .then(response => response.json())
-  //     .then(data => {
-  //         console.log("registered successfully", data);
-  //         navigate('/');
-  //     })
-  //     .catch(error => console.log("error", error))
-  // }
 
   function handleClick(e: FormEvent) {
     e.preventDefault();
@@ -130,14 +111,18 @@ export function CourierDashboard({ sendDataToApp }: CourierDashboardProps) {
                 <button
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5" //, marginRight:"10px"
-                    onClick={() => navigate("/orders")}
+                    onClick={() => {
+                      navigate(CourierUrl.VIEW_ORDER, { state: { allowUpdate: false }})
+                    }}
                   >
                     View
                   </button>
                   <button
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-                    onClick={() => navigate("/update")}
+                    onClick={() => {
+                      navigate(CourierUrl.UPDATE_ORDER, { state: { allowUpdate: true }})
+                    }}
                   >
                     Update
                   </button>

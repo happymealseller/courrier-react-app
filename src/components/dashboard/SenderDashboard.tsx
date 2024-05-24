@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { SenderDashboardProps } from "../../pages/SenderDashboardPage";
 import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
 import { config } from "../../utilities/constants/config";
+import { CustomerUrl } from "../../utilities/enums/Url";
 
 const filterData = (data: any[], keys: any[]) => {
   return data.map((item) => {
@@ -23,6 +24,7 @@ export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const [allowUpdate, setAllowUpdate] = useState(false);
   const { jwt, accountType, username } = location.state || {};
   useEffect(() => {
     sendDataToApp({ jwt, accountType, username });
@@ -104,14 +106,18 @@ export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
                   <button
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5"
-                    onClick={() => navigate("/orders")}
+                    onClick={() => {
+                      navigate(CustomerUrl.VIEW_ORDER, { state: { allowUpdate: false }})
+                    }}
                   >
                     View
                   </button>
                   <button
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-                    onClick={() => navigate("/update")}
+                    onClick={() => {
+                      navigate(CustomerUrl.UPDATE_ORDER, { state: { allowUpdate: true }})
+                    }}
                   >
                     Update
                   </button>

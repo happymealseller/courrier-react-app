@@ -15,6 +15,7 @@ import { ProtectedRoutes } from "./components/security/ProtectedRoutes"
 import { NewOrderSummaryPage } from "./pages/NewOrderSummaryPage"
 import { LocalStorageData } from "./utilities/type-aliases/app/LocalStorageData"
 import { AuthenticationUrl, CourierUrl, CustomerUrl, PublicUrl } from "./utilities/enums/Url"
+import { ViewUpdateOrderPage } from "./pages/ViewUpdateOrderPage"
 
 const initialLocalStorageData: LocalStorageData = {
 	jwt: "",
@@ -67,6 +68,10 @@ function App() {
 						<Route path={CustomerUrl.CREATE_A_SHIPMENT} element={<ShippingFormPage />} />
 						<Route path={CourierUrl.DASHBOARD} element={(<CourierDashboardPage sendDataToApp={handleDataFromCourierDashboard}/>)} />
 						<Route path={CustomerUrl.DASHBOARD} element={(<SenderDashboardPage sendDataToApp={handleDataFromSenderDashboard}/>)} />
+						{/* <Route path={CourierUrl.UPDATE_ORDER} element={<ViewUpdateOrderPage />} />
+						<Route path={CourierUrl.VIEW_ORDER} element={<ViewUpdateOrderPage />}/>        To activate after status page desgined*/}
+						<Route path={CustomerUrl.UPDATE_ORDER} element={<ViewUpdateOrderPage />} />
+						<Route path={CustomerUrl.VIEW_ORDER} element={<ViewUpdateOrderPage />} />
 						<Route path={CustomerUrl.NEW_ORDER_SUMMARY} element={(<NewOrderSummaryPage />)} />
 						<Route path={AuthenticationUrl.LOGOUT} element={<Logout sendDataToApp={handleDataFromLogout}/>} />
 					</Route>
