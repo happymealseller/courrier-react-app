@@ -2,6 +2,10 @@ import { useState, FormEvent, useEffect } from "react";
 import { axiosInstance } from "../security/axiosInstance";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import { config } from "../../utilities/constants/config";
+import { RequestHeaderKey } from "../../utilities/enums/RequestHeaderKey";
+import { useSelector } from "react-redux";
+import { RootState } from "../../App";
 
 const filterData = (data: any[], keys: any[]) => {
   return data.map((item) => {
@@ -38,12 +42,11 @@ export function SenderDashboard() {
     "currentStatus",
   ];
 
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "http://localhost:3000",
-    },
-  };
+  const username = useSelector((state: RootState) => state.authentication.username)
+
+	useEffect(() => {
+		config.headers[RequestHeaderKey.Username] = username
+	}, [])
 
   useEffect(() => {
     axiosInstance
@@ -65,7 +68,7 @@ export function SenderDashboard() {
       </h1>
       <br></br>
       <h2 className="text-lg font-semibold px-4 py-2 text-bright-red">
-        Welcome {localStorage.getItem("username")} !
+        Welcome {username} !
       </h2>
       <br></br>
       <table className="table-auto w-full">
