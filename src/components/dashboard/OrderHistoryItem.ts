@@ -1,4 +1,4 @@
-interface OrderHistoryItem {
+export interface OrderHistoryItem {
     orderId: number;
     orderStatus: string;
     toFullName: string;
