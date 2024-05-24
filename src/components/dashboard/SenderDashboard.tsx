@@ -1,9 +1,7 @@
 import { useState, FormEvent, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { axiosInstance } from "../security/axiosInstance";
 import { format } from "date-fns";
-import { SenderDashboardProps } from "../../pages/SenderDashboardPage";
-import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
+import { useNavigate } from "react-router-dom";
 
 const filterData = (data: any[], keys: any[]) => {
   return data.map((item) => {
@@ -17,15 +15,10 @@ const filterData = (data: any[], keys: any[]) => {
   });
 };
 
-export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
+export function SenderDashboard() {
   const [orders, setOrders] = useState<OrderHistoryItem[]>([]);
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const { jwt, accountType, username } = location.state || {};
-  useEffect(() => {
-    sendDataToApp({ jwt, accountType, username });
-  }, []);
 
   const order_headers = [
     "order_id",
@@ -49,7 +42,6 @@ export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "http://localhost:3000",
-      username: localStorage.getItem(LocalStorageKey.Username),
     },
   };
 

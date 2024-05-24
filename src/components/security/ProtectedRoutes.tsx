@@ -1,12 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom"
-import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey"
 import { AuthenticationUrl } from "../../utilities/enums/Url"
-import { useRef } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../App";
 
 export function ProtectedRoutes() {
-    const jwt = useRef(localStorage.getItem(LocalStorageKey.Jwt));
+    const isLoggedIn = useSelector((state: RootState) => state.authentication.isLoggedIn)
     return ( 
-        jwt.current ?
+        isLoggedIn ?
             <Outlet />
         :
             <Navigate to={AuthenticationUrl.LOGIN}/>

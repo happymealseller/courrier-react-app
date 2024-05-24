@@ -14,7 +14,9 @@ import { NewOrderSummary } from "../utilities/api-models/NewOrderSummary"
 import { CustomerEndpoint } from "../utilities/enums/Endpoint"
 import { config } from "../utilities/constants/config"
 import { CustomerUrl } from "../utilities/enums/Url"
-import { LocalStorageKey } from "../utilities/enums/LocalStorageKey"
+import { RequestHeaderKey } from "../utilities/enums/RequestHeaderKey"
+import { useSelector } from "react-redux"
+import { RootState } from "../App"
 
 const INITIAL_DATA: FormData = {
 	fromCompanyName: "",
@@ -41,8 +43,10 @@ const INITIAL_DATA: FormData = {
 
 export function ShippingFormPage() {
 
+	const username = useSelector((state: RootState) => state.authentication.username)
+	
 	useEffect(() => {
-		config.headers[LocalStorageKey.Username] = localStorage.getItem(LocalStorageKey.Username) || ""
+		config.headers[RequestHeaderKey.Username] = username
 	}, [])
 
 	const navigate = useNavigate();
