@@ -1,8 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { axiosInstance } from "../security/axiosInstance";
 import { format } from "date-fns";
-import { CourierDashboardProps } from "../../utilities/type-aliases/dashboard/CourierDashboardProps";
+import { useNavigate } from "react-router-dom";
 
 const filterData = (data: any[], keys: any[]) => {
   return data.map((item) => {
@@ -16,15 +15,10 @@ const filterData = (data: any[], keys: any[]) => {
   });
 };
 
-export function CourierDashboard({ sendDataToApp }: CourierDashboardProps) {
+export function CourierDashboard() {
   const [orders, setOrders] = useState<OrderHistoryItem[]>([]);
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const { jwt, accountType, username } = location.state || {};
-  useEffect(() => {
-    sendDataToApp({ jwt, accountType, username });
-  }, []);
 
   const order_headers = [
     "order_id",
