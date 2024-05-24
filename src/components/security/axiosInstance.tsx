@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
+import { store } from "../../redux/store";
 
 export const axiosInstance = axios.create({
     baseURL: "http://localhost:8081"
@@ -7,7 +7,8 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem(LocalStorageKey.Jwt);
+        const state = store.getState();
+        const token = state.authentication.jwt
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }

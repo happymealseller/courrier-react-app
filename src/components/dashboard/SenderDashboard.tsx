@@ -1,11 +1,12 @@
 import { useState, FormEvent, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { axiosInstance } from "../security/axiosInstance";
 import { format } from "date-fns";
-import { SenderDashboardProps } from "../../pages/SenderDashboardPage";
-import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
-import { config } from "../../utilities/constants/config";
 import { CustomerUrl } from "../../utilities/enums/Url";
+import { useNavigate } from "react-router-dom";
+import { config } from "../../utilities/constants/config";
+import { RequestHeaderKey } from "../../utilities/enums/RequestHeaderKey";
+import { useSelector } from "react-redux";
+import { RootState } from "../../App";
 
 const filterData = (data: any[], keys: any[]) => {
   return data.map((item) => {
@@ -19,16 +20,13 @@ const filterData = (data: any[], keys: any[]) => {
   });
 };
 
-export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
+export function SenderDashboard() {
   const [orders, setOrders] = useState<OrderHistoryItem[]>([]);
 
   const navigate = useNavigate();
   const location = useLocation();
   const [allowUpdate, setAllowUpdate] = useState(false);
-  const { jwt, accountType, username } = location.state || {};
-  useEffect(() => {
-    sendDataToApp({ jwt, accountType, username });
-  }, []);
+
 
   const order_headers = [
     "Tracking ID",
@@ -48,8 +46,11 @@ export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
     "currentStatus",
   ];
 
+
+  const username = useSelector((state: RootState) => state.authentication.username)
+
 	useEffect(() => {
-		config.headers[LocalStorageKey.Username] = localStorage.getItem(LocalStorageKey.Username) || ""
+		config.headers[RequestHeaderKey.Username] = username
 	}, [])
 
   useEffect(() => {
@@ -72,7 +73,7 @@ export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
       </h1>
       <br></br>
       <h2 className="text-lg font-semibold px-4 py-2 text-bright-red">
-        Welcome {localStorage.getItem(LocalStorageKey.Username)} !
+        Welcome {username} !
       </h2>
       <br></br>
       <table className="table-auto w-full">
@@ -109,6 +110,7 @@ export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
                     onClick={() => {
                       navigate(CustomerUrl.VIEW_ORDER, { state: { allowUpdate: false }})
                     }}
+
                   >
                     View
                   </button>
@@ -118,6 +120,7 @@ export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
                     onClick={() => {
                       navigate(CustomerUrl.UPDATE_ORDER, { state: { allowUpdate: true }})
                     }}
+
                   >
                     Update
                   </button>

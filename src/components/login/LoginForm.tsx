@@ -4,14 +4,17 @@ import { ResponseStatus } from "../../utilities/enums/ResponseStatus";
 import { AccountType } from "../../utilities/enums/AccountType";
 import { GmailIcon } from "../icons/GmailIcon";
 import { axiosInstance } from "../security/axiosInstance";
-import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
-import { AuthenticationUrl, CourierUrl, CustomerUrl } from "../../utilities/enums/Url";
+import { CourierUrl, CustomerUrl } from "../../utilities/enums/Url";
 import { AuthenticationEndpoint } from "../../utilities/enums/Endpoint";
 import { config } from "../../utilities/constants/config";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/authentication/authenticationSlice";
+import { AuthenticationActionPayload } from "../../redux/authentication/AuthenticationAction";
 
 export function LoginForm() {
     const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useDispatch();
     const { prepopulatedUsername, prepopulatedPassword } = location.state || { prepopulatedUsername: "", prepopulatedPassword: ""};
     const [username, setUsername] = useState(prepopulatedUsername);
     const [password, setPassword] = useState(prepopulatedPassword);
@@ -24,33 +27,19 @@ export function LoginForm() {
         axiosInstance.post(url, JSON.stringify(loginInformation), config)
             .then(response => {
                 if (response.data.status === ResponseStatus.Success) {
-                    localStorage.setItem(LocalStorageKey.Jwt, response.data.jwt)
-                    localStorage.setItem(LocalStorageKey.AccountType, response.data.role === AccountType.Customer ? AccountType.Customer : AccountType.Courier)
-                    localStorage.setItem(LocalStorageKey.Username, username);
+                    const userData: AuthenticationActionPayload = {
+                        jwt: response.data.jwt,
+                        username: username,
+                        role: response.data.role
+                    }
                     switch (response.data.role) {
                         case AccountType.Customer:
-                            navigate(
-                                CustomerUrl.DASHBOARD, 
-                                { state: 
-                                    { 
-                                        "jwt" : localStorage.getItem(LocalStorageKey.Jwt), 
-                                        "accountType": localStorage.getItem(LocalStorageKey.AccountType),
-                                        "username": localStorage.getItem(LocalStorageKey.Username)
-                                    }
-                                }
-                            );
+                            dispatch(login(userData));
+                            navigate(CustomerUrl.DASHBOARD);
                             break;
                         case AccountType.Courier:
-                            navigate(
-                                CourierUrl.DASHBOARD,
-                                { state: 
-                                    { 
-                                        "jwt" : localStorage.getItem(LocalStorageKey.Jwt), 
-                                        "accountType": localStorage.getItem(LocalStorageKey.AccountType),
-                                        "username": localStorage.getItem(LocalStorageKey.Username)
-                                    }
-                                }
-                            );
+                            dispatch(login(userData));
+                            navigate(CourierUrl.DASHBOARD);
                             break;
                     }
                 } else if (response.data.status === ResponseStatus.Failure) {
