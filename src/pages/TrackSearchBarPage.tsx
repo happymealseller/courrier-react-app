@@ -1,11 +1,26 @@
-import { FormEvent, useState} from 'react';
+import { FormEvent, useEffect, useState} from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PublicUrl } from '../utilities/enums/Url';
+import { axiosInstance } from '../components/security/axiosInstance';
+import { CustomerEndpoint } from '../utilities/enums/Endpoint';
 
 function TrackSearchBarPage() {
     const [trackingNo, setTrackingNo] = useState("");
-
+    const navigate = useNavigate();
+    
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("tracking: ", trackingNo);
+        console.log("[USER INPUT] Tracking No. : ", trackingNo);
+
+        axiosInstance.get(CustomerEndpoint.TRACK_ORDER + trackingNo)
+            .then((response) => {
+                console.log("[RESPONSE - COURIER_APP backend] REQUEST_URL: ", 
+                    (CustomerEndpoint.TRACK_ORDER + trackingNo) + " | Response: ", response);
+                navigate(PublicUrl.ORDER_STATUS, {state: response.data.orderDetails, replace: true});
+            })
+            .catch((error) => {
+                console.log(error);
+            })        
     };
 
     return (<>

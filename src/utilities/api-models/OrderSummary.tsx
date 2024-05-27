@@ -13,7 +13,7 @@ class OrderStatus {
 		this.statusUpdateDate = statusUpdateDate
 	}
 }
-export class NewOrderSummary {
+export class OrderSummary {
 
     orderId: number
 	orderStatus: OrderStatus[]

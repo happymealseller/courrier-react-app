@@ -10,7 +10,7 @@ import { ParcelType } from "../utilities/enums/ParcelType"
 import { axiosInstance } from "../components/security/axiosInstance"
 import { ResponseStatus } from "../utilities/enums/ResponseStatus"
 import { useNavigate } from "react-router-dom"
-import { NewOrderSummary } from "../utilities/api-models/NewOrderSummary"
+import { OrderSummary } from "../utilities/api-models/OrderSummary"
 import { CustomerEndpoint } from "../utilities/enums/Endpoint"
 import { config } from "../utilities/constants/config"
 import { CustomerUrl } from "../utilities/enums/Url"
@@ -73,7 +73,7 @@ export function ShippingFormPage() {
 					if (response.data.status === ResponseStatus.Success) {
 						navigate(
 							CustomerUrl.NEW_ORDER_SUMMARY,
-							{ state: response.data.orderDetails as NewOrderSummary}
+							{ state: response.data.orderDetails as OrderSummary}
 						)
 					} else if (response.data.status === ResponseStatus.Failure) {
 						alert(`Error ${response.data.message}`)
