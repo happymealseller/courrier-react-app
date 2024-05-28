@@ -55,7 +55,7 @@ export function RegisterForm() {
 	}
 
 	return (
-	<div className="bg-white px-10 py-12 rounded-3xl border-2 border-gray-200">
+	<div style={{ marginTop: '200px' }} className="bg-white px-10 py-12 rounded-3xl border-2 border-gray-200">
 		<h1 className="text-5xl font-semibold">FDMx</h1>
 		<p className="font-medium text-lg text-gray-500 mt-4">
 		Please enter your registration details.
@@ -86,7 +86,7 @@ export function RegisterForm() {
 								required 
 							/> */}
 				<div>
-					<label className="text-lg font-medium">Full Name:</label>
+					<label className="text-lg font-medium">Fullname:</label>
 				</div>
 				<input
 					type="text"
@@ -94,7 +94,7 @@ export function RegisterForm() {
 					className="w-full border-2 border-gray-100 rounded-xl p-2 mt-1 bg-transparent"
 					id="full-name"
 					name="full-name"
-					placeholder="Full Name"
+					placeholder="Fullname"
 					required
 					onChange={(e) => setFullName(e.target.value)}
 				></input>
@@ -107,7 +107,7 @@ export function RegisterForm() {
 					className="w-full border-2 border-gray-100 rounded-xl p-2 mt-1 bg-transparent"
 					id="username"
 					name="username"
-					placeholder="Userame"
+					placeholder="Username"
 					required
 					onChange={(e) => setUsername(e.target.value)}
 				></input>
