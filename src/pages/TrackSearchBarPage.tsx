@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { PublicUrl } from '../utilities/enums/Url';
 import { axiosInstance } from '../components/security/axiosInstance';
 import { CustomerEndpoint } from '../utilities/enums/Endpoint';
-import { OrderSummary } from '../utilities/api-models/OrderSummary';
 import { ResponseStatus } from '../utilities/enums/ResponseStatus';
+
 
 function TrackSearchBarPage() {
     const [trackingNo, setTrackingNo] = useState("");
@@ -13,6 +13,7 @@ function TrackSearchBarPage() {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        
         console.log("[USER INPUT] Tracking No. : ", trackingNo);
         axiosInstance.get(`${CustomerEndpoint.TRACK_ORDER}${trackingNo}`)
             .then((response) => {
@@ -29,6 +30,8 @@ function TrackSearchBarPage() {
             })
             .catch((error) => {
                 alert(`Error: ${error.message}`)
+                console.log("[RESPONSE - COURIER_APP backend] REQUEST_URL: ", 
+                        (CustomerEndpoint.TRACK_ORDER + trackingNo) + " | Response: ", error.message);
             })
         
         
