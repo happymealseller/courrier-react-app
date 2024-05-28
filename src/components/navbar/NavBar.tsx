@@ -6,28 +6,24 @@ import { NavBarItemWithDropdownData } from "../../utilities/type-aliases/navbar/
 import { NavBarItemWithDropdown } from "./NavBarItemWithDropdown";
 import { HamburgerMenu } from "./HamburgerMenu";
 import "../../css/Navbar.css"
-import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
-import { NavBarProps } from "../../utilities/type-aliases/navbar/NavBarProps";
+import { useSelector } from "react-redux";
+import { RootState } from "../../App";
+import { AccountType } from "../../utilities/enums/AccountType";
 
-export function NavBar({ isCourierLoggedIn, isSenderLoggedIn }: NavBarProps) {
-    const [isLogout, setIsLogout] = useState(true);
-
-    useEffect(() => {
-            setIsLogout(!isCourierLoggedIn && !isSenderLoggedIn);
-    }, [isCourierLoggedIn, isSenderLoggedIn])
+export function NavBar() {
+    const isLoggedIn = useSelector((state: RootState) => state.authentication.isLoggedIn);
+    const role = useSelector((state: RootState) => state.authentication.role);
 
     useEffect(() => {
-        const jwtToken = localStorage.getItem(LocalStorageKey.Jwt);
-        if (isSenderLoggedIn && jwtToken) {
+        if (isLoggedIn && role === AccountType.Customer) {
             setShippingData((prevShippingData) => [
                 ...prevShippingData,
                 { title: "Create a Shipment", navLink: "create-a-shipment" },
-            ]);
-        } else if (!isSenderLoggedIn) {
+            ])
+        } else {
             setShippingData(initialShippingData);
         }
-        
-    }, [isSenderLoggedIn]);
+    }, [isLoggedIn]);
 
     const initialShippingData: DropdownItemData[] = [
         { title: "Schedule a Collection", navLink: "schedule-a-collection" },
@@ -142,7 +138,7 @@ export function NavBar({ isCourierLoggedIn, isSenderLoggedIn }: NavBarProps) {
                             <ul className="nav-list w-full lg:w-auto flex flex-col lg:flex-row space-x-2 space-y-2 lg:space-y-0">
                                 {<NavBarItemWithoutDropdown navBarItems={[{title: "About FDMx", navLink: "about"}]}/>}
                                 {<NavBarItemWithDropdown navBarItems={navBarItemsWithDropdown} />}
-                                {isLogout ? (
+                                {!isLoggedIn ? (
                                     <NavBarItemWithoutDropdown navBarItems={[{title: "Login", navLink: "login"}]}/>
                                 ) : (
                                     <NavBarItemWithoutDropdown navBarItems={[{title: "Logout", navLink: "logout"}]}/>

@@ -1,29 +1,23 @@
-import { useEffect, useRef } from "react";
-import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
 import { ParcelBoxIcon } from "../icons/ParcelBoxIcon";
-import { AccountType } from "../../utilities/enums/AccountType";
-import { LogoutProps } from "../../utilities/type-aliases/logout/LogoutProps";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/authentication/authenticationSlice";
+import { RootState } from "../../App";
+import { useEffect } from "react";
 
-export function Logout({ sendDataToApp }: LogoutProps) {
-    const username = useRef(localStorage.getItem(LocalStorageKey.Username));
+export function Logout() {
+    const username = useSelector((state: RootState) => state.authentication.username);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        sendDataToApp(
-            localStorage.getItem(LocalStorageKey.AccountType) === AccountType.Courier,
-            {
-                jwt: "",
-                accountType: "",
-                username: ""
-            }
-        )
-        localStorage.clear()
+        dispatch(logout());
     }, [])
+
     return (
         <div className="flex flex-col justify-center items-center">
             <br />
             <ParcelBoxIcon />
             <br />
-            <h3 className="text-2xl font-medium text-slate-500">You have successfully logged out, {username.current}</h3>
+            <h3 className="text-2xl font-medium text-slate-500">You have successfully logged out, {username}</h3>
         </div>
     )
 }

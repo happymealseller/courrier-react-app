@@ -1,8 +1,11 @@
 import { FormEvent, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { axiosInstance } from "../security/axiosInstance";
 import { format } from "date-fns";
-import { CourierDashboardProps } from "../../utilities/type-aliases/dashboard/CourierDashboardProps";
+import { useNavigate } from "react-router-dom";
+import { RequestHeaderKey } from "../../utilities/enums/RequestHeaderKey";
+import { useSelector } from "react-redux";
+import { RootState } from "../../App";
+import { config } from "../../utilities/constants/config";
 
 const filterData = (data: any[], keys: any[]) => {
   return data.map((item) => {
@@ -16,42 +19,34 @@ const filterData = (data: any[], keys: any[]) => {
   });
 };
 
-export function CourierDashboard({ sendDataToApp }: CourierDashboardProps) {
+export function CourierDashboard() {
   const [orders, setOrders] = useState<OrderHistoryItem[]>([]);
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const { jwt, accountType, username } = location.state || {};
-  useEffect(() => {
-    sendDataToApp({ jwt, accountType, username });
-  }, []);
 
   const order_headers = [
-    "order_id",
-    "sender_name",
-    "receipient_name",
-    "delivery_address",
-    "delivery_date",
-    "status",
+    "Tracking ID",
+    "Sender Name",
+    "Receipient Name",
+    "Date of Deilvery",
+    "Delivery Address",
+    "Order Status",
   ];
 
   const displayKeys = [
     "orderId",
     "fromFullName",
     "toFullName",
-    "toAddress",
     "deliveryDate",
-    "orderStatus",
+    "toAddress",
+    "currentStatus",
   ];
 
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "http://localhost:3000",
-      jwt: localStorage.getItem("jwt"),
-      username: localStorage.getItem("username"),
-    },
-  };
+  const username = useSelector((state: RootState) => state.authentication.username)
+
+	useEffect(() => {
+		config.headers[RequestHeaderKey.Username] = username
+	}, [])
 
   useEffect(() => {
     axiosInstance
@@ -95,7 +90,7 @@ export function CourierDashboard({ sendDataToApp }: CourierDashboardProps) {
       </h1>
       <br></br>
       <h2 className="text-lg font-semibold px-4 py-2 text-bright-red">
-        Welcome User
+      Welcome {username} !
       </h2>
       <br></br>
       <table className="table-auto w-full">
@@ -129,13 +124,20 @@ export function CourierDashboard({ sendDataToApp }: CourierDashboardProps) {
                 className="border px-5 py-2 border-black"
                 style={{ textAlign: "center" }}
               >
-                <div style={{ padding: "10px 15px", alignItems: "center" }}>
+                <div style={{ padding: "10px", alignItems: "center" }}>
+                <button
+                    type="button"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5" //, marginRight:"10px"
+                    onClick={() => navigate("/orders")}
+                  >
+                    View
+                  </button>
                   <button
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-                    onClick={handleClick}
+                    onClick={() => navigate("/update")}
                   >
-                    View
+                    Update
                   </button>
                 </div>
               </td>

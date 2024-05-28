@@ -1,9 +1,11 @@
 import { useState, FormEvent, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { axiosInstance } from "../security/axiosInstance";
 import { format } from "date-fns";
-import { SenderDashboardProps } from "../../pages/SenderDashboardPage";
-import { LocalStorageKey } from "../../utilities/enums/LocalStorageKey";
+import { useNavigate } from "react-router-dom";
+import { config } from "../../utilities/constants/config";
+import { RequestHeaderKey } from "../../utilities/enums/RequestHeaderKey";
+import { useSelector } from "react-redux";
+import { RootState } from "../../App";
 
 const filterData = (data: any[], keys: any[]) => {
   return data.map((item) => {
@@ -17,23 +19,18 @@ const filterData = (data: any[], keys: any[]) => {
   });
 };
 
-export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
+export function SenderDashboard() {
   const [orders, setOrders] = useState<OrderHistoryItem[]>([]);
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const { jwt, accountType, username } = location.state || {};
-  useEffect(() => {
-    sendDataToApp({ jwt, accountType, username });
-  }, []);
 
   const order_headers = [
-    "order_id",
-    "receipient_name",
-    "order_date",
-    "delivery_date",
-    "delivery_address",
-    "status",
+    "Tracking ID",
+    "Receipient Name",
+    "Date of Order",
+    "Date of Deilvery",
+    "Delivery Address",
+    "Order Status",
   ];
 
   const displayKeys = [
@@ -42,16 +39,14 @@ export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
     "orderDate",
     "deliveryDate",
     "toAddress",
-    "orderStatus",
+    "currentStatus",
   ];
 
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "http://localhost:3000",
-      username: localStorage.getItem(LocalStorageKey.Username),
-    },
-  };
+  const username = useSelector((state: RootState) => state.authentication.username)
+
+	useEffect(() => {
+		config.headers[RequestHeaderKey.Username] = username
+	}, [])
 
   useEffect(() => {
     axiosInstance
@@ -73,7 +68,7 @@ export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
       </h1>
       <br></br>
       <h2 className="text-lg font-semibold px-4 py-2 text-bright-red">
-        Welcome User
+        Welcome {username} !
       </h2>
       <br></br>
       <table className="table-auto w-full">
@@ -103,13 +98,20 @@ export function SenderDashboard({ sendDataToApp }: SenderDashboardProps) {
                 className="px-5 py-2 border-none"
                 style={{ textAlign: "center" }}
               >
-                <div style={{ padding: "10px 15px", alignItems: "center" }}>
+                <div style={{ padding: "10px", alignItems: "center"}}>
+                  <button
+                    type="button"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5"
+                    onClick={() => navigate("/orders")}
+                  >
+                    View
+                  </button>
                   <button
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-                    onClick={handleClick}
+                    onClick={() => navigate("/update")}
                   >
-                    View
+                    Update
                   </button>
                 </div>
               </td>
