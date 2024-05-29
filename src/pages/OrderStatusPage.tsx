@@ -4,11 +4,107 @@ import { BoxIcon } from "../components/icons/black-white-icons/BoxIcon";
 import { TickIcon } from "../components/icons/black-white-icons/TickIcon";
 import { TruckIcon } from "../components/icons/black-white-icons/TruckIcon";
 import { HouseIcon } from "../components/icons/black-white-icons/HouseIcon";
+import { OrderStatusType } from "../utilities/enums/OrderStatusType";
+import { ReactNode } from "react";
+import { LetterXIcon } from "../components/icons/black-white-icons/LetterXIcon";
+import { InformationIcon } from "../components/icons/black-white-icons/InformationIcon";
 
-export function OrderStatusPage() {
+export { OrderStatusPage };
+
+interface taskProps {
+    timestamp: string,
+    remarks: string,
+    taskCompleted: boolean
+}
+
+interface statusProperty {
+    status: string,
+    remarks: string,
+    statusUpdateDate: string
+}
+
+const StatusComponentsMap = new Map([
+    [OrderStatusType.OrderCreated.toString(), ClipBoardIcon],
+    [OrderStatusType.Processing.toString(), BoxIcon],
+    [OrderStatusType.PickedUp.toString(), TickIcon],
+    [OrderStatusType.Sorting.toString(), TickIcon],
+    [OrderStatusType.ReadyForDelivery.toString(), TickIcon],
+    [OrderStatusType.Delivering.toString(), TruckIcon],
+    [OrderStatusType.Delivered.toString(), HouseIcon],
+    [OrderStatusType.Cancelled.toString(), LetterXIcon],
+    [OrderStatusType.Other.toString(), InformationIcon]
+]);
+
+// different statuses of a given order
+function OrderCreated(props: taskProps) {
+    const listItemClass: string = props.taskCompleted ? "text-gray-400" : "";
+    return (<>
+        {/* <li className={`mb-10 ms-6 text-primary-700 dark:text-primary-500 ${listItemClass}`}>
+            <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800"> */}
+                <ClipBoardIcon />
+            {/* </span>
+            <h4 className="mb-0.5 font-semibold">{props.timestamp}</h4>
+            <p className="text-sm">{props.remarks}</p> */}
+        {/* </li> */}
+    </>);
+}
+
+function Processing(props: taskProps) {
+    const listItemClass: string = props.taskCompleted ? "text-gray-400" : "";
+    return (<>
+        {/* <li className={`mb-10 ms-6 text-primary-700 dark:text-primary-500 ${listItemClass}`}>
+            <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800"> */}
+                <BoxIcon />
+            {/* </span>
+            <h4 className="mb-0.5 font-semibold">{props.timestamp}</h4>
+            <p className="text-sm">{props.remarks}</p>
+        </li> */}
+    </>)
+}
+
+function PickedUp(props: taskProps) {
+    const listItemClass: string = props.taskCompleted ? "text-gray-400" : "";
+    return (<>
+        {/* <li className={`mb-10 ms-6 text-primary-700 dark:text-primary-500 ${listItemClass}`}> */}
+            {/* <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800"> */}
+                <TickIcon />
+            {/* </span>
+            <h4 className="mb-0.5 text-base font-semibold">{props.timestamp}</h4>
+            <p className="text-sm">{props.remarks}</p> */}
+        {/* </li> */}
+    </>)
+}
+
+
+
+function Sorting(props: taskProps) {
+
+}
+
+const sampleStatuses = JSON.parse(`[
+    {"status": "ORDER_CREATED", "remarks": "Order created", "statusUpdateDate": "2024-05-01T04:00:22.769+00:00"},
+    {"status": "PROCESSING", "remarks": "Processing order", "statusUpdateDate": "2024-05-24T05:50:22.769+00:00"},
+    {"status": "PICKED_UP", "remarks": "Picked up order", "statusUpdateDate": "2024-05-24T06:15:22.769+00:00"},
+    {"status": "SORTING", "remarks": "Sorting order", "statusUpdateDate": "2024-05-24T07:20:22.769+00:00"},
+    {"status": "READY_FOR_DELIVERY", "remarks": "Ready for delivery", "statusUpdateDate": "2024-05-24T08:25:22.769+00:00"},
+    {"status": "DELIVERING", "remarks": "Delivering order", "statusUpdateDate": "2024-05-24T09:44:22.769+00:00"},
+    {"status": "DELIVERED", "remarks": "Delivered order", "statusUpdateDate": "2024-05-24T10:40:22.769+00:00"},
+    {"status": "CANCELLED", "remarks": "Cancelled order", "statusUpdateDate": "2024-05-24T11:10:22.769+00:00"},
+    {"status": "OTHER", "remarks": "Some kind of remark for other category", "statusUpdateDate": "2024-05-24T04:12:22.769+00:00"}
+]`);
+sampleStatuses.reverse();
+
+
+
+function OrderStatusPage() {
     const { state } = useLocation();
-    console.log("[REDIRECT - from TrackSearchBarPage] Response: ", state);
+    console.log("[REDIRECT - from TrackSearchBarPage] Response data: ", state);
+    const statusesArray = state.orderStatus.reverse();
 
+
+    const testDate = new Date(state.orderStatus[0].statusUpdateDate);
+    const formattedDate = testDate.toLocaleString('default', { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "numeric" });
+    console.log(`formatted date: ${formattedDate}`);
 
     // text-gray-400 for greying out completed items
     // use size-5 for svg className
@@ -51,61 +147,27 @@ export function OrderStatusPage() {
                                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Order history</h3>
 
                                 <ol className="relative ms-3 border-s border-gray-200 dark:border-gray-700">
-                                    <li className="mb-10 ms-6">
-                                        <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800">
-                                           <HouseIcon /> 
-                                        </span>
-                                        <h4 className="mb-0.5 text-base font-semibold text-gray-900 dark:text-white">Estimated delivery in 30 Nov 2023</h4>
-                                        <p className="text-sm font-normal text-gray-500 dark:text-gray-400">Delivered Order</p>
-                                    </li>
 
-                                    <li className="mb-10 ms-6">
-                                        <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800">
-                                            <TruckIcon />
-                                        </span>
-                                        <h4 className="mb-0.5 text-base font-semibold text-gray-900 dark:text-white">Today</h4>
-                                        <p className="text-sm font-normal text-gray-500 dark:text-gray-400">Delivering order</p>
-                                    </li>
+                                    // have to change sampleStatuses to statusesArray for the .map method and comparison of length
+                                    {sampleStatuses.map((element: statusProperty, index: number) => {
+                                        console.log(`status: ${element.status}, remarks: ${element.remarks}, statusUpdateDate: ${element.statusUpdateDate}`);
+                                        const isMostRecentTask = (sampleStatuses.length === 1)? true : (index === 0);
+                                        const listItemClass: string = isMostRecentTask ? "text-gray-900" : "text-gray-400";
 
-                                    <li className="mb-10 ms-6 text-primary-700 dark:text-primary-500 text-gray-400">
-                                        <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800">
-                                            <TickIcon />
-                                        </span>
-                                        <h4 className="mb-0.5 font-semibold">24 Nov 2023, 15:15</h4>
-                                        <p className="text-sm">Ready for delivery</p>
-                                    </li>
+                                        const Component = StatusComponentsMap.get(element.status);
+                                        if (!Component) return (<><p>{`Invalid status ${element.status}`}</p></>);
 
-                                    <li className="mb-10 ms-6 text-primary-700 dark:text-primary-500 text-gray-400">
-                                        <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800">
-                                            <TickIcon />
-                                        </span>
-                                        <h4 className="mb-0.5 font-semibold">23 Nov 2023, 15:15</h4>
-                                        <p className="text-sm">Sorting order</p>
-                                    </li>
+                                        return (<>
+                                            <li className={`mb-10 ms-6 text-primary-700 dark:text-primary-500 ${listItemClass}`} >
+                                                <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800">
+                                                    <Component />
+                                                </span>
+                                                <h4 className={`mb-0.5 text-base font-semibold ${listItemClass} dark:text-white`}>{element.statusUpdateDate}</h4>
+                                                <p className={`text-sm font-normal ${listItemClass} dark:text-gray-400`}>{element.remarks}</p>
+                                            </li>
+                                        </>);
+                                    })}
 
-                                    <li className="mb-10 ms-6 text-primary-700 dark:text-primary-500 text-gray-400">
-                                        <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800">
-                                            <TickIcon />
-                                        </span>
-                                        <h4 className="mb-0.5 text-base font-semibold">22 Nov 2023, 12:27</h4>
-                                        <p className="text-sm">Picked up order</p>
-                                    </li>
-
-                                    <li className="mb-10 ms-6 text-primary-700 dark:text-primary-500 text-gray-400">
-                                        <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800">
-                                            <BoxIcon />
-                                        </span>
-                                        <h4 className="mb-0.5 font-semibold">19 Nov 2023, 10:47</h4>
-                                        <p className="text-sm">Processing order</p>
-                                    </li>
-
-                                    <li className="ms-6 text-primary-700 dark:text-primary-500 text-gray-400">
-                                        <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800">
-                                            <ClipBoardIcon />
-                                        </span>
-                                        <h4 className="mb-0.5 font-semibold">19 Nov 2023, 10:45</h4>
-                                        <a href="#" className="text-sm font-medium hover:underline">Order created</a>
-                                    </li>
                                 </ol>
 
                                 <div className="gap-4 sm:flex sm:items-center">

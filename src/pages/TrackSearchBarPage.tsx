@@ -17,9 +17,9 @@ function TrackSearchBarPage() {
         console.log("[USER INPUT] Tracking No. : ", trackingNo);
         axiosInstance.get(`${CustomerEndpoint.TRACK_ORDER}${trackingNo}`)
             .then((response) => {
+                console.log("[RESPONSE - COURIER_APP backend] REQUEST_URL: ", 
+                        (CustomerEndpoint.TRACK_ORDER + trackingNo) + " | Response: ", response)
                 if (response.data.status === ResponseStatus.Success) {
-                    console.log("[RESPONSE - COURIER_APP backend] REQUEST_URL: ", 
-                        (CustomerEndpoint.TRACK_ORDER + trackingNo) + " | Response: ", response);
                     navigate(PublicUrl.ORDER_STATUS, {
                         state: response.data.orderDetails
                     })
@@ -29,9 +29,7 @@ function TrackSearchBarPage() {
                 
             })
             .catch((error) => {
-                alert(`Error: ${error.message}`)
-                console.log("[RESPONSE - COURIER_APP backend] REQUEST_URL: ", 
-                        (CustomerEndpoint.TRACK_ORDER + trackingNo) + " | Response: ", error.message);
+                alert(`Error: ${error.message}`);
             })
         
         
