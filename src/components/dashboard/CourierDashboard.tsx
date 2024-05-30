@@ -62,27 +62,6 @@ export function CourierDashboard() {
       .catch((err) => console.log(err));
   }, [setOrders]); // to filter only for undelivered items next time
 
-  //overall function need to update
-  // function handleSubmit(e: FormEvent) {
-  //     e.preventDefault()
-  //     const orderInformation = { courierId, orderId };
-  //     const url = "http://localhost:8081/courier";  //update this url
-  //     const options = {
-  //         "method": "POST",
-  //         "headers": {
-  //             "Content-Type": "application/json"
-  //         },
-  //         "body": JSON.stringify(orderInformation)
-  //     }
-  //     fetch(url, options)
-  //     .then(response => response.json())
-  //     .then(data => {
-  //         console.log("registered successfully", data);
-  //         navigate('/');
-  //     })
-  //     .catch(error => console.log("error", error))
-  // }
-
   const handleStatusUpdate = async (orderId: string) => {
     console.log(config);
     try {
@@ -128,12 +107,18 @@ export function CourierDashboard() {
                   {value}
                 </td>
               ))}
-              <td className="border px-5 py-2 border-black" style={{ textAlign: 'center' }}>
-                <div className="mb-2">
-                  <button
+              {/* Button in the last column, to fix issue with last column header borders next time */}
+              <td
+                className="border px-5 py-2 border-black"
+                style={{ textAlign: "center" }}
+              >
+                <div style={{ padding: "10px", alignItems: "center" }}>
+                <button
                     type="button"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-                    onClick={() => navigate('/orders')}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5" //, marginRight:"10px"
+                    onClick={() => {
+                      navigate(CourierUrl.VIEW_ORDER, { state: { allowUpdate: false }})
+                    }}
                   >
                     View
                   </button>
@@ -173,6 +158,10 @@ export function CourierDashboard() {
                       type="button"
                       className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mt-2" style={{ width: '130px' }}
                       onClick={() => { setEditingOrderId(item.orderId); setSelectedStatus(item.currentStatus); }}
+                      // Below is to opn a new page
+                      // onClick={() => {
+                      //   navigate(CourierUrl.UPDATE_ORDER, { state: { allowUpdate: true }})
+                      // }}
                     >
                       Update
                     </button>
@@ -194,7 +183,4 @@ export function CourierDashboard() {
       </div>
     </div>
   );
-  
-  
-  
 }
