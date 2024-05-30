@@ -1,11 +1,11 @@
 import { FormEvent, useEffect, useState } from "react";
-import { axiosInstance } from "../security/axiosInstance";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { RequestHeaderKey } from "../../utilities/enums/RequestHeaderKey";
 import { useSelector } from "react-redux";
 import { RootState } from "../../App";
 import { config } from "../../utilities/constants/config";
+import { axiosInstance } from "../security/axiosInstance";
 
 const filterData = (data: any[], keys: any[]) => {
   return data.map((item) => {
@@ -19,32 +19,14 @@ const filterData = (data: any[], keys: any[]) => {
   });
 };
 
-const dummyOrders = [
-  {
-    orderId: '1',
-    fromFullName: 'Alice Johnson',
-    toFullName: 'John Doe',
-    deliveryDate: '2023-01-02',
-    toAddress: '123 Main St',
-    currentStatus: 'Out for delivery',
-
-  },
-  {
-    orderId: '2',
-    fromFullName: 'Bob Brown',
-    toFullName: 'Jane Smith',
-    deliveryDate: '2023-01-06',
-    toAddress: '456 Elm St',
-    currentStatus: 'Collected',
-
-  },
-];
+const allowedStatuses = ["PICKED_UP", "SORTING", "DELIVERING", "DELIVERED"];
 
 export function CourierDashboard() {
   const [orders, setOrders] = useState<OrderHistoryItem[]>([]);
   const [editingOrderId, setEditingOrderId] = useState<string | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<string>('');
   const navigate = useNavigate();
+  const username = useSelector((state: RootState) => state.authentication.username);
 
   const order_headers = [
     "Tracking ID",
@@ -64,25 +46,17 @@ export function CourierDashboard() {
     "currentStatus",
   ];
 
-  const username = useSelector((state: RootState) => state.authentication.username)
+	useEffect(() => {
+		config.headers[RequestHeaderKey.Username] = username
+	}, [])
 
   useEffect(() => {
-    config.headers[RequestHeaderKey.Username] = username;
-    const assignedOrders = dummyOrders;
-    setOrders(assignedOrders);
-  }, [username]);
-
-	// useEffect(() => {
-	// 	config.headers[RequestHeaderKey.Username] = username
-	// }, [])
-
-  // useEffect(() => {
-  //   axiosInstance
-  //     .get("/courier/orders", config) //  url to change also
-  //     .then((res) => filterData(res.data.orderHistoryList, displayKeys))
-  //     .then((data: OrderHistoryItem[]) => setOrders(data))
-  //     .catch((err) => console.log(err));
-  // }, [setOrders]); // to filter only for undelivered items next time
+    axiosInstance
+      .get("/courier/orders", config) 
+      .then((res) => filterData(res.data.orderHistoryList, displayKeys))
+      .then((data: OrderHistoryItem[]) => setOrders(data))
+      .catch((err) => console.log(err));
+  }, [setOrders]); // to filter only for undelivered items next time
 
   //overall function need to update
   // function handleSubmit(e: FormEvent) {
@@ -105,12 +79,20 @@ export function CourierDashboard() {
   //     .catch(error => console.log("error", error))
   // }
 
-  const handleStatusUpdate = (orderId: string) => {
-    // Handle the update request to the backend
-    console.log(`Updating order ${orderId} to status: ${selectedStatus}`);
-    // Update the order status on the dashboard
-    setOrders(orders.map(order => order.orderId === orderId ? { ...order, currentStatus: selectedStatus } : order));
-    setEditingOrderId(null);
+  const handleStatusUpdate = async (orderId: string) => {
+    console.log(config);
+    try {
+      const response = await axiosInstance.put(`/courier/${orderId}`, {
+        status: selectedStatus,
+        remarks: 'Status updated by courier',
+      }, config);
+      // Update status on dashboard
+      setOrders(orders.map(order => order.orderId === orderId ? { ...order, currentStatus: selectedStatus } : order));
+      setEditingOrderId(null);
+      console.log(`Order ${orderId} updated successfully to status: ${selectedStatus}`);
+    } catch (error) {
+      console.error(`Failed to update order ${orderId}:`, error);
+    }
   };
 
   function handleClick(e: FormEvent) {
@@ -122,14 +104,14 @@ export function CourierDashboard() {
   return (
     <div className="bg-white p-12 rounded-3xl border-2 border-gray-200">
       <h1 className="text-2xl font-semibold underline underline-offset-1">Courier Dashboard</h1>
-      <br></br>
+      <br />
       <h2 className="text-lg font-semibold px-4 py-2 text-bright-red">Welcome {username} !</h2>
-      <br></br>
-      <table className="table-auto w-full">
+      <br />
+      <table className="table-auto w-full" style={{ height: '200px' }}> 
         <thead>
           <tr className="border border-black px-5 py-2">
             {order_headers.map((header, idx) => (
-              <th key={idx} className="border border-black px-5 py-2">{header}</th>
+              <th key={idx} className="border border-black px-5 py-2" style={{ width: '165px' }}>{header}</th>
             ))}
             <th className="border border-black px-5 py-2">Actions</th>
           </tr>
@@ -143,48 +125,54 @@ export function CourierDashboard() {
                 </td>
               ))}
               <td className="border px-5 py-2 border-black" style={{ textAlign: 'center' }}>
-                <button
-                  type="button"
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5"
-                  onClick={() => navigate('/orders')}
-                >
-                  View
-                </button>
+                <div className="mb-2">
+                  <button
+                    type="button"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+                    onClick={() => navigate('/orders')}
+                  >
+                    View
+                  </button>
+                </div>
                 {editingOrderId === item.orderId ? (
                   <div>
                     <select
                       value={selectedStatus}
                       onChange={(e) => setSelectedStatus(e.target.value)}
-                      className="border-2 rounded-md px-2"
+                      className="border-2 rounded-md px-2 mb-2"
                     >
                       <option value="">Select Status</option>
-                      <option value="Collected">Collected</option>
-                      <option value="Processing">Processing</option>                      
-                      <option value="Out for delivery">Out for delivery</option>
+                      {allowedStatuses.map((status) => (
+                        <option key={status} value={status}>{status}</option>
+                      ))}
                     </select>
-                    <button
-                      type="button"
-                      className="bg-green-500 hover:bg-green-700 text-white font-semibold py-1 px-2 ml-2 rounded"
-                      onClick={() => handleStatusUpdate(item.orderId)}
-                    >
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      className="bg-red-500 hover:bg-red-700 text-white font-semibold py-1 px-2 ml-2 rounded"
-                      onClick={() => setEditingOrderId(null)}
-                    >
-                      Cancel
-                    </button>
+                    <div className="flex space-x-2">
+                      <button
+                        type="button"
+                        className="bg-green-500 hover:bg-green-700 text-white font-semibold py-1 px-2 rounded"
+                        onClick={() => handleStatusUpdate(item.orderId)}
+                      >
+                        Save
+                      </button>
+                      <button
+                        type="button"
+                        className="bg-red-500 hover:bg-red-700 text-white font-semibold py-1 px-2 rounded"
+                        onClick={() => setEditingOrderId(null)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
                 ) : (
-                  <button
-                    type="button"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-                    onClick={() => { setEditingOrderId(item.orderId); setSelectedStatus(item.currentStatus); }}
-                  >
-                    Update
-                  </button>
+                  <div>
+                    <button
+                      type="button"
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mt-2" style={{ width: '130px' }}
+                      onClick={() => { setEditingOrderId(item.orderId); setSelectedStatus(item.currentStatus); }}
+                    >
+                      Update
+                    </button>
+                  </div>
                 )}
               </td>
             </tr>
@@ -202,4 +190,7 @@ export function CourierDashboard() {
       </div>
     </div>
   );
+  
+  
+  
 }
