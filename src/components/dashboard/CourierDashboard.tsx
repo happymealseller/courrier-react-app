@@ -6,7 +6,6 @@ import { RequestHeaderKey } from "../../utilities/enums/RequestHeaderKey";
 import { useSelector } from "react-redux";
 import { RootState } from "../../App";
 import { config } from "../../utilities/constants/config";
-import { OrderHistoryItem } from "./OrderHistoryItem";
 import { axiosInstance } from "../security/axiosInstance";
 import { OrderHistoryItem } from "./OrderHistoryItem";
 
@@ -29,8 +28,6 @@ export function CourierDashboard() {
   const [editingOrderId, setEditingOrderId] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<string>('');
   const navigate = useNavigate();
-  const location = useLocation();
-  const [allowUpdate, setAllowUpdate] = useState(false);
   const username = useSelector((state: RootState) => state.authentication.username);
   const location = useLocation();
   const [allowUpdate, setAllowUpdate] = useState(false);
