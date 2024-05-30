@@ -24,7 +24,7 @@ const allowedStatuses = ["PICKED_UP", "SORTING", "DELIVERING", "DELIVERED"];
 
 export function CourierDashboard() {
   const [orders, setOrders] = useState<OrderHistoryItem[]>([]);
-  const [editingOrderId, setEditingOrderId] = useState<string | null>(null);
+  const [editingOrderId, setEditingOrderId] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<string>('');
   const navigate = useNavigate();
   const username = useSelector((state: RootState) => state.authentication.username);
@@ -91,7 +91,7 @@ export function CourierDashboard() {
       }, config);
       // Update status on dashboard
       setOrders(orders.map(order => order.orderId === orderId ? { ...order, currentStatus: selectedStatus } : order));
-      setEditingOrderId(null);
+      setEditingOrderId("");
       console.log(`Order ${orderId} updated successfully to status: ${selectedStatus}`);
     } catch (error) {
       console.error(`Failed to update order ${orderId}:`, error);
@@ -137,7 +137,7 @@ export function CourierDashboard() {
                     View
                   </button>
                 </div>
-                {editingOrderId === item.orderId ? (
+                {editingOrderId === item.orderId as string ? (
                   <div>
                     <select
                       value={selectedStatus}
