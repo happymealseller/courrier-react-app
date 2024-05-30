@@ -40,8 +40,7 @@ export function RegisterForm() {
 						AuthenticationUrl.LOGIN, 
 						{
 							state: {
-								prepopulatedUsername: username, 
-								prepopulatedPassword: password
+								prepopulatedUsername: username
 							}
 						}
 					);

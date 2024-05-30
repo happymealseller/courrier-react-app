@@ -12,7 +12,9 @@ import { Logout } from "./components/logout/Logout"
 import { ProtectedRoutes } from "./components/security/ProtectedRoutes"
 import { NewOrderSummaryPage } from "./pages/NewOrderSummaryPage"
 import { AuthenticationUrl, CourierUrl, CustomerUrl, PublicUrl } from "./utilities/enums/Url"
+import { ViewUpdateOrderPage } from "./pages/ViewUpdateOrderPage"
 import { AuthenticationState } from "./redux/authentication/authenticationSlice"
+
 
 export type RootState = {
 	authentication: AuthenticationState
@@ -31,6 +33,10 @@ function App() {
 				<Routes>
 					<Route element={<ProtectedRoutes />}>
 						<Route path={CustomerUrl.CREATE_A_SHIPMENT} element={<ShippingFormPage />} />
+						{/* <Route path={CourierUrl.UPDATE_ORDER} element={<ViewUpdateOrderPage />} />
+						<Route path={CourierUrl.VIEW_ORDER} element={<ViewUpdateOrderPage />}/>        To activate after status page desgined*/}
+						<Route path={CustomerUrl.UPDATE_ORDER} element={<ViewUpdateOrderPage />} />
+						<Route path={CustomerUrl.VIEW_ORDER} element={<ViewUpdateOrderPage />} />
 						<Route path={CourierUrl.DASHBOARD} element={<CourierDashboardPage />} />
 						<Route path={CustomerUrl.DASHBOARD} element={<SenderDashboardPage />} />
 						<Route path={CustomerUrl.NEW_ORDER_SUMMARY} element={(<NewOrderSummaryPage />)} />

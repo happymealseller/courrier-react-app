@@ -1,11 +1,13 @@
 import { useState, FormEvent, useEffect } from "react";
 import { axiosInstance } from "../security/axiosInstance";
 import { format } from "date-fns";
-import { useNavigate } from "react-router-dom";
+import { CustomerUrl } from "../../utilities/enums/Url";
+import { useLocation, useNavigate } from "react-router-dom";
 import { config } from "../../utilities/constants/config";
 import { RequestHeaderKey } from "../../utilities/enums/RequestHeaderKey";
 import { useSelector } from "react-redux";
 import { RootState } from "../../App";
+import { OrderHistoryItem } from "./OrderHistoryItem";
 
 const filterData = (data: any[], keys: any[]) => {
   return data.map((item) => {
@@ -23,6 +25,9 @@ export function SenderDashboard() {
   const [orders, setOrders] = useState<OrderHistoryItem[]>([]);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const [allowUpdate, setAllowUpdate] = useState(false);
+
 
   const order_headers = [
     "Tracking ID",
@@ -41,6 +46,7 @@ export function SenderDashboard() {
     "toAddress",
     "currentStatus",
   ];
+
 
   const username = useSelector((state: RootState) => state.authentication.username)
 
@@ -102,14 +108,20 @@ export function SenderDashboard() {
                   <button
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5"
-                    onClick={() => navigate("/orders")}
+                    onClick={() => {
+                      navigate(CustomerUrl.VIEW_ORDER, { state: { allowUpdate: false }})
+                    }}
+
                   >
                     View
                   </button>
                   <button
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-                    onClick={() => navigate("/update")}
+                    onClick={() => {
+                      navigate(CustomerUrl.UPDATE_ORDER, { state: { allowUpdate: true }})
+                    }}
+
                   >
                     Update
                   </button>
