@@ -10,13 +10,14 @@ import { ParcelType } from "../utilities/enums/ParcelType"
 import { axiosInstance } from "../components/security/axiosInstance"
 import { ResponseStatus } from "../utilities/enums/ResponseStatus"
 import { useNavigate } from "react-router-dom"
-import { NewOrderSummary } from "../utilities/api-models/NewOrderSummary"
+import { OrderSummary } from "../utilities/api-models/OrderSummary"
 import { CustomerEndpoint } from "../utilities/enums/Endpoint"
 import { config } from "../utilities/constants/config"
 import { CustomerUrl } from "../utilities/enums/Url"
 import { RequestHeaderKey } from "../utilities/enums/RequestHeaderKey"
 import { useSelector } from "react-redux"
 import { RootState } from "../App"
+import { ShippingServiceForm } from "../components/order-form/ShippingServiceForm"
 
 const INITIAL_DATA: FormData = {
 	fromCompanyName: "",
@@ -62,7 +63,7 @@ export function ShippingFormPage() {
 		<ShipFromForm {...data} updateFields={updateFields} />,
 		<ShipToForm {...data} updateFields={updateFields} />,
 		<ParcelInformationForm {...data} updateFields={updateFields} />,
-		//<ShippingServiceForm />,
+		<ShippingServiceForm />,
 		//<PaymentForm {...data} updateFields={updateFields} />
 	])
 
@@ -77,7 +78,7 @@ export function ShippingFormPage() {
 					if (response.data.status === ResponseStatus.Success) {
 						navigate(
 							CustomerUrl.NEW_ORDER_SUMMARY,
-							{ state: response.data.orderDetails as NewOrderSummary}
+							{ state: response.data.orderDetails as OrderSummary}
 						)
 					} else if (response.data.status === ResponseStatus.Failure) {
 						alert(`Error ${response.data.message}`)

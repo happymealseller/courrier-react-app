@@ -10,8 +10,8 @@ export function DeliveryServiceCardContainer() {
     };
 
     const cardsData = [
-        { title: "Normal", estimatedTimeArrival: "Wednesday 01/05", deliveryCharge: "20.00"},
-        { title: "Express", estimatedTimeArrival: "Thursday 25/04", deliveryCharge: "50.00"}
+        { title: "Normal", estimatedTimeArrival: "Wednesday 01/05", deliveryCharge: "3.50"},
+        { title: "Express", estimatedTimeArrival: "Thursday 25/04", deliveryCharge: "5.00"}
     ];
 
     return (

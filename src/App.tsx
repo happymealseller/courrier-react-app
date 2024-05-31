@@ -12,6 +12,7 @@ import { Logout } from "./components/logout/Logout"
 import { ProtectedRoutes } from "./components/security/ProtectedRoutes"
 import { NewOrderSummaryPage } from "./pages/NewOrderSummaryPage"
 import { AuthenticationUrl, CourierUrl, CustomerUrl, PublicUrl } from "./utilities/enums/Url"
+import { OrderStatusPage } from "./pages/OrderStatusPage"
 import { ViewUpdateOrderPage } from "./pages/ViewUpdateOrderPage"
 import { AuthenticationState } from "./redux/authentication/authenticationSlice"
 
@@ -24,9 +25,9 @@ function App() {
 	return (
 		<Router>
 			<div>
-			<header>
-				<NavBar />
-			</header>
+				<header>
+					<NavBar />
+				</header>
 			</div>
 			<main className="main-content">
 			<div className="flex justify-center">
@@ -44,6 +45,7 @@ function App() {
 					</Route>
 					<Route index element={<TrackSearchBarPage />} />
 					<Route path={PublicUrl.TRACK_A_PACKAGE} element={<TrackSearchBarPage />} />
+					<Route path={PublicUrl.ORDER_STATUS} element={<OrderStatusPage />} />
 					<Route path={AuthenticationUrl.OPEN_AN_ACCOUNT} element={<RegisterPage />} />
 					<Route path={AuthenticationUrl.LOGIN} element={<LoginPage />} />
 					<Route path="*" element={<NotFound />} />
