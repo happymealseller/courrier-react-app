@@ -8,18 +8,12 @@ export type RootState = {
 }
 
 function App() {
-	return (<>
-		<div>
-			<header>
-				<NavBar />
-			</header>
+	return (
+		<div className="w-full h-[100svh] bg-slate-700">
+			<NavBar />
+			<AppRoutes />
 		</div>
-		<main className="main-content">
-			<div className="flex justify-center">
-				<AppRoutes />
-			</div>
-		</main>
-	</>)
+	)
 }
 
 export default App
