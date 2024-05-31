@@ -17,6 +17,7 @@ import { CustomerUrl } from "../utilities/enums/Url"
 import { RequestHeaderKey } from "../utilities/enums/RequestHeaderKey"
 import { useSelector } from "react-redux"
 import { RootState } from "../App"
+import { ShippingServiceForm } from "../components/order-form/ShippingServiceForm"
 
 const INITIAL_DATA: FormData = {
 	fromCompanyName: "",
@@ -62,7 +63,7 @@ export function ShippingFormPage() {
 		<ShipFromForm {...data} updateFields={updateFields} />,
 		<ShipToForm {...data} updateFields={updateFields} />,
 		<ParcelInformationForm {...data} updateFields={updateFields} />,
-		//<ShippingServiceForm />,
+		<ShippingServiceForm />,
 		//<PaymentForm {...data} updateFields={updateFields} />
 	])
 
