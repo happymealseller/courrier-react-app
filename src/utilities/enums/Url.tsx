@@ -7,11 +7,15 @@ export enum AuthenticationUrl {
 export enum CustomerUrl {
     DASHBOARD = "/dashboard/customer",
     CREATE_A_SHIPMENT = "/create-a-shipment",
-    NEW_ORDER_SUMMARY = "/dashboard/customer/new-order-summary"
+    NEW_ORDER_SUMMARY = "/dashboard/customer/new-order-summary",
+    UPDATE_ORDER = "/update/customer",
+    VIEW_ORDER = "/view/customer"
 }
 
 export enum CourierUrl {
     DASHBOARD = "/dashboard/courier",
+    UPDATE_ORDER = "/update/courier",
+    VIEW_ORDER = "/view/courier"
 }
 
 export enum PublicUrl {

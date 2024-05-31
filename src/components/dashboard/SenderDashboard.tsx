@@ -1,11 +1,13 @@
 import { useState, FormEvent, useEffect } from "react";
 import { axiosInstance } from "../security/axiosInstance";
 import { format } from "date-fns";
-import { useNavigate } from "react-router-dom";
+import { CustomerUrl } from "../../utilities/enums/Url";
+import { useLocation, useNavigate } from "react-router-dom";
 import { config } from "../../utilities/constants/config";
 import { RequestHeaderKey } from "../../utilities/enums/RequestHeaderKey";
 import { useSelector } from "react-redux";
 import { RootState } from "../../App";
+import { OrderHistoryItem } from "./OrderHistoryItem";
 
 const filterData = (data: any[], keys: any[]) => {
   return data.map((item) => {
@@ -23,12 +25,15 @@ export function SenderDashboard() {
   const [orders, setOrders] = useState<OrderHistoryItem[]>([]);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const [allowUpdate, setAllowUpdate] = useState(false);
+
 
   const order_headers = [
     "Tracking ID",
-    "Receipient Name",
+    "Recipient Name",
     "Date of Order",
-    "Date of Deilvery",
+    "Date of Delivery",
     "Delivery Address",
     "Order Status",
   ];
@@ -41,6 +46,7 @@ export function SenderDashboard() {
     "toAddress",
     "currentStatus",
   ];
+
 
   const username = useSelector((state: RootState) => state.authentication.username)
 
@@ -64,11 +70,11 @@ export function SenderDashboard() {
   return (
     <div className="bg-white p-12 rounded-3xl border-2 border-gray-200">
       <h1 className="text-2xl font-semibold  underline underline-offset-1">
-        Courier Dashboard
+        Customer Dashboard
       </h1>
       <br></br>
       <h2 className="text-lg font-semibold px-4 py-2 text-bright-red">
-        Welcome {username} !
+        Welcome {username}!
       </h2>
       <br></br>
       <table className="table-auto w-full">
@@ -102,14 +108,20 @@ export function SenderDashboard() {
                   <button
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5"
-                    onClick={() => navigate("/orders")}
+                    onClick={() => {
+                      navigate(CustomerUrl.VIEW_ORDER, { state: { allowUpdate: false }})
+                    }}
+
                   >
                     View
                   </button>
                   <button
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-                    onClick={() => navigate("/update")}
+                    onClick={() => {
+                      navigate(CustomerUrl.UPDATE_ORDER, { state: { allowUpdate: true }})
+                    }}
+
                   >
                     Update
                   </button>

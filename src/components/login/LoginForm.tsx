@@ -4,7 +4,7 @@ import { ResponseStatus } from "../../utilities/enums/ResponseStatus";
 import { AccountType } from "../../utilities/enums/AccountType";
 import { GmailIcon } from "../icons/GmailIcon";
 import { axiosInstance } from "../security/axiosInstance";
-import { CourierUrl, CustomerUrl } from "../../utilities/enums/Url";
+import { AuthenticationUrl, CourierUrl, CustomerUrl } from "../../utilities/enums/Url";
 import { AuthenticationEndpoint } from "../../utilities/enums/Endpoint";
 import { config } from "../../utilities/constants/config";
 import { useDispatch } from "react-redux";
@@ -86,7 +86,7 @@ export function LoginForm() {
                             />
                             <label className="ml-2 font-medium text-base" htmlFor="remember">Remember me</label>
                         </div>
-                        <button className="font-medium text-base text-slate-500">Forgot password</button>
+                        <button className="font-medium text-base text-slate-500">Forgot password</button>  {/* onClick={() => navigate to reset pw page} */}
                     </div>
                     { error && (
                         <p className="text-red-500">{error}</p>
@@ -106,7 +106,7 @@ export function LoginForm() {
                 </form>
                 <div className="mt-8 flex justify-center items-center">
                     <p className="font-medium text-base">Don't have an account?</p>
-                    <button className="text-slate-500 text-base font-medium ml-2">Sign up</button>
+                    <button className="text-slate-500 text-base font-medium ml-2" onClick={() => navigate(AuthenticationUrl.OPEN_AN_ACCOUNT)}>Sign up</button>
                 </div>
             </div>
         </div>
