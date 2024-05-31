@@ -31,9 +31,9 @@ export function SenderDashboard() {
 
   const order_headers = [
     "Tracking ID",
-    "Receipient Name",
+    "Recipient Name",
     "Date of Order",
-    "Date of Deilvery",
+    "Date of Delivery",
     "Delivery Address",
     "Order Status",
   ];
@@ -70,11 +70,11 @@ export function SenderDashboard() {
   return (
     <div className="bg-white p-12 rounded-3xl border-2 border-gray-200">
       <h1 className="text-2xl font-semibold  underline underline-offset-1">
-        Courier Dashboard
+        Customer Dashboard
       </h1>
       <br></br>
       <h2 className="text-lg font-semibold px-4 py-2 text-bright-red">
-        Welcome {username} !
+        Welcome {username}!
       </h2>
       <br></br>
       <table className="table-auto w-full">
