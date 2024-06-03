@@ -67,6 +67,7 @@ export function LoginForm() {
                             required 
                         />
                     </div>
+                    <br></br>
                     <div>
                         <label className="text-lg font-medium">Password</label>
                         <input 
@@ -98,10 +99,10 @@ export function LoginForm() {
                         >
                             Sign in
                         </button>
-                        <button className="flex items-center justify-center gap-2 active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all">
+                        {/* <button className="flex items-center justify-center gap-2 active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all">
                             <GmailIcon />
                             Sign in with Google
-                        </button>
+                        </button> */}
                     </div>
                 </form>
                 <div className="mt-8 flex justify-center items-center">
