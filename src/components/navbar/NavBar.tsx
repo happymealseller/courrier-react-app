@@ -29,19 +29,17 @@ export function NavBar() {
         // { title: "Schedule a Collection", navLink: "schedule-a-collection" },
         // { title: "How To Ship a Parcel", navLink: "how-to-ship-a-parcel" },
         // { title: "Collections and Drop-Offs", navLink: "collections-and-drop-offs"},
-        { title: "Calculate Shipping Cost", navLink: "calculate-shipping-cost" },
         // { title: "Find a Location", navLink: "find-a-location" },
+        { title: "Calculate Shipping Cost", navLink: "calculate-shipping-cost" },
     ];
+
+    const dashboardLink = role === AccountType.Customer ? "dashboard/customer" : "dashboard/courier";
 
     const [shippingData, setShippingData] = useState<DropdownItemData[]>(initialShippingData);
 
     const trackingData: DropdownItemData[] = [
         {title: "Track a Package", navLink: "track-a-package"},
         // {title: "Change a Delivery", navLink: "change-a-delivery"},
-    ]
-
-    const solutionsData: DropdownItemData[] = [
-        {title: "Open an Account", navLink: "open-an-account"},
     ]
 
     // const supportData: DropdownItemData[] = [
@@ -76,15 +74,15 @@ export function NavBar() {
         setIsTrackingDropdownOpen(false);
     }
 
-    const [isSolutionDropdownOpen, setIsSolutionDropdownOpen] = useState(false);
+    // const [isSolutionDropdownOpen, setIsSolutionDropdownOpen] = useState(false);
 
-    const handleMouseEnterSolutionDropdown = () => {
-        setIsSolutionDropdownOpen(true);
-    }
+    // const handleMouseEnterSolutionDropdown = () => {
+    //     setIsSolutionDropdownOpen(true);
+    // }
 
-    const handleMouseLeaveSolutionDropdown = () => {
-        setIsSolutionDropdownOpen(false);
-    }
+    // const handleMouseLeaveSolutionDropdown = () => {
+    //     setIsSolutionDropdownOpen(false);
+    // }
 
     // const [isSupportDropdownOpen, setIsSupportDropdownOpen] = useState(false);
 
@@ -111,13 +109,6 @@ export function NavBar() {
             onMouseLeave: handleMouseLeaveTrackingDropdown,
             isDropdownOpen: isTrackingDropdownOpen,
         },
-        {
-            title: "Accounts",
-            dropdownData: solutionsData,
-            onMouseEnter: handleMouseEnterSolutionDropdown,
-            onMouseLeave: handleMouseLeaveSolutionDropdown,
-            isDropdownOpen: isSolutionDropdownOpen,
-        },
         // {
         //     title: "Support",
         //     dropdownData: supportData,
@@ -139,9 +130,15 @@ export function NavBar() {
                                 {/* {<NavBarItemWithoutDropdown navBarItems={[{title: "About FDMx", navLink: "about"}]}/>} */}
                                 {<NavBarItemWithDropdown navBarItems={navBarItemsWithDropdown} />}
                                 {!isLoggedIn ? (
-                                    <NavBarItemWithoutDropdown navBarItems={[{title: "Login", navLink: "login"}]}/>
+                                    <>
+                                        <NavBarItemWithoutDropdown navBarItems={[{title: "Register an Account", navLink: "open-an-account"}]}/>
+                                        <NavBarItemWithoutDropdown navBarItems={[{title: "Login", navLink: "login"}]}/>
+                                    </>
                                 ) : (
-                                    <NavBarItemWithoutDropdown navBarItems={[{title: "Logout", navLink: "logout"}]}/>
+                                    <>
+                                        <NavBarItemWithoutDropdown navBarItems={[{ title: "Dashboard", navLink: dashboardLink }]}/>
+                                        <NavBarItemWithoutDropdown navBarItems={[{ title: "Logout", navLink: "logout" }]}/>
+                                    </>
                                 )}
                             </ul>
                         </div>
