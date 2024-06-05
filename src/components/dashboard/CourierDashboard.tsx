@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { format } from "date-fns";
 import { CourierUrl } from "../../utilities/enums/Url";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { RequestHeaderKey } from "../../utilities/enums/RequestHeaderKey";
 import { useSelector } from "react-redux";
 import { RootState } from "../../App";
@@ -29,8 +29,6 @@ export function CourierDashboard() {
   const [selectedStatus, setSelectedStatus] = useState<string>('');
   const navigate = useNavigate();
   const username = useSelector((state: RootState) => state.authentication.username);
-  const location = useLocation();
-  const [allowUpdate, setAllowUpdate] = useState(false);
 
   const order_headers = [
     "Tracking ID",
@@ -70,7 +68,7 @@ export function CourierDashboard() {
         remarks: 'Status updated by courier',
       }, config);
       // Update status on dashboard
-      setOrders(orders.map(order => order.orderId === orderId ? { ...order, currentStatus: selectedStatus } : order));
+      setOrders(orders.map(order => order.orderId === parseInt(orderId) ? { ...order, currentStatus: selectedStatus } : order));
       setEditingOrderId("");
       console.log(`Order ${orderId} updated successfully to status: ${selectedStatus}`);
     } catch (error) {
@@ -123,7 +121,7 @@ export function CourierDashboard() {
                     View
                   </button>
                 </div>
-                {editingOrderId === item.orderId as string ? (
+                {editingOrderId === item.orderId.toString() ? (
                   <div>
                     <select
                       value={selectedStatus}
@@ -139,7 +137,7 @@ export function CourierDashboard() {
                       <button
                         type="button"
                         className="bg-green-500 hover:bg-green-700 text-white font-semibold py-1 px-2 rounded"
-                        onClick={() => handleStatusUpdate(item.orderId)}
+                        onClick={() => handleStatusUpdate(item.orderId.toString())}
                       >
                         Save
                       </button>
@@ -157,7 +155,7 @@ export function CourierDashboard() {
                     <button
                       type="button"
                       className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mt-2" style={{ width: '130px' }}
-                      onClick={() => { setEditingOrderId(item.orderId); setSelectedStatus(item.currentStatus); }}
+                      onClick={() => { setEditingOrderId(item.orderId.toString()); setSelectedStatus(item.orderStatus); }}
                       // Below is to opn a new page
                       // onClick={() => {
                       //   navigate(CourierUrl.UPDATE_ORDER, { state: { allowUpdate: true }})

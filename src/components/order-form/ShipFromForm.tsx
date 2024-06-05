@@ -3,7 +3,7 @@ import { ShipFromFormProps } from "../../utilities/type-aliases/order-form/ShipF
 
 export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhone, updateFields }: ShipFromFormProps) {
     return (
-        <FormWrapper title="Ship From">
+        <FormWrapper title="Ship From (Sender)">
             {/*
             <label className="font-bold">Full Name or Company Name</label>
             <input 

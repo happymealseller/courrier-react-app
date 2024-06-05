@@ -3,7 +3,7 @@ import { ShipToFormProps } from "../../utilities/type-aliases/order-form/ShipToF
 
 export function ShipToForm({ toAddress, toFullName, toEmail, toPhone, updateFields }: ShipToFormProps) {
     return (
-        <FormWrapper title="Ship To">
+        <FormWrapper title="Ship To (Receipient)">
             {/*
             <label className="font-bold">Full Name or Company Name</label>
             <input 
