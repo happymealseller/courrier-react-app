@@ -16,19 +16,26 @@ interface statusProperty {
     statusUpdateDate: string
 }
 
-const StatusComponentsMap = new Map([
-    [OrderStatusType.OrderCreated, ClipBoardIcon],
-    [OrderStatusType.Processing, BoxIcon],
-    [OrderStatusType.PickedUp, TickIcon],
-    [OrderStatusType.Sorting, TickIcon],
-    [OrderStatusType.ReadyForDelivery, TickIcon],
-    [OrderStatusType.Delivering, TruckIcon],
-    [OrderStatusType.Delivered, HouseIcon],
-    [OrderStatusType.Cancelled, LetterXIcon],
-    [OrderStatusType.Other, InformationIcon]
-]);
+const statusComponentsRecord: Record<OrderStatusType, () => JSX.Element> = {
+    [OrderStatusType.OrderCreated]: ClipBoardIcon,
+    [OrderStatusType.Processing]: BoxIcon,
+    [OrderStatusType.PickedUp]: TickIcon,
+    [OrderStatusType.Sorting]: TickIcon,
+    [OrderStatusType.ReadyForDelivery]: TickIcon,
+    [OrderStatusType.Delivering]: TruckIcon,
+    [OrderStatusType.Delivered]: HouseIcon,
+    [OrderStatusType.Cancelled]: LetterXIcon,
+    [OrderStatusType.Other]: InformationIcon
+};
 
-const sampleStatuses = JSON.parse(`[
+const hiddenUIStatuses = [
+    OrderStatusType.Processing,
+    OrderStatusType.PickedUp,
+    OrderStatusType.Sorting,
+];
+
+
+let sampleStatuses = JSON.parse(`[
     {"status": "ORDER_CREATED", "remarks": "Order created", "statusUpdateDate": "2024-05-01T04:00:22.769+00:00"},
     {"status": "PROCESSING", "remarks": "Processing order", "statusUpdateDate": "2024-05-10T05:50:22.769+00:00"},
     {"status": "PICKED_UP", "remarks": "Picked up order", "statusUpdateDate": "2024-05-11T06:15:22.769+00:00"},
@@ -40,6 +47,7 @@ const sampleStatuses = JSON.parse(`[
     {"status": "OTHER", "remarks": "Some kind of remark for other category Some kind of remark for other category Some kind of remark for other category Some kind of remark for other category", "statusUpdateDate": "2024-05-17T04:12:22.769+00:00"}
 ]`);
 sampleStatuses.reverse();
+sampleStatuses = removeUIStatuses(sampleStatuses, hiddenUIStatuses);
 
 function formatTimestamp(timestamp: string, includeTime: boolean) {
     return includeTime ? (new Date(timestamp)).toLocaleString('default', { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "numeric", hourCycle: "h24" })
@@ -48,10 +56,16 @@ function formatTimestamp(timestamp: string, includeTime: boolean) {
         (new Date(timestamp)).toLocaleString('default', { day: "numeric", month: "short", year: "numeric" });
 }
 
+function removeUIStatuses(statuses: statusProperty[], statusesToRemove: string[]) {
+    return statuses.filter((statusProperty) => 
+        !statusesToRemove.some((status) => statusProperty.status === status))
+}
+
 function OrderStatusPage() {
     const { state } = useLocation();
     console.log("[REDIRECT - from TrackSearchBarPage] Response data: ", state);
-    const statusesArray = state.orderStatus.reverse();
+    const statusesArray = removeUIStatuses(state.orderStatus.reverse(), hiddenUIStatuses); 
+    console.log(sampleStatuses);
 
     return (
         <>
@@ -125,16 +139,15 @@ function OrderStatusPage() {
 
                                 <ol className="relative ms-3 border-s min-w-72 max-w-min border-gray-200 dark:border-gray-700">
                                     
-                                    {statusesArray.map((element: statusProperty, index: number) => {
-                                        const isMostRecentTask = (statusesArray.length === 1) ? true : (index === 0);
+                                    {sampleStatuses.map((element: statusProperty, index: number) => {
+                                        const isMostRecentTask = (sampleStatuses.length === 1) ? true : (index === 0);
                                         const listItemClass: string = isMostRecentTask ? "text-gray-900" : "text-gray-400";
                                         const formattedDatetime = formatTimestamp(element.statusUpdateDate, true);
 
-                                        const Component = StatusComponentsMap.get(OrderStatusType.valueOf(element.status));
-                                        if (!Component) return (<><p>{`Invalid status ${element.status}`}</p></>);
+                                        const Component = statusComponentsRecord[OrderStatusType.valueOf(element.status)];
 
                                         return (<>
-                                            <li className={`mb-10 ms-6 text-primary-700 dark:text-primary-500 ${listItemClass}`} key={index}>
+                                            <li className={`mb-10 ms-6 text-primary-700 dark:text-primary-500 ${listItemClass}`} key={`${element.status}-${element.statusUpdateDate}`}>
                                                 <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800">
                                                     <Component />
                                                 </span>
