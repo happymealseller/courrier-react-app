@@ -28,9 +28,38 @@ export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhone, 
             <input 
                 autoFocus 
                 required 
+                type="text"
+                value={fromAddress.address}
+                onChange={e => updateFields({ fromAddress: { ...fromAddress, address: e.target.value }})}
+                className="border-2 px-2 rounded-md bg-gray-200"
+            />
+            <label className="font-bold">Postal Code</label>
+            <input 
+                autoFocus 
+                required 
                 type="text" 
-                value={fromAddress}
-                onChange={e => updateFields({ fromAddress: e.target.value })}
+                pattern="^\d{0,6}$"
+                title="Please enter 6 digits"
+                value={fromAddress.postalCode}
+                onChange={e => updateFields({ fromAddress: { ...fromAddress, postalCode: e.target.value }})}
+                className="border-2 px-2 rounded-md bg-gray-200"
+            />
+            <label className="font-bold">City</label>
+            <input 
+                autoFocus 
+                required 
+                type="text" 
+                value={fromAddress.city}
+                onChange={e => updateFields({ fromAddress: { ...fromAddress, city: e.target.value }})}
+                className="border-2 px-2 rounded-md bg-gray-200"
+            />
+            <label className="font-bold">Country</label>
+            <input 
+                autoFocus 
+                required 
+                type="text" 
+                value={fromAddress.country}
+                onChange={e => updateFields({ fromAddress: { ...fromAddress, country: e.target.value }})}
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
             <label className="font-bold">Email</label>

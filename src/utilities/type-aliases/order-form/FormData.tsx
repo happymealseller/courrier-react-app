@@ -1,13 +1,11 @@
 import { ParcelType } from "../../enums/ParcelType"
 
 export type FormData = {
-    fromCompanyName: string,
-    fromAddress: string,
+    fromAddress: Partial<Address>,
     fromFullName: string,
     fromEmail: string,
     fromPhone: string,
-    toCompanyName: string,
-    toAddress: string,
+    toAddress: Partial<Address>,
     toFullName: string,
     toEmail: string,
     toPhone: string,
@@ -21,4 +19,11 @@ export type FormData = {
     cardNumber: string,
     expiryDate: string,
     securityCode: string*/
-  }
+}
+
+export type Address = {
+  address: string
+  postalCode: string
+  country: string
+  city: string
+}
