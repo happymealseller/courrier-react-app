@@ -121,6 +121,7 @@ export function SenderDashboard() {
                   isAddress={key === "toAddress" || key === "fromAddress"}
                 />
               ))}
+
               <td
                 className="px-5 py-2 border-none"
                 style={{ textAlign: "center" }}
