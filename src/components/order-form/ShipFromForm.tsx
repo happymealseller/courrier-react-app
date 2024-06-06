@@ -1,7 +1,31 @@
 import { FormWrapper } from "./FormWrapper";
 import { ShipFromFormProps } from "../../utilities/type-aliases/order-form/ShipFromFormProps";
+import { FormEvent, useEffect, useState } from "react";
+import axios from "axios";
 
 export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhone, updateFields }: ShipFromFormProps) {
+
+    const [address, setAddress] = useState(fromAddress.address);
+    const [city, setCity] = useState(fromAddress.city);
+    const [country, setCountry] = useState(fromAddress.country);
+
+
+    const handleAddressRetrieval = (event: FormEvent, postalCode: string) => {
+        const url = `http://localhost:3001/${postalCode}`
+        axios.get(url).then(response => {
+            console.log(response)
+            setAddress(response.data.address)
+            setCountry(response.data.country)
+            setCity(response.data.city)
+        })
+        
+    }
+
+    useEffect(() => {
+        updateFields({ fromAddress: { ...fromAddress, address: address, city: city, country: country }})
+    }, [address, city, country])
+
+
     return (
         <FormWrapper title="Ship From (Sender)">
             {/*

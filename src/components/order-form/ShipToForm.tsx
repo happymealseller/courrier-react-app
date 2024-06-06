@@ -1,7 +1,27 @@
 import { FormWrapper } from "./FormWrapper";
 import { ShipToFormProps } from "../../utilities/type-aliases/order-form/ShipToFormProps";
+import { axiosInstance } from "../security/axiosInstance";
+import { FormEvent, useEffect, useState } from "react";
+import axios from "axios";
 
 export function ShipToForm({ toAddress, toFullName, toEmail, toPhone, updateFields }: ShipToFormProps) {
+    const [address, setAddress] = useState(toAddress.address);
+    const [city, setCity] = useState(toAddress.city);
+    const [country, setCountry] = useState(toAddress.country);
+
+    const handleAddressRetrieval = (event: FormEvent, postalCode: string) => {
+        const url = `http://localhost:3001/${postalCode}`
+        axios.get(url).then(response => {
+            setAddress(response.data.address);
+            setCountry(response.data.country);
+            setCity(response.data.city);
+        })
+    }
+
+    useEffect(() => {
+        updateFields({ toAddress: { ...toAddress, address: address, city: city, country: country }})
+    }, [address, city, country])
+
     return (
         <FormWrapper title="Ship To (Receipient)">
             {/*
