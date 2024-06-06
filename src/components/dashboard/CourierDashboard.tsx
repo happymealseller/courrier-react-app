@@ -35,6 +35,7 @@ export function CourierDashboard() {
     "Sender Name",
     "Recipient Name",
     "Date of Delivery",
+    "Sending Address",
     "Delivery Address",
     "Order Status",
   ];
@@ -44,6 +45,7 @@ export function CourierDashboard() {
     "fromFullName",
     "toFullName",
     "deliveryDate",
+    "fromAddress",
     "toAddress",
     "currentStatus",
   ];
@@ -82,6 +84,30 @@ export function CourierDashboard() {
     navigate("/");
   }
 
+  interface TableCellProps {
+    key: number;
+    value: any;
+    isAddress: boolean;
+  }
+  
+  const TableCell: React.FC<TableCellProps> = ({ key, value, isAddress }) => {
+    const displayValue = isAddress
+      ? `${value.address.toString()}, ${value.postalCode.toString()}`
+      : value.toString();
+  
+    return (
+      <td
+        key={key}
+        className="border border-black px-5 py-2 border-solid"
+        style={{ textAlign: "center" }}
+      >
+        {displayValue}
+      </td>
+    );
+  };
+
+
+
   return (
     <div className="bg-white p-12 rounded-3xl border-2 border-gray-200">
       <h1 className="text-2xl font-semibold underline underline-offset-1">Courier Dashboard</h1>
@@ -101,9 +127,11 @@ export function CourierDashboard() {
           {orders.map((item, index) => (
             <tr key={index} className="bg-white border border-black px-5 py-2 border-solid">
               {Object.entries(item).map(([key, value], idx) => (
-                <td key={idx} className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
-                  {value}
-                </td>
+                <TableCell
+                  key={idx}
+                  value={value}
+                  isAddress={key === "toAddress" || key === "fromAddress"}
+                />
               ))}
               {/* Button in the last column, to fix issue with last column header borders next time */}
               <td
