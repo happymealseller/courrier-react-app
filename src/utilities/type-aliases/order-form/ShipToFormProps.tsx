@@ -1,6 +1,8 @@
+import { Address } from "./FormData"
+
 type ShipToData = {
     // toCompanyName: string,
-    toAddress: string,
+    toAddress: Partial<Address>,
     toFullName: string,
     toEmail: string,
     toPhone: string

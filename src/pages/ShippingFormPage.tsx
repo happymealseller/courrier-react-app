@@ -20,13 +20,21 @@ import { RootState } from "../App"
 import { ShippingServiceForm } from "../components/order-form/ShippingServiceForm"
 
 const INITIAL_DATA: FormData = {
-	fromCompanyName: "",
-	fromAddress: "",
+	fromAddress: {
+		address: "",
+        postalCode: "",
+        country: "",
+        city: ""
+	},
 	fromFullName: "",
 	fromEmail: "",
 	fromPhone: "",
-	toCompanyName: "",
-	toAddress: "",
+	toAddress:  {
+		address: "",
+        postalCode: "",
+        country: "",
+        city: ""
+	},
 	toFullName: "",
 	toEmail: "",
 	toPhone: "",
@@ -73,6 +81,7 @@ export function ShippingFormPage() {
 			return next()
 		} else {
 			const endpoint = CustomerEndpoint.NEW_ORDER;
+			console.log(data);
 			axiosInstance.post(endpoint, JSON.stringify(data), config)
 				.then(response => {
 					if (response.data.status === ResponseStatus.Success) {
