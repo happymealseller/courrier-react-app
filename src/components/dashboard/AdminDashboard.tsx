@@ -9,9 +9,8 @@ import { config } from "../../utilities/constants/config";
 import { axiosInstance } from "../security/axiosInstance";
 import { OrderHistoryItem } from "./OrderHistoryItem";
 
-/* Admin should be able to do 2 things
-- filter by order status
-- assign trip to courier
+/* Admin should be able to do
+- filter by trip status (UNASSIGNED, ASSIGNED, RETRIEVED, COMPLETED), region, trip date, type (PICKUP OR DELIVERY)
 - update order status INCLUDING order cancelled and others AND remarks
 */
 const filterData = (data: any[], keys: any[]) => {
@@ -60,7 +59,7 @@ export function AdminDashboard() {
   const dummyOrders: OrderHistoryItem[] = [
     {
       orderId: 1,
-      orderStatus: "Delivered",
+      orderStatus: "Completed",
       toFullName: "Bob Smith",
       deliveryDate: "2024-06-01",
       toAddress: "123 Main St, Springfield",
@@ -68,7 +67,7 @@ export function AdminDashboard() {
     },
     {
       orderId: 2,
-      orderStatus: "Sorting",
+      orderStatus: "Retrieved",
       toFullName: "David Green",
       deliveryDate: "2024-06-05",
       toAddress: "456 Elm St, Springfield",
@@ -76,7 +75,7 @@ export function AdminDashboard() {
     },
     {
       orderId: 3,
-      orderStatus: "Processing",
+      orderStatus: "Assigned",
       toFullName: "Frank White",
       deliveryDate: "2024-06-03",
       toAddress: "789 Maple St, Springfield",
@@ -127,12 +126,10 @@ export function AdminDashboard() {
         <label htmlFor="statusFilter" className="mr-2">Filter by status:</label>
         <select id="statusFilter" value={selectedStatus} onChange={handleStatusChange} className="border-2 border-gray-300 p-2 rounded-md">
           <option value="All">All</option>
-          <option value="Processing">Processing</option>
-          <option value="Order Picked Up">Order Picked Up</option>
-          <option value="Sorting">Sorting</option>
-          <option value="Ready for Delivery">Ready for Delivery</option>
-          <option value="Delivering">Delivering</option>
-          <option value="Delivered">Delivered</option>
+          <option value="Unassigned">Unassigned</option>
+          <option value="Assigned">Assigned</option>
+          <option value="Retrieved">Retrieved</option>
+          <option value="Completed">Completed</option>
         </select>
       </div>
       <table className="table-auto w-full" style={{ height: '200px' }}> 
