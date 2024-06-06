@@ -144,8 +144,8 @@ function OrderStatusPage() {
 
                                 <ol className="relative ms-3 border-s min-w-72 max-w-min border-gray-200 dark:border-gray-700">
 
-                                    {sampleStatuses.map((element: statusProperty, index: number) => {
-                                        const isMostRecentTask = (sampleStatuses.length === 1) ? true : (index === 0);
+                                    {statusesArray.map((element: statusProperty, index: number) => {
+                                        const isMostRecentTask = (statusesArray.length === 1) ? true : (index === 0);
                                         const listItemClass: string = isMostRecentTask ? "text-gray-900" : "text-gray-400";
                                         const formattedDatetime = formatTimestamp(element.statusUpdateDate, true);
                                         const orderStatus = OrderStatusType.valueOf(element.status);
