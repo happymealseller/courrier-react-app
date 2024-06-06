@@ -28,7 +28,7 @@ export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhone, 
             <input 
                 autoFocus 
                 required 
-                type="text" 
+                type="text"
                 value={fromAddress.address}
                 onChange={e => updateFields({ fromAddress: { ...fromAddress, address: e.target.value }})}
                 className="border-2 px-2 rounded-md bg-gray-200"
@@ -38,6 +38,8 @@ export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhone, 
                 autoFocus 
                 required 
                 type="text" 
+                pattern="^\d{0,6}$"
+                title="Please enter 6 digits"
                 value={fromAddress.postalCode}
                 onChange={e => updateFields({ fromAddress: { ...fromAddress, postalCode: e.target.value }})}
                 className="border-2 px-2 rounded-md bg-gray-200"

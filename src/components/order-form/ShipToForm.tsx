@@ -38,6 +38,8 @@ export function ShipToForm({ toAddress, toFullName, toEmail, toPhone, updateFiel
                 autoFocus 
                 required 
                 type="text" 
+                pattern="^\d{0,6}$"
+                title="Please enter 6 digits"
                 value={toAddress.postalCode}
                 onChange={e => updateFields({ toAddress: { ...toAddress, postalCode: e.target.value }})}
                 className="border-2 px-2 rounded-md bg-gray-200"
