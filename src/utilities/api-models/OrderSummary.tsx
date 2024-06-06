@@ -1,3 +1,5 @@
+import { Address } from "../type-aliases/order-form/FormData"
+
 class OrderStatus {
 	status: string
 	remarks: string
@@ -19,11 +21,11 @@ export class OrderSummary {
 	orderStatus: OrderStatus[]
 	deliveryDate: string
 	orderDate: string
-	fromAddress: string
+	fromAddress: Address
 	fromFullName: string
 	fromEmail: string
 	fromPhoneNo: string
-	toAddress: string
+	toAddress: Address
 	toFullName: string
 	toEmail: string
 	toPhoneNo: string
@@ -38,11 +40,11 @@ export class OrderSummary {
 		orderStatus: OrderStatus[],
 		deliveryDate: string,
 		orderDate: string,
-		fromAddress: string,
+		fromAddress: Address,
 		fromFullName: string,
 		fromEmail: string,
 		fromPhoneNo: string,
-		toAddress: string,
+		toAddress: Address,
 		toFullName: string,
 		toEmail: string,
 		toPhoneNo: string,

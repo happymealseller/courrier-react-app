@@ -24,13 +24,40 @@ export function ShipToForm({ toAddress, toFullName, toEmail, toPhone, updateFiel
                 onChange={e => updateFields({ toFullName: e.target.value })} 
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
-            <label className="font-bold">Address</label>
+             <label className="font-bold">Address</label>
             <input 
                 autoFocus 
                 required 
                 type="text" 
-                value={toAddress}
-                onChange={e => updateFields({ toAddress: e.target.value })} 
+                value={toAddress.address}
+                onChange={e => updateFields({ toAddress: { ...toAddress, address: e.target.value }})}
+                className="border-2 px-2 rounded-md bg-gray-200"
+            />
+            <label className="font-bold">Postal Code</label>
+            <input 
+                autoFocus 
+                required 
+                type="text" 
+                value={toAddress.postalCode}
+                onChange={e => updateFields({ toAddress: { ...toAddress, postalCode: e.target.value }})}
+                className="border-2 px-2 rounded-md bg-gray-200"
+            />
+            <label className="font-bold">City</label>
+            <input 
+                autoFocus 
+                required 
+                type="text" 
+                value={toAddress.city}
+                onChange={e => updateFields({ toAddress: { ...toAddress, city: e.target.value }})}
+                className="border-2 px-2 rounded-md bg-gray-200"
+            />
+            <label className="font-bold">Country</label>
+            <input 
+                autoFocus 
+                required 
+                type="text" 
+                value={toAddress.country}
+                onChange={e => updateFields({ toAddress: { ...toAddress, country: e.target.value }})}
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
             <label className="font-bold">Recipient Email</label>
