@@ -10,7 +10,7 @@ export enum OrderStatusType {
     Other = "OTHER"
 }
 
-export const statusConversionRecord: Record<string, OrderStatusType> = {
+const statusConversionRecord: Record<string, OrderStatusType> = {
     [OrderStatusType.OrderCreated.toString()]: OrderStatusType.OrderCreated,
     [OrderStatusType.Processing.toString()]: OrderStatusType.Processing,
     [OrderStatusType.PickedUp.toString()]: OrderStatusType.PickedUp,
@@ -22,8 +22,19 @@ export const statusConversionRecord: Record<string, OrderStatusType> = {
     [OrderStatusType.Other.toString()]: OrderStatusType.Other
 };
 
-/** Converts string input to OrderStatusType if string corresponds to a valid OrderStatusType
- 
+export const statusDescriptionRecord: Record<OrderStatusType, string> = {
+    [OrderStatusType.OrderCreated]: "Order created",
+    [OrderStatusType.Processing]: "Ready for pick up",
+    [OrderStatusType.PickedUp]: "Order picked up",
+    [OrderStatusType.Sorting]: "Soring order",
+    [OrderStatusType.ReadyForDelivery]: "Ready for delivery",
+    [OrderStatusType.Delivering]: "Delivering order",
+    [OrderStatusType.Delivered]: "Order delivered",
+    [OrderStatusType.Cancelled]: "Order cancelled",
+    [OrderStatusType.Other]: ""
+}
+
+/** Converts string input to OrderStatusType if string corresponds to a valid OrderStatusType 
 Otherwise, returns a default OrderStatusType of Other.*/
 export namespace OrderStatusType {
     export function valueOf(inputStatus: string) {
