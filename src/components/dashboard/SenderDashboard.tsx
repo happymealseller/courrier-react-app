@@ -50,9 +50,9 @@ export function SenderDashboard() {
 
   const username = useSelector((state: RootState) => state.authentication.username)
 
-	useEffect(() => {
-		config.headers[RequestHeaderKey.Username] = username
-	}, [])
+  useEffect(() => {
+    config.headers[RequestHeaderKey.Username] = username
+  }, [])
 
   useEffect(() => {
     axiosInstance
@@ -69,59 +69,44 @@ export function SenderDashboard() {
 
   return (
     <div className="bg-white p-12 rounded-3xl border-2 border-gray-200">
-      <h1 className="text-2xl font-semibold  underline underline-offset-1">
+      <h1 className="text-3xl font-semibold underline underline-offset-1 mb-4">
         Courier Dashboard
       </h1>
-      <br></br>
-      <h2 className="text-lg font-semibold px-4 py-2 text-bright-red">
-        Welcome {username} !
+      <h2 className="text-xl font-semibold text-bright-red mb-6">
+        Welcome {username}!
       </h2>
-      <br></br>
       <table className="table-auto w-full">
         <thead>
-          <tr className="border border-black px-5 py-2">
+          <tr className="border-b-2 border-gray-300">
             {order_headers.map((header, idx) => (
-              <th key={idx} className="border border-black px-5 py-2">
+              <th key={idx} className="px-5 py-3 text-left border-b-2 border-gray-300">
                 {header}
               </th>
             ))}
-            <th className="px-5 py-2 border-none">Actions</th>
+            <th className="px-5 py-3 text-left border-none">Actions</th>
           </tr>
         </thead>
         <tbody>
           {orders.map((item, index) => (
-            <tr key={index} className="bg-white border border-black px-5 py-2 border-solid">
+            <tr key={index} className={`border-b ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}>
               {Object.entries(item).map(([key, value], idx) => (
-                <td
-                  key={idx}
-                  className="border border-black px-5 py-2 border-solid"
-                  style={{ textAlign: "center" }}
-                >
+                <td key={idx} className="px-5 py-3 text-center">
                   {value}
                 </td>
               ))}
-              <td
-                className="px-5 py-2 border-none"
-                style={{ textAlign: "center" }}
-              >
-                <div style={{ padding: "10px", alignItems: "center"}}>
+              <td className="px-5 py-3 text-center border-none">
+                <div className="flex justify-center space-x-2">
                   <button
                     type="button"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5"
-                    onClick={() => {
-                      navigate(CustomerUrl.VIEW_ORDER, { state: { allowUpdate: false }})
-                    }}
-
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+                    onClick={() => navigate(CustomerUrl.VIEW_ORDER, { state: { allowUpdate: false } })}
                   >
                     View
                   </button>
                   <button
                     type="button"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-                    onClick={() => {
-                      navigate(CustomerUrl.UPDATE_ORDER, { state: { allowUpdate: true }})
-                    }}
-
+                    className="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
+                    onClick={() => navigate(CustomerUrl.UPDATE_ORDER, { state: { allowUpdate: true } })}
                   >
                     Update
                   </button>
@@ -131,15 +116,16 @@ export function SenderDashboard() {
           ))}
         </tbody>
       </table>
-      <div className="mt-8 gap-y-6">
+      <div className="mt-8 flex justify-center">
         <button
           type="button"
-          className="active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-slate-500 text-white text-lg font-bold px-8 py-3 text-center m-2 "
+          className="py-3 px-8 bg-slate-500 text-white text-lg font-bold rounded-xl transition-transform transform active:scale-95 hover:scale-105"
           onClick={handleClick}
         >
           Back
         </button>
       </div>
     </div>
+
   );
 }

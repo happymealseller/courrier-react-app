@@ -9,24 +9,25 @@ import { axiosInstance } from "../components/security/axiosInstance"
 import { ResponseStatus } from "../utilities/enums/ResponseStatus"
 import { useLocation, useNavigate } from "react-router-dom"
 import { NewOrderSummary } from "../utilities/api-models/NewOrderSummary"
-import { CustomerEndpoint } from "../utilities/enums/Endpoint"
+import { AuthenticationEndpoint, CustomerEndpoint } from "../utilities/enums/Endpoint"
 import { config } from "../utilities/constants/config"
-import { CustomerUrl } from "../utilities/enums/Url"
+import { CustomerUrl, PublicUrl } from "../utilities/enums/Url"
 import { useSelector } from "react-redux"
 import { RootState } from "../App"
 import { RequestHeaderKey } from "../utilities/enums/RequestHeaderKey"
+import React from "react"
 
 const INITIAL_DATA: FormData = {
 	fromCompanyName: "",
 	fromAddress: "",
 	fromFullName: "",
 	fromEmail: "",
-	fromPhone: "",
+	fromPhoneNo: "",
 	toCompanyName: "",
 	toAddress: "",
 	toFullName: "",
 	toEmail: "",
-	toPhone: "",
+	toPhoneNo: "",
 	parcelType: ParcelType.Custom,
 	length: "",
 	width: "",
@@ -35,23 +36,65 @@ const INITIAL_DATA: FormData = {
 	parcelDescription: "Bomb"
 }  // to replace with retrieved data from local storage
 // pls preload dummy b4 testing, validation kicks in
+interface senderDetails {
+	fromFullName: string
+	fromEmail: string
+	fromPhone: string
+	fromAddress: string
+}
+
+interface receipientDeatails {
+	toFullName: string
+	toEmail: string
+	toPhone: string
+	toAddress: string
+}
+
+interface orderDetails {
+	sender: senderDetails
+	recipient: receipientDeatails
+}
 
 export function ViewUpdateOrderPage() {
-
-	const username = useSelector((state: RootState) => state.authentication.username)
-	
-	useEffect(() => {
-		config.headers[RequestHeaderKey.Username] = username
-	}, [])
-
 	const navigate = useNavigate();
 	const [data, setData] = useState(INITIAL_DATA);
 	const location = useLocation();
 	const { allowUpdate } = location.state || { allowUpdate: false };
+	const username = useSelector((state: RootState) => state.authentication.username)
+
+	// const orderId = "" // we get from state later
+	// const orderDetails: orderDetails = {}
+	// const url = CustomerEndpoint.UPDATE_ORDER.replace("{orderId}", orderId);
+
+	// React.useEffect(() => {
+	// 	axiosInstance.post(url, JSON.stringify(orderDetails), config)
+	// 		.then(response => {
+	// 			if (response.data.status === ResponseStatus.Success) {
+	// 				navigate(CustomerUrl.VIEW_ORDER, { state: { allowUpdate: false } })
+	// 			}
+	// 		})
+	// }, [])
+
+	React.useEffect(() => {
+		config.headers[RequestHeaderKey.Username] = username
+	}, [])
+
+	React.useEffect(() => {
+		const url = CustomerEndpoint.TRACK_ORDER_ID.replace("{orderId}", "1")
+		axiosInstance
+			.get(url, config)
+			.then((res) => {
+				setData(res.data.orderDetails)
+			})
+			.catch((err => {
+				console.log(err)
+			}))
+	}, [])
+
 
 	function updateFields(fields: Partial<FormData>) {
-		if (allowUpdate){
-			setData( prev => {
+		if (allowUpdate) {
+			setData(prev => {
 				return { ...prev, ...fields };
 			});
 		}
@@ -60,7 +103,7 @@ export function ViewUpdateOrderPage() {
 	const { currentStepIndex, isFirstStep, isLastStep, step, steps, next, back } = useMultistepForm([
 		<ShipFromForm {...data} updateFields={updateFields} />,
 		<ShipToForm {...data} updateFields={updateFields} />,
-		<ParcelInformationForm {...data} updateFields={updateFields} />,
+		//<ParcelInformationForm {...data} updateFields={updateFields} />,
 		//<ShippingServiceForm />,
 		//<PaymentForm {...data} updateFields={updateFields} />
 	])
@@ -69,57 +112,77 @@ export function ViewUpdateOrderPage() {
 		e.preventDefault()
 		if (!isLastStep) {
 			return next()
-		} else if(allowUpdate){
-			const endpoint = CustomerEndpoint.NEW_ORDER;
-			axiosInstance.post(endpoint, JSON.stringify(data), config)
+		} else if (allowUpdate) {
+			const endpoint = CustomerEndpoint.UPDATE_ORDER.replace("{orderId}", "1")
+
+
+			// const orderId = "" // we get from state later
+			const orderDetails: orderDetails = {
+				sender: {
+					fromFullName: "John Doe",
+					fromEmail: "johndoe1@mail.com",
+					fromPhone: "98765432",
+					fromAddress: "Raffles Place"
+				},
+				recipient: {
+					toFullName: "Jane Doe",
+					toEmail: "janedoe@mail.com",
+					toPhone: "87654321",
+					toAddress: "City Hall"
+				}
+			}
+
+			console.log(orderDetails);
+			console.log(config);
+			axiosInstance.put(endpoint, JSON.stringify(orderDetails), config)
 				.then(response => {
 					if (response.data.status === ResponseStatus.Success) {
 						navigate(
 							CustomerUrl.NEW_ORDER_SUMMARY,
-							{ state: response.data.orderDetails as NewOrderSummary}
+							{ state: response.data.orderDetails as NewOrderSummary }
 						)
 					} else if (response.data.status === ResponseStatus.Failure) {
 						alert(`Error ${response.data.message}`)
 					}
 				})
 		}
-	}	
+	}
 
 	return (
 		<>
 			<div style={{
-			position: "relative",
-			background: "white",
-			border: "1px solid black",
-			padding: "2rem",
-			margin: "1rem",
-			borderRadius: "0.5rem",
-			fontFamily: "Arial",
-			maxWidth: "max-content"
+				position: "relative",
+				background: "white",
+				border: "1px solid black",
+				padding: "2rem",
+				margin: "1rem",
+				borderRadius: "0.5rem",
+				fontFamily: "Arial",
+				maxWidth: "max-content"
 			}}>
 				<form onSubmit={handleSubmit}>
 					<div style={{
-					position: "absolute",
-					top: "0.5rem",
-					right: "0.5rem"
+						position: "absolute",
+						top: "0.5rem",
+						right: "0.5rem"
 					}}>
-					{currentStepIndex + 1} / {steps.length}
+						{currentStepIndex + 1} / {steps.length}
 					</div>
 					{step}
 					<div style={{
-					marginTop: "1rem",
-					display: "flex",
-					gap: "0.5rem",
-					justifyContent: "flex-end"
+						marginTop: "1rem",
+						display: "flex",
+						gap: "0.5rem",
+						justifyContent: "flex-end"
 					}}>
-					{!isFirstStep && (
-						<button type="button" onClick={back} className="border-2 px-2 py-1 rounded-md hover:bg-slate-300 hover:text-gray-500 hover:border-slate-300">
-						Back
+						{!isFirstStep && (
+							<button type="button" onClick={back} className="border-2 px-2 py-1 rounded-md hover:bg-slate-300 hover:text-gray-500 hover:border-slate-300">
+								Back
+							</button>
+						)}
+						<button type="submit" className="border-2 px-2 py-1 rounded-md hover:bg-slate-300 hover:text-gray-500 hover:border-slate-300">
+							{isLastStep ? "Finish" : "Next"}
 						</button>
-					)}
-					<button type="submit" className="border-2 px-2 py-1 rounded-md hover:bg-slate-300 hover:text-gray-500 hover:border-slate-300">
-						{isLastStep ? "Finish" : "Next"}
-					</button>
 					</div>
 				</form>
 			</div>

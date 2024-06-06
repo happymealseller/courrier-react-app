@@ -1,9 +1,9 @@
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { axiosInstance } from '../components/security/axiosInstance';
-import { AuthenticationUrl } from '../utilities/enums/Url';
-import { CustomerEndpoint } from '../utilities/enums/Endpoint';
-import { config } from '../utilities/constants/config';
+import { axiosInstance } from '../../components/security/axiosInstance';
+import { AuthenticationUrl } from '../../utilities/enums/Url';
+import { CustomerEndpoint } from '../../utilities/enums/Endpoint';
+import { config } from '../../utilities/constants/config';
 
 function TrackSearchBarPage() {
     const navigate = useNavigate();
@@ -37,7 +37,7 @@ function TrackSearchBarPage() {
 
     return (<>
         <div className="
-            h-3/4 w-full
+            h-[75svh] w-full
             flex justify-center items-center
             bg-[url('https://images.pexels.com/photos/4391470/pexels-photo-4391470.jpeg')] 
             bg-cover bg-center

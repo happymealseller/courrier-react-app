@@ -17,6 +17,7 @@ import { CustomerUrl } from "../utilities/enums/Url"
 import { RequestHeaderKey } from "../utilities/enums/RequestHeaderKey"
 import { useSelector } from "react-redux"
 import { RootState } from "../App"
+import { ShippingServiceForm } from "../components/order-form/ShippingServiceForm"
 
 const INITIAL_DATA: FormData = {
 	fromCompanyName: "",
@@ -44,7 +45,7 @@ const INITIAL_DATA: FormData = {
 export function ShippingFormPage() {
 
 	const username = useSelector((state: RootState) => state.authentication.username)
-	
+
 	useEffect(() => {
 		config.headers[RequestHeaderKey.Username] = username
 	}, [])
@@ -53,7 +54,7 @@ export function ShippingFormPage() {
 	const [data, setData] = useState(INITIAL_DATA);
 
 	function updateFields(fields: Partial<FormData>) {
-		setData( prev => {
+		setData(prev => {
 			return { ...prev, ...fields };
 		});
 	}
@@ -62,7 +63,7 @@ export function ShippingFormPage() {
 		<ShipFromForm {...data} updateFields={updateFields} />,
 		<ShipToForm {...data} updateFields={updateFields} />,
 		<ParcelInformationForm {...data} updateFields={updateFields} />,
-		//<ShippingServiceForm />,
+		<ShippingServiceForm />,
 		//<PaymentForm {...data} updateFields={updateFields} />
 	])
 
@@ -77,50 +78,50 @@ export function ShippingFormPage() {
 					if (response.data.status === ResponseStatus.Success) {
 						navigate(
 							CustomerUrl.NEW_ORDER_SUMMARY,
-							{ state: response.data.orderDetails as NewOrderSummary}
+							{ state: response.data.orderDetails as NewOrderSummary }
 						)
 					} else if (response.data.status === ResponseStatus.Failure) {
 						alert(`Error ${response.data.message}`)
 					}
 				})
 		}
-	}	
+	}
 
 	return (
 		<>
 			<div style={{
-			position: "relative",
-			background: "white",
-			border: "1px solid black",
-			padding: "2rem",
-			margin: "1rem",
-			borderRadius: "0.5rem",
-			fontFamily: "Arial",
-			maxWidth: "max-content"
+				position: "relative",
+				background: "white",
+				border: "1px solid black",
+				padding: "2rem",
+				margin: "1rem",
+				borderRadius: "0.5rem",
+				fontFamily: "Arial",
+				maxWidth: "max-content"
 			}}>
 				<form onSubmit={handleSubmit}>
 					<div style={{
-					position: "absolute",
-					top: "0.5rem",
-					right: "0.5rem"
+						position: "absolute",
+						top: "0.5rem",
+						right: "0.5rem"
 					}}>
-					{currentStepIndex + 1} / {steps.length}
+						{currentStepIndex + 1} / {steps.length}
 					</div>
 					{step}
 					<div style={{
-					marginTop: "1rem",
-					display: "flex",
-					gap: "0.5rem",
-					justifyContent: "flex-end"
+						marginTop: "1rem",
+						display: "flex",
+						gap: "0.5rem",
+						justifyContent: "flex-end"
 					}}>
-					{!isFirstStep && (
-						<button type="button" onClick={back} className="border-2 px-2 py-1 rounded-md hover:bg-slate-300 hover:text-gray-500 hover:border-slate-300">
-						Back
+						{!isFirstStep && (
+							<button type="button" onClick={back} className="border-2 px-2 py-1 rounded-md hover:bg-slate-300 hover:text-gray-500 hover:border-slate-300">
+								Back
+							</button>
+						)}
+						<button type="submit" className="border-2 px-2 py-1 rounded-md hover:bg-slate-300 hover:text-gray-500 hover:border-slate-300">
+							{isLastStep ? "Finish" : "Next"}
 						</button>
-					)}
-					<button type="submit" className="border-2 px-2 py-1 rounded-md hover:bg-slate-300 hover:text-gray-500 hover:border-slate-300">
-						{isLastStep ? "Finish" : "Next"}
-					</button>
 					</div>
 				</form>
 			</div>

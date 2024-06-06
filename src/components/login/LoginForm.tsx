@@ -13,11 +13,11 @@ import { AuthenticationActionPayload } from "../../redux/authentication/Authenti
 
 export function LoginForm() {
     const navigate = useNavigate();
-    const location = useLocation();
+    // const location = useLocation();
     const dispatch = useDispatch();
-    const { prepopulatedUsername, prepopulatedPassword } = location.state || { prepopulatedUsername: "", prepopulatedPassword: ""};
-    const [username, setUsername] = useState(prepopulatedUsername);
-    const [password, setPassword] = useState(prepopulatedPassword);
+    // const { prepopulatedUsername, prepopulatedPassword } = location.state || { prepopulatedUsername: "", prepopulatedPassword: "" };
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
     function handleSubmit(e: FormEvent) {
@@ -51,28 +51,28 @@ export function LoginForm() {
             });
     }
     return (
-        <div className="bg-white px-10 py-20 rounded-3xl border-2 border-gray-200">
+        <div className="bg-white p-10 mt-12 mb-12 rounded-3xl border-2 border-gray-200">
             <h1 className="text-5xl font-semibold">FDMx</h1>
             <p className="font-medium text-lg text-gray-500 mt-4">Welcome Back! Please enter your details.</p>
             <div className="mt-8">
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label className="text-lg font-medium">Username</label>
-                        <input 
+                        <input
                             className="w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
                             placeholder="Enter your username"
                             type="text"
                             value={username}
                             onChange={e => setUsername(e.target.value)}
-                            required 
+                            required
                         />
                     </div>
                     <div>
                         <label className="text-lg font-medium">Password</label>
-                        <input 
+                        <input
                             className="w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
                             placeholder="Enter your password"
-                            type="password" 
+                            type="password"
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                             required
@@ -80,7 +80,7 @@ export function LoginForm() {
                     </div>
                     <div className="mt-8 flex justify-between items-center">
                         <div>
-                            <input 
+                            <input
                                 type="checkbox"
                                 id="remember"
                             />
@@ -88,11 +88,11 @@ export function LoginForm() {
                         </div>
                         <button className="font-medium text-base text-slate-500">Forgot password</button>  {/* onClick={() => navigate to reset pw page} */}
                     </div>
-                    { error && (
+                    {error && (
                         <p className="text-red-500">{error}</p>
                     )}
                     <div className="mt-8 flex flex-col gap-y-4">
-                        <button 
+                        <button
                             type="submit"
                             className="active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-slate-500 text-white text-lg font-bold"
                         >
