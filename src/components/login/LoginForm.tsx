@@ -4,7 +4,7 @@ import { ResponseStatus } from "../../utilities/enums/ResponseStatus";
 import { AccountType } from "../../utilities/enums/AccountType";
 import { GmailIcon } from "../icons/GmailIcon";
 import { axiosInstance } from "../security/axiosInstance";
-import { AuthenticationUrl, CourierUrl, CustomerUrl } from "../../utilities/enums/Url";
+import { AdminUrl, AuthenticationUrl, CourierUrl, CustomerUrl } from "../../utilities/enums/Url";
 import { AuthenticationEndpoint } from "../../utilities/enums/Endpoint";
 import { config } from "../../utilities/constants/config";
 import { useDispatch } from "react-redux";
@@ -40,6 +40,10 @@ export function LoginForm() {
                         case AccountType.Courier:
                             dispatch(login(userData));
                             navigate(CourierUrl.DASHBOARD);
+                            break;
+                        case AccountType.Admin:
+                            dispatch(login(userData));
+                            navigate(AdminUrl.DASHBOARD);
                             break;
                     }
                 } else if (response.data.status === ResponseStatus.Failure) {
