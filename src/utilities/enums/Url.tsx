@@ -25,5 +25,6 @@ export enum PublicUrl {
 
 // Check url again
 export enum AdminUrl {
-    DASHBOARD = "/dashboard/admin"
+    DASHBOARD = "/dashboard/admin",
+    REGISTER_COURIER = "regcourier"
 }
