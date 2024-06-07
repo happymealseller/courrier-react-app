@@ -27,90 +27,56 @@ export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhone, 
 
 
     return (
-        <FormWrapper title="Ship From">
-                {/*
-                <label className="font-bold">Full Name or Company Name</label>
-                <input 
-                    autoFocus 
-                    required 
-                    type="text" 
-                    value={fromCompanyName} 
-                    onChange={e => updateFields({ fromCompanyName: e.target.value })}
-                    className="border-2 px-2 rounded-md bg-gray-200" 
-                />
-                */}
-                <label className="font-bold">Full Name</label>
-                <input 
-                    autoFocus 
-                    required 
-                    type="text" 
-                    value={fromFullName}
-                    onChange={e => updateFields({ fromFullName: e.target.value })}
-                    className="border-2 px-2 rounded-md bg-gray-200"
-                />
-                <label className="font-bold">Address</label>
-                <input 
-                    autoFocus
-                    type="text"
-                    value={address}
-                    onChange={e => setAddress(e.target.value)}
-                    className="border-2 px-2 rounded-md bg-gray-200"
-                />
-                    <label className="font-bold">Postal Code</label>
-                <div>
-                    <input 
-                        autoFocus
-                        type="text" 
-                        pattern="^\d{0,6}$"
-                        title="Please enter 6 digits"
-                        value={fromAddress.postalCode}
-                        onChange={e => updateFields({ fromAddress: { ...fromAddress, postalCode: e.target.value }})}
-                        className="border-2 px-2 rounded-md bg-gray-200"
-                    />
-                    <button
-                        type="button"
-                        className="bg-slate-500 rounded-md w-1/2 text-sm text-white ml-1 p-1"
-                        onClick={(e) => handleAddressRetrieval(e, fromAddress.postalCode || "")}
-                    >
-                        Retrieve address
-                    </button>
-                </div>
-                <label className="font-bold">City</label>
-                <input 
-                    autoFocus
-                    type="text" 
-                    value={city}
-                    onChange={e => setCity(e.target.value)}
-                    className="border-2 px-2 rounded-md bg-gray-200"
-                />
-                <label className="font-bold">Country</label>
-                <input 
-                    autoFocus
-                    type="text" 
-                    value={country}
-                    onChange={e => setCountry(e.target.value)}
-                    className="border-2 px-2 rounded-md bg-gray-200"
-                />
-                <label className="font-bold">Email</label>
-                <input 
-                    autoFocus 
-                    required 
-                    type="email" 
-                    value={fromEmail}
-                    onChange={e => updateFields({ fromEmail: e.target.value })}
-                    className="border-2 px-2 rounded-md bg-gray-200"
-                />
-                <label className="font-bold">Phone</label>
-                <input 
-                    autoFocus 
-                    required 
-                    type="text" 
-                    pattern="^[89]\d{7}$"
-                    title="Please enter an 8-digit number starting with 8 or 9."
-                    value={fromPhone} 
-                    onChange={e => updateFields({ fromPhone: e.target.value })}
-                    className="border-2 px-2 rounded-md bg-gray-200"
-                />
+        <FormWrapper title="Ship From (Sender)">
+            {/*
+            <label className="font-bold">Full Name or Company Name</label>
+            <input 
+                autoFocus 
+                required 
+                type="text" 
+                value={fromCompanyName} 
+                onChange={e => updateFields({ fromCompanyName: e.target.value })}
+                className="border-2 px-2 rounded-md bg-gray-200" 
+            />
+            */}
+            <label className="font-bold">Full Name</label>
+            <input 
+                autoFocus 
+                required 
+                type="text" 
+                value={fromFullName}
+                onChange={e => updateFields({ fromFullName: e.target.value })}
+                className="border-2 px-2 rounded-md bg-gray-200"
+            />
+            <label className="font-bold">Address</label>
+            <input 
+                autoFocus 
+                required 
+                type="text" 
+                value={fromAddress}
+                onChange={e => updateFields({ fromAddress: e.target.value })}
+                className="border-2 px-2 rounded-md bg-gray-200"
+            />
+            <label className="font-bold">Email</label>
+            <input 
+                autoFocus 
+                required 
+                type="email" 
+                value={fromEmail}
+                onChange={e => updateFields({ fromEmail: e.target.value })}
+                className="border-2 px-2 rounded-md bg-gray-200"
+            />
+            <label className="font-bold">Phone</label>
+            <input 
+                autoFocus 
+                required 
+                type="text" 
+                pattern="^[89]\d{7}$"
+                title="Please enter an 8-digit number starting with 8 or 9."
+                value={fromPhone} 
+                onChange={e => updateFields({ fromPhone: e.target.value })}
+                className="border-2 px-2 rounded-md bg-gray-200"
+            />
         </FormWrapper>
     )
     

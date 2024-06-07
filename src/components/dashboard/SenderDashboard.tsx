@@ -47,7 +47,6 @@ export function SenderDashboard() {
     "currentStatus",
   ];
 
-
   const username = useSelector((state: RootState) => state.authentication.username)
 
 	useEffect(() => {
@@ -67,6 +66,30 @@ export function SenderDashboard() {
     navigate("/");
   }
 
+  interface TableCellProps {
+    key: number;
+    value: any;
+    isAddress: boolean;
+  }
+  
+  const TableCell: React.FC<TableCellProps> = ({ key, value, isAddress }) => {
+    const displayValue = isAddress
+      ? `${value.address.toString()}, ${value.postalCode.toString()}`
+      : value.toString();
+  
+    return (
+      <td
+        key={key}
+        className="border border-black px-5 py-2 border-solid"
+        style={{ textAlign: "center" }}
+      >
+        {displayValue}
+      </td>
+    );
+  };
+
+
+  
   return (
     <div className="bg-white p-12 rounded-3xl border-2 border-gray-200">
       <h1 className="text-2xl font-semibold  underline underline-offset-1">
@@ -91,17 +114,14 @@ export function SenderDashboard() {
         <tbody>
           {orders.map((item, index) => (
             <tr key={index} className="bg-white border border-black px-5 py-2 border-solid">
-              {
-              Object.entries(item).map(([key, value], idx) => (
-                <td
+              {Object.entries(item).map(([key, value], idx) => (
+                <TableCell
                   key={idx}
-                  className="border border-black px-5 py-2 border-solid"
-                  style={{ textAlign: "center" }}
-                >
-                  {value.toString()}
-                </td>
-              ))
-              }
+                  value={value}
+                  isAddress={key === "toAddress" || key === "fromAddress"}
+                />
+              ))}
+
               <td
                 className="px-5 py-2 border-none"
                 style={{ textAlign: "center" }}

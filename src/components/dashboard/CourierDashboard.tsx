@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { format } from "date-fns";
 import { CourierUrl } from "../../utilities/enums/Url";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { RequestHeaderKey } from "../../utilities/enums/RequestHeaderKey";
 import { useSelector } from "react-redux";
 import { RootState } from "../../App";
@@ -29,14 +29,13 @@ export function CourierDashboard() {
   const [selectedStatus, setSelectedStatus] = useState<string>('');
   const navigate = useNavigate();
   const username = useSelector((state: RootState) => state.authentication.username);
-  const location = useLocation();
-  const [allowUpdate, setAllowUpdate] = useState(false);
 
   const order_headers = [
     "Tracking ID",
     "Sender Name",
     "Recipient Name",
     "Date of Delivery",
+    "Sending Address",
     "Delivery Address",
     "Order Status",
   ];
@@ -46,6 +45,7 @@ export function CourierDashboard() {
     "fromFullName",
     "toFullName",
     "deliveryDate",
+    "fromAddress",
     "toAddress",
     "currentStatus",
   ];
@@ -70,7 +70,7 @@ export function CourierDashboard() {
         remarks: 'Status updated by courier',
       }, config);
       // Update status on dashboard
-      setOrders(orders.map(order => order.orderId === orderId ? { ...order, currentStatus: selectedStatus } : order));
+      setOrders(orders.map(order => order.orderId === parseInt(orderId) ? { ...order, currentStatus: selectedStatus } : order));
       setEditingOrderId("");
       console.log(`Order ${orderId} updated successfully to status: ${selectedStatus}`);
     } catch (error) {
@@ -83,6 +83,30 @@ export function CourierDashboard() {
     console.log("Courier assigned to order successfully!");
     navigate("/");
   }
+
+  interface TableCellProps {
+    key: number;
+    value: any;
+    isAddress: boolean;
+  }
+  
+  const TableCell: React.FC<TableCellProps> = ({ key, value, isAddress }) => {
+    const displayValue = isAddress
+      ? `${value.address.toString()}, ${value.postalCode.toString()}`
+      : value.toString();
+  
+    return (
+      <td
+        key={key}
+        className="border border-black px-5 py-2 border-solid"
+        style={{ textAlign: "center" }}
+      >
+        {displayValue}
+      </td>
+    );
+  };
+
+
 
   return (
     <div className="bg-white p-12 rounded-3xl border-2 border-gray-200">
@@ -103,9 +127,11 @@ export function CourierDashboard() {
           {orders.map((item, index) => (
             <tr key={index} className="bg-white border border-black px-5 py-2 border-solid">
               {Object.entries(item).map(([key, value], idx) => (
-                <td key={idx} className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
-                  {value}
-                </td>
+                <TableCell
+                  key={idx}
+                  value={value}
+                  isAddress={key === "toAddress" || key === "fromAddress"}
+                />
               ))}
               {/* Button in the last column, to fix issue with last column header borders next time */}
               <td
@@ -123,7 +149,7 @@ export function CourierDashboard() {
                     View
                   </button>
                 </div>
-                {editingOrderId === item.orderId as string ? (
+                {editingOrderId === item.orderId.toString() ? (
                   <div>
                     <select
                       value={selectedStatus}
@@ -139,7 +165,7 @@ export function CourierDashboard() {
                       <button
                         type="button"
                         className="bg-green-500 hover:bg-green-700 text-white font-semibold py-1 px-2 rounded"
-                        onClick={() => handleStatusUpdate(item.orderId)}
+                        onClick={() => handleStatusUpdate(item.orderId.toString())}
                       >
                         Save
                       </button>
@@ -157,7 +183,7 @@ export function CourierDashboard() {
                     <button
                       type="button"
                       className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mt-2" style={{ width: '130px' }}
-                      onClick={() => { setEditingOrderId(item.orderId); setSelectedStatus(item.currentStatus); }}
+                      onClick={() => { setEditingOrderId(item.orderId.toString()); setSelectedStatus(item.orderStatus); }}
                       // Below is to opn a new page
                       // onClick={() => {
                       //   navigate(CourierUrl.UPDATE_ORDER, { state: { allowUpdate: true }})
