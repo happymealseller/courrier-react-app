@@ -1,10 +1,9 @@
 import { FormWrapper } from "./FormWrapper";
 import { ShipToFormProps } from "../../utilities/type-aliases/order-form/ShipToFormProps";
-import { axiosInstance } from "../security/axiosInstance";
 import { FormEvent, useEffect, useState } from "react";
 import axios from "axios";
 
-export function ShipToForm({ toAddress, toFullName, toEmail, toPhone, updateFields }: ShipToFormProps) {
+export function ShipToForm({ toAddress, toFullName, toEmail, toPhoneNo, updateFields }: ShipToFormProps) {
     const [address, setAddress] = useState(toAddress.address);
     const [city, setCity] = useState(toAddress.city);
     const [country, setCountry] = useState(toAddress.country);
@@ -24,17 +23,6 @@ export function ShipToForm({ toAddress, toFullName, toEmail, toPhone, updateFiel
 
     return (
         <FormWrapper title="Ship To (Receipient)">
-            {/*
-            <label className="font-bold">Full Name or Company Name</label>
-            <input 
-                autoFocus 
-                required 
-                type="text" 
-                value={toCompanyName} 
-                onChange={e => updateFields({ toCompanyName: e.target.value })} 
-                className="border-2 px-2 rounded-md bg-gray-200"
-            />
-            */}
             <label className="font-bold">Contact Name</label>
             <input 
                 autoFocus 
@@ -49,8 +37,46 @@ export function ShipToForm({ toAddress, toFullName, toEmail, toPhone, updateFiel
                 autoFocus 
                 required 
                 type="text" 
-                value={toAddress}
-                onChange={e => updateFields({ toAddress: e.target.value })} 
+                value={toAddress.address}
+                onChange={e => setAddress(e.target.value)}
+                className="border-2 px-2 rounded-md bg-gray-200"
+            />
+            <label className="font-bold">Postal Code</label>
+            <div>
+                <input 
+                    autoFocus 
+                    required 
+                    type="text" 
+                    pattern="^\d{0,6}$"
+                    title="Please enter 6 digits"
+                    value={toAddress.postalCode}
+                    onChange={e => updateFields({ toAddress: { ...toAddress, postalCode: e.target.value }})}
+                    className="border-2 px-2 rounded-md bg-gray-200"
+                />
+                <button
+                    type="button"
+                    className="bg-slate-500 rounded-md w-1/2 text-sm text-white ml-1 p-1"
+                    onClick={(e) => handleAddressRetrieval(e, toAddress.postalCode || "")}
+                >
+                    Retrieve address
+                </button>
+            </div>
+            <label className="font-bold">City</label>
+            <input 
+                autoFocus 
+                required 
+                type="text" 
+                value={toAddress.city}
+                onChange={e => setCity(e.target.value)}
+                className="border-2 px-2 rounded-md bg-gray-200"
+            />
+            <label className="font-bold">Country</label>
+            <input 
+                autoFocus 
+                required 
+                type="text" 
+                value={toAddress.country}
+                onChange={e => setCountry(e.target.value)}
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
             <label className="font-bold">Recipient Email</label>
@@ -68,8 +94,8 @@ export function ShipToForm({ toAddress, toFullName, toEmail, toPhone, updateFiel
                 required 
                 pattern="^[89]\d{7}$"
                 title="Please enter an 8-digit number starting with 8 or 9."
-                value={toPhone} 
-                onChange={e => updateFields({ toPhone: e.target.value })} 
+                value={toPhoneNo} 
+                onChange={e => updateFields({ toPhoneNo: e.target.value })} 
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
         </FormWrapper>

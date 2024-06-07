@@ -5,7 +5,7 @@ type ShipFromData = {
     fromAddress: Partial<Address>,
     fromFullName: string,
     fromEmail: string,
-    fromPhone: string
+    fromPhoneNo: string
 }
 
 export type ShipFromFormProps = ShipFromData & {
