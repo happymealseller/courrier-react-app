@@ -42,6 +42,7 @@ function App() {
 						<Route path={CustomerUrl.DASHBOARD} element={<SenderDashboardPage />} />
 						<Route path={CustomerUrl.NEW_ORDER_SUMMARY} element={(<NewOrderSummaryPage />)} />
 						<Route path={AdminUrl.DASHBOARD} element={<AdminDashboardPage />} />
+						<Route path={AdminUrl.REGISTER_COURIER} element={<RegisterPage />} />
 						<Route path={AuthenticationUrl.LOGOUT} element={<Logout />} />
 					</Route>
 					<Route index element={<TrackSearchBarPage />} />
