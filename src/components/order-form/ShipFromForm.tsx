@@ -1,7 +1,7 @@
 import { FormWrapper } from "./FormWrapper";
 import { ShipFromFormProps } from "../../utilities/type-aliases/order-form/ShipFromFormProps";
-import { FormEvent, useEffect, useState } from "react";
 import axios from "axios";
+import { useState, useEffect, FormEvent } from "react";
 
 export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhone, updateFields }: ShipFromFormProps) {
 
@@ -9,16 +9,22 @@ export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhone, 
     const [city, setCity] = useState(fromAddress.city);
     const [country, setCountry] = useState(fromAddress.country);
 
+    const getAddressFromPostalCode = (event: FormEvent, postalCode: string) => {
+        const url = `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${postalCode}&returnGeom=Y&getAddrDetails=Y&pageNum=1`;
 
-    const handleAddressRetrieval = (event: FormEvent, postalCode: string) => {
-        const url = `http://localhost:3001/${postalCode}`
-        axios.get(url).then(response => {
-            console.log(response)
-            setAddress(response.data.address)
-            setCountry(response.data.country)
-            setCity(response.data.city)
-        })
-        
+        axios.get(url)
+            .then(response => {
+                if (response.data.found > 0) {
+                    setAddress(response.data.results[0]["ADDRESS"])
+                    setCountry("SINGAPORE")
+                    setCity("SINGAPORE")
+                } else {
+                    alert("No address found for this postal code.")
+                }
+            })
+            .catch(error => {
+                console.error(error.message);
+            })
     }
 
     useEffect(() => {
@@ -49,7 +55,7 @@ export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhone, 
             <div>
                 <input 
                     autoFocus
-                    type="text" 
+                    type="number" 
                     pattern="^\d{0,6}$"
                     title="Please enter 6 digits"
                     value={fromAddress.postalCode}
@@ -59,7 +65,7 @@ export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhone, 
                 <button
                     type="button"
                     className="bg-slate-500 rounded-md w-1/2 text-sm text-white ml-1 p-1"
-                    onClick={(e) => handleAddressRetrieval(e, fromAddress.postalCode || "")}
+                    onClick={(e) => getAddressFromPostalCode(e, fromAddress.postalCode || "")} // handleAddressRetrieval(e, fromAddress.postalCode || "")
                 >
                     Retrieve address
                 </button>
