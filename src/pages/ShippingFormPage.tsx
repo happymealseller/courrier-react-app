@@ -34,7 +34,7 @@ const INITIAL_DATA: FormData = {
 	},
 	fromFullName: "",
 	fromEmail: "",
-	fromPhone: "",
+	fromPhoneNo: "",
 	toAddress:  {
 		address: "",
         postalCode: "",

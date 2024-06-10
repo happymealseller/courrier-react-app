@@ -3,7 +3,7 @@ import { ShipFromFormProps } from "../../utilities/type-aliases/order-form/ShipF
 import axios from "axios";
 import { useState, useEffect, FormEvent } from "react";
 
-export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhone, updateFields }: ShipFromFormProps) {
+export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhoneNo, updateFields }: ShipFromFormProps) {
 
     const [address, setAddress] = useState(fromAddress.address);
     const [city, setCity] = useState(fromAddress.city);
@@ -46,8 +46,9 @@ export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhone, 
             <label className="font-bold">Address</label>
             <input 
                 autoFocus
+                required
                 type="text"
-                value={address}
+                value={fromAddress.address}
                 onChange={e => setAddress(e.target.value)}
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
@@ -55,6 +56,7 @@ export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhone, 
             <div>
                 <input 
                     autoFocus
+                    required
                     type="number" 
                     pattern="^\d{0,6}$"
                     title="Please enter 6 digits"
@@ -73,16 +75,18 @@ export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhone, 
             <label className="font-bold">City</label>
             <input 
                 autoFocus
+                required
                 type="text" 
-                value={city}
+                value={fromAddress.city}
                 onChange={e => setCity(e.target.value)}
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
             <label className="font-bold">Country</label>
             <input 
                 autoFocus
+                required
                 type="text" 
-                value={country}
+                value={fromAddress.country}
                 onChange={e => setCountry(e.target.value)}
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
