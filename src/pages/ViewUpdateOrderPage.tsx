@@ -104,11 +104,12 @@ export function ViewUpdateOrderPage() {
 			});
 		}
 	}
+	const noOp = () => {};
 
 	const { currentStepIndex, isFirstStep, isLastStep, step, steps, next, back } = useMultistepForm([
 		<ShipFromForm {...data} updateFields={updateFields} />,
 		<ShipToForm {...data} updateFields={updateFields} />,
-		<ParcelInformationForm {...data} updateFields={updateFields} />,   // future fix: to prevent update of parcel info
+		<ParcelInformationForm {...data} updateFields={ noOp } />,   // future fix: to prevent update of parcel info
 		//<ShippingServiceForm />,
 		//<PaymentForm {...data} updateFields={updateFields} />
 	])
