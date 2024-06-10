@@ -44,28 +44,25 @@ const INITIAL_DATA: FormData = {
 }  // to replace with retrieved data from local storage
 // pls preload dummy b4 testing, validation kicks in
 
+interface Address {
+	address: string;
+	postalCode: string;
+	country: string;
+	city: string;
+  }
+
 interface senderDetails {
 	fromFullName: string
 	fromEmail: string
 	fromPhone: string
-	fromAddress: {
-		address: string,
-		postalCode: string,
-		country: string,
-		city: string
-	}
+	fromAddress: Address
 }
 
 interface receipientDeatails {
 	toFullName: string
 	toEmail: string
 	toPhone: string
-	toAddress: {
-		address: string,
-		postalCode: string,
-		country: string,
-		city: string
-	}
+	toAddress: Address
 }
 
 interface orderDetails {
@@ -125,25 +122,25 @@ export function ViewUpdateOrderPage() {
 
 			const orderDetails: orderDetails = {
 				sender: {
-					fromFullName: "John Doe",
-					fromEmail: "johndoe1@mail.com",
-					fromPhone: "98765432",
+					fromFullName: data.fromFullName,
+					fromEmail: data.fromEmail,
+					fromPhone: data.fromPhoneNo,
 					fromAddress: {
-						address: "Woodlands",
-						postalCode: "739089",
-						country: "Singapore",
-						city: "Singapore"
+						address: data.fromAddress!.address!,
+						postalCode: data.fromAddress!.postalCode!,
+						country: data.fromAddress!.country!,
+						city: data.fromAddress!.city!
 					}
 				},
 				recipient: {
-					toFullName: "Jane Doe",
-					toEmail: "janedoe@mail.com",
-					toPhone: "87654321",
+					toFullName: data.toFullName,
+					toEmail: data.toEmail,
+					toPhone: data.toPhoneNo,
 					toAddress: {
-						address: "Woodlands",
-						postalCode: "739090",
-						country: "Singapore",
-						city: "Singapore"
+						address: data.toAddress!.address!,
+						postalCode: data.toAddress!.postalCode!,
+						country: data.toAddress!.country!,
+						city: data.toAddress!.city!
 					}
 				}
 			}
@@ -153,7 +150,7 @@ export function ViewUpdateOrderPage() {
 					if (response.data.status === ResponseStatus.Success) {
 						navigate(
 							CustomerUrl.NEW_ORDER_SUMMARY,
-							{ state: response.data.orderDetails as OrderSummary }
+							{ state: response.data.updatedOrderDetails as OrderSummary }
 						)
 				} else if (response.data.status === ResponseStatus.Failure) {
 					alert(`Error ${response.data.message}`)
