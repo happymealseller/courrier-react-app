@@ -1,20 +1,39 @@
 import { FormWrapper } from "./FormWrapper";
 import { ShipFromFormProps } from "../../utilities/type-aliases/order-form/ShipFromFormProps";
+import axios from "axios";
+import { useState, useEffect, FormEvent } from "react";
 
 export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhone, updateFields }: ShipFromFormProps) {
+
+    const [address, setAddress] = useState(fromAddress.address);
+    const [city, setCity] = useState(fromAddress.city);
+    const [country, setCountry] = useState(fromAddress.country);
+
+    const getAddressFromPostalCode = (event: FormEvent, postalCode: string) => {
+        const url = `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${postalCode}&returnGeom=Y&getAddrDetails=Y&pageNum=1`;
+
+        axios.get(url)
+            .then(response => {
+                if (response.data.found > 0) {
+                    setAddress(response.data.results[0]["ADDRESS"])
+                    setCountry("SINGAPORE")
+                    setCity("SINGAPORE")
+                } else {
+                    alert("No address found for this postal code.")
+                }
+            })
+            .catch(error => {
+                console.error(error.message);
+            })
+    }
+
+    useEffect(() => {
+        updateFields({ fromAddress: { ...fromAddress, address: address, city: city, country: country }})
+    }, [address, city, country])
+
+
     return (
-        <FormWrapper title="Ship From">
-            {/*
-            <label className="font-bold">Full Name or Company Name</label>
-            <input 
-                autoFocus 
-                required 
-                type="text" 
-                value={fromCompanyName} 
-                onChange={e => updateFields({ fromCompanyName: e.target.value })}
-                className="border-2 px-2 rounded-md bg-gray-200" 
-            />
-            */}
+        <FormWrapper title="Ship From (Sender)">
             <label className="font-bold">Full Name</label>
             <input 
                 autoFocus 
@@ -26,11 +45,45 @@ export function ShipFromForm({ fromAddress, fromFullName, fromEmail, fromPhone, 
             />
             <label className="font-bold">Address</label>
             <input 
-                autoFocus 
-                required 
+                autoFocus
+                type="text"
+                value={address}
+                onChange={e => setAddress(e.target.value)}
+                className="border-2 px-2 rounded-md bg-gray-200"
+            />
+                <label className="font-bold">Postal Code</label>
+            <div>
+                <input 
+                    autoFocus
+                    type="number" 
+                    pattern="^\d{0,6}$"
+                    title="Please enter 6 digits"
+                    value={fromAddress.postalCode}
+                    onChange={e => updateFields({ fromAddress: { ...fromAddress, postalCode: e.target.value }})}
+                    className="border-2 px-2 rounded-md bg-gray-200"
+                />
+                <button
+                    type="button"
+                    className="bg-slate-500 rounded-md w-1/2 text-sm text-white ml-1 p-1"
+                    onClick={(e) => getAddressFromPostalCode(e, fromAddress.postalCode || "")} // handleAddressRetrieval(e, fromAddress.postalCode || "")
+                >
+                    Retrieve address
+                </button>
+            </div>
+            <label className="font-bold">City</label>
+            <input 
+                autoFocus
                 type="text" 
-                value={fromAddress}
-                onChange={e => updateFields({ fromAddress: e.target.value })}
+                value={city}
+                onChange={e => setCity(e.target.value)}
+                className="border-2 px-2 rounded-md bg-gray-200"
+            />
+            <label className="font-bold">Country</label>
+            <input 
+                autoFocus
+                type="text" 
+                value={country}
+                onChange={e => setCountry(e.target.value)}
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
             <label className="font-bold">Email</label>

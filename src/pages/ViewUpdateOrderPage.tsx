@@ -49,6 +49,8 @@ export function ViewUpdateOrderPage() {
 	const location = useLocation();
 	const { allowUpdate } = location.state || { allowUpdate: false };
 
+	const pageTitle = allowUpdate ? "Update Order" : "View Order";
+
 	function updateFields(fields: Partial<FormData>) {
 		if (allowUpdate){
 			setData( prev => {
@@ -87,6 +89,13 @@ export function ViewUpdateOrderPage() {
 
 	return (
 		<>
+		<div className={`box-border h-32 w-32 p-4 border-2 border-black my-12 mx-8 shadow-lg
+			${allowUpdate ? 'bg-blue-300 shadow-blue-500/30' : 'bg-green-300 shadow-green-500/30'}`}>
+			<div className = "flex justify-center text-xl text-center font-medium text-gray-800 p-4"> 
+				{pageTitle}
+			</div>
+		</div>
+
 			<div style={{
 			position: "relative",
 			background: "white",

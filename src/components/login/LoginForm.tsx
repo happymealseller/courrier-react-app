@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom";
 import { ResponseStatus } from "../../utilities/enums/ResponseStatus";
 import { AccountType } from "../../utilities/enums/AccountType";
-import { GmailIcon } from "../icons/GmailIcon";
+// import { GmailIcon } from "../icons/GmailIcon";
 import { axiosInstance } from "../security/axiosInstance";
 import { AdminUrl, AuthenticationUrl, CourierUrl, CustomerUrl } from "../../utilities/enums/Url";
 import { AuthenticationEndpoint } from "../../utilities/enums/Endpoint";

@@ -23,14 +23,20 @@ export function NewOrderSummaryPage() {
               <p><strong>Full Name:</strong> {order.fromFullName}</p>
               <p><strong>Email:</strong> {order.fromEmail}</p>
               <p><strong>Phone Number:</strong> {order.fromPhoneNo}</p>
-              <p><strong>Address:</strong> {order.fromAddress}</p>
+              <p><strong>Address:</strong> {order.fromAddress.address}</p>
+              <p><strong>City:</strong> {order.fromAddress.city}</p>
+              <p><strong>Country:</strong> {order.fromAddress.country}</p>
+              <p><strong>Postal Code:</strong> {order.fromAddress.postalCode}</p>
             </div>
             <div className="order-section">
               <h2>Recipient Information</h2>
               <p><strong>Full Name:</strong> {order.toFullName}</p>
               <p><strong>Email:</strong> {order.toEmail}</p>
               <p><strong>Phone Number:</strong> {order.toPhoneNo}</p>
-              <p><strong>Address:</strong> {order.toAddress}</p>
+              <p><strong>Address:</strong> {order.toAddress.address}</p>
+              <p><strong>City:</strong> {order.fromAddress.city}</p>
+              <p><strong>Country:</strong> {order.fromAddress.country}</p>
+              <p><strong>Postal Code:</strong> {order.fromAddress.postalCode}</p>
             </div>
             <div className="order-section">
               <h2>Delivery Information</h2>
