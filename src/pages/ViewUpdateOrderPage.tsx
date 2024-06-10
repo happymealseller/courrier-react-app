@@ -134,8 +134,6 @@ export function ViewUpdateOrderPage() {
 
 	const pageTitle = allowUpdate ? "Update Order" : "View Order";
 
-	const pageTitle = allowUpdate ? "Update Order" : "View Order";
-
 	function updateFields(fields: Partial<FormData>) {
 		if (allowUpdate){
 			setData( prev => {

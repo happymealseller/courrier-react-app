@@ -1,92 +1,142 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { CourierUrl } from "../../utilities/enums/Url";
 import { useNavigate } from "react-router-dom";
-import { RequestHeaderKey } from "../../utilities/enums/RequestHeaderKey";
 import { useSelector } from "react-redux";
 import { RootState } from "../../App";
-import { config } from "../../utilities/constants/config";
 import { axiosInstance } from "../security/axiosInstance";
-import { OrderHistoryItem } from "./OrderHistoryItem";
 
 /* Admin should be able to do
 - filter by trip status (UNASSIGNED, ASSIGNED, RETRIEVED, COMPLETED), region, trip date, type (PICKUP OR DELIVERY)
 - update order status INCLUDING order cancelled and others AND remarks
 */
+
+/*
+- Add region column add a later date
+*/
+interface PartyAddress {
+  id: number;
+  address: string;
+  postalCode: string;
+  country: string;
+  city: string;
+}
+
+interface SortingWarehouse {
+  id: number;
+  name: string;
+  address: string;
+  postalCode: string;
+  country: string;
+  city: string;
+}
+
+interface Trip {
+  tripId: number;
+  tripDate: string;
+  tripStatus: string;
+  route: string;
+  partyAddress: PartyAddress;
+  sortingWarehouse: SortingWarehouse;
+  courierId?: number | null; // Courier ID, which may be null
+}
+
 const filterData = (data: any[], keys: any[]) => {
   return data.map((item) => {
-    const filteredItem: any = {}; // Add type annotation here
+    const filteredItem: any = {};
     keys.forEach((key) => {
       filteredItem[key] = key.includes("Date")
-        ? format(new Date(item[key]), "yyyy-MM-dd")
+        ? item[key] ? format(new Date(item[key]), "yyyy-MM-dd") : "N/A"
         : item[key];
     });
-    return filteredItem as OrderHistoryItem;
+    return filteredItem as Trip;
   });
 };
 
-const filterOrdersByStatus = (orders: OrderHistoryItem[], status: string): OrderHistoryItem[] => {
-  return status === "All" ? orders : orders.filter(order => order.orderStatus === status);
+const filterOrdersByStatus = (orders: Trip[], status: string): Trip[] => {
+  return status === "All" ? orders : orders.filter(order => order.tripStatus === status);
+};
+
+const mapRouteType = (route: string): string => {
+  switch (route) {
+    case 'INBOUND':
+      return 'Pick up';
+    case 'OUTBOUND':
+      return 'Delivery';
+    default:
+      return route;
+  }
+};
+
+const mapTripStatus = (status: string): string => {
+  switch (status) {
+    case 'UNASSIGNED':
+      return 'Unassigned';
+    case 'ASSIGNED':
+      return 'ASSIGNED';
+    case 'RETRIEVED':
+      return 'Retrieved';
+    case 'COMPLETED':
+      return 'Completed';
+    default:
+      return status;
+  }
 };
 
 export function AdminDashboard() {
-  const [orders, setOrders] = useState<OrderHistoryItem[]>([]);
+  const [orders, setOrders] = useState<Trip[]>([]);
+  const [filteredOrders, setFilteredOrders] = useState<Trip[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState("All");
   const navigate = useNavigate();
   const username = useSelector((state: RootState) => state.authentication.username);
-  const [allowUpdate, setAllowUpdate] = useState(false);
-  const [filteredOrders, setFilteredOrders] = useState<OrderHistoryItem[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState("All");
 
   const order_headers = [
-    "Tracking ID",
-    "Sender Name",
-    "Recipient Name",
+    "Trip ID",
+    "Recipient Address",
     "Date of Delivery",
-    "Delivery Address",
-    "Order Status",
+    "Route Type",
+    "Trip Status",
+    "Courier Name",
   ];
 
   const displayKeys = [
-    "orderId",
-    "fromFullName",
-    "toFullName",
-    "deliveryDate",
-    "toAddress",
-    "currentStatus",
-  ];
-
-  // Dummy data for demonstration
-  const dummyOrders: OrderHistoryItem[] = [
-    {
-      orderId: 1,
-      orderStatus: "Completed",
-      toFullName: "Bob Smith",
-      deliveryDate: "2024-06-01",
-      toAddress: "123 Main St, Springfield",
-      orderDate: "2024-05-28",
-    },
-    {
-      orderId: 2,
-      orderStatus: "Retrieved",
-      toFullName: "David Green",
-      deliveryDate: "2024-06-05",
-      toAddress: "456 Elm St, Springfield",
-      orderDate: "2024-06-01",
-    },
-    {
-      orderId: 3,
-      orderStatus: "Assigned",
-      toFullName: "Frank White",
-      deliveryDate: "2024-06-03",
-      toAddress: "789 Maple St, Springfield",
-      orderDate: "2024-06-01",
-    },
+    "tripId",
+    "tripDate",
+    "tripStatus",
+    "route",
+    "partyAddress",
+    "courierId",
   ];
 
   useEffect(() => {
-    setOrders(dummyOrders);
-    setFilteredOrders(dummyOrders);
-  }, []);
+    const fetchData = async () => {
+      const hardcodedToken = 'eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MTgwMDIyMDcsImV4cCI6MTcxODA4ODYwNywidXNlcm5hbWUiOiJBZG1pbjAwMSIsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiJ9.7SZtPvLahOsdkJZ7ef-IpuOs0OfejRFRaSwty7y_iUoR5zAxXZla5LxOISYOXh7s';
+  
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${hardcodedToken}`, // Hardcoded JWT token here
+          // 'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        },
+      };
+  
+      try {
+        const response = await axiosInstance.get('/admin/trips', config);
+        if (response.data && response.data.trips) {
+          const filteredData = filterData(response.data.trips, displayKeys);
+          setOrders(filteredData);
+          setFilteredOrders(filteredData);
+        } else {
+          console.log('No trips found in response.');
+          setOrders([]);
+          setFilteredOrders([]);
+        }
+      } catch (error) {
+        console.error('Error fetching trip data:', error);
+      }
+    };
+
+    fetchData();
+  }, [username]);
 
   useEffect(() => {
     setFilteredOrders(filterOrdersByStatus(orders, selectedStatus));
@@ -96,21 +146,7 @@ export function AdminDashboard() {
     setSelectedStatus(e.target.value);
   }
 
-	// useEffect(() => {
-	// 	config.headers[RequestHeaderKey.Username] = username
-	// }, [])
-
-  //   // Change API after its done
-  // useEffect(() => {
-  //   axiosInstance
-  //     .get("/courier/orders", config) 
-  //     .then((res) => filterData(res.data.orderHistoryList, displayKeys))
-  //     .then((data: OrderHistoryItem[]) => setOrders(data))
-  //     .catch((err) => console.log(err));
-  // }, [setOrders]); // to filter only for undelivered items next time
-
-
-  function handleClick(e: FormEvent) {
+  function handleClick(e: React.FormEvent) {
     e.preventDefault();
     console.log("Courier assigned to order successfully!");
     navigate("/");
@@ -126,10 +162,10 @@ export function AdminDashboard() {
         <label htmlFor="statusFilter" className="mr-2">Filter by status:</label>
         <select id="statusFilter" value={selectedStatus} onChange={handleStatusChange} className="border-2 border-gray-300 p-2 rounded-md">
           <option value="All">All</option>
-          <option value="Unassigned">Unassigned</option>
-          <option value="Assigned">Assigned</option>
-          <option value="Retrieved">Retrieved</option>
-          <option value="Completed">Completed</option>
+          <option value="UNASSIGNED">Unassigned</option>
+          <option value="ASSIGNED">Assigned</option>
+          <option value="RETRIEVED">Retrieved</option>
+          <option value="COMPLETED">Completed</option>
         </select>
       </div>
       <table className="table-auto w-full" style={{ height: '200px' }}> 
@@ -142,13 +178,26 @@ export function AdminDashboard() {
           </tr>
         </thead>
         <tbody>
-          {filteredOrders.map((item, index) => (
+          {filteredOrders.map((trip, index) => (
             <tr key={index} className="bg-white border border-black px-5 py-2 border-solid">
-              {Object.entries(item).map(([key, value], idx) => (
-                <td key={idx} className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
-                  {value}
-                </td>
-              ))}
+              <td className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
+                {trip.tripId}
+              </td>
+              <td className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
+                {trip.partyAddress.address}, {trip.partyAddress.city}, {trip.partyAddress.country}
+              </td>
+              <td className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
+                {trip.tripDate !== "N/A" ? format(new Date(trip.tripDate), "yyyy-MM-dd") : "N/A"}
+              </td>
+              <td className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
+                {mapRouteType(trip.route)}
+              </td>
+              <td className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
+                {mapTripStatus(trip.tripStatus)}
+              </td>
+              <td className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
+                {trip.courierId ?? "N/A"}
+              </td>
               <td
                 className="border px-5 py-2 border-black"
                 style={{ textAlign: "center" }}
@@ -180,15 +229,6 @@ export function AdminDashboard() {
           ))}
         </tbody>
       </table>
-      <div className="mt-8 gap-y-6">
-        <button
-          type="button"
-          className="active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-slate-500 text-white text-lg font-bold px-8 py-3 text-center m-2"
-          onClick={handleClick}
-        >
-          Back
-        </button>
-      </div>
     </div>
   );
 }
