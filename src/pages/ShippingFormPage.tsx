@@ -28,7 +28,7 @@ const INITIAL_DATA: FormData = {
 	},
 	fromFullName: "",
 	fromEmail: "",
-	fromPhone: "",
+	fromPhoneNo: "",
 	toAddress:  {
 		address: "",
         postalCode: "",
@@ -37,7 +37,7 @@ const INITIAL_DATA: FormData = {
 	},
 	toFullName: "",
 	toEmail: "",
-	toPhone: "",
+	toPhoneNo: "",
 	parcelType: ParcelType.Custom,
 	length: "",
 	width: "",

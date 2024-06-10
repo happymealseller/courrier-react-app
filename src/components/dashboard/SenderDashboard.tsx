@@ -131,7 +131,7 @@ export function SenderDashboard() {
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5"
                     onClick={() => {
-                      navigate(CustomerUrl.VIEW_ORDER, { state: { allowUpdate: false }})
+                      navigate(CustomerUrl.VIEW_ORDER, { state: { allowUpdate: false, orderId: item.orderId }})
                     }}
 
                   >
@@ -141,7 +141,7 @@ export function SenderDashboard() {
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
                     onClick={() => {
-                      navigate(CustomerUrl.UPDATE_ORDER, { state: { allowUpdate: true }})
+                      navigate(CustomerUrl.UPDATE_ORDER, { state: { allowUpdate: true, orderId: item.orderId }})
                     }}
 
                   >

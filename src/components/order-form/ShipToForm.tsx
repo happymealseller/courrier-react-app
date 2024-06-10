@@ -3,7 +3,7 @@ import { ShipToFormProps } from "../../utilities/type-aliases/order-form/ShipToF
 import { FormEvent, useEffect, useState } from "react";
 import axios from "axios";
 
-export function ShipToForm({ toAddress, toFullName, toEmail, toPhone, updateFields }: ShipToFormProps) {
+export function ShipToForm({ toAddress, toFullName, toEmail, toPhoneNo, updateFields }: ShipToFormProps) {
     const [address, setAddress] = useState(toAddress.address);
     const [city, setCity] = useState(toAddress.city);
     const [country, setCountry] = useState(toAddress.country);
@@ -37,7 +37,7 @@ export function ShipToForm({ toAddress, toFullName, toEmail, toPhone, updateFiel
                 autoFocus 
                 required 
                 type="text" 
-                value={address}
+                value={toAddress.address}
                 onChange={e => setAddress(e.target.value)}
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
@@ -66,7 +66,7 @@ export function ShipToForm({ toAddress, toFullName, toEmail, toPhone, updateFiel
                 autoFocus 
                 required 
                 type="text" 
-                value={city}
+                value={toAddress.city}
                 onChange={e => setCity(e.target.value)}
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
@@ -75,7 +75,7 @@ export function ShipToForm({ toAddress, toFullName, toEmail, toPhone, updateFiel
                 autoFocus 
                 required 
                 type="text" 
-                value={country}
+                value={toAddress.country}
                 onChange={e => setCountry(e.target.value)}
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
@@ -94,8 +94,8 @@ export function ShipToForm({ toAddress, toFullName, toEmail, toPhone, updateFiel
                 required 
                 pattern="^[89]\d{7}$"
                 title="Please enter an 8-digit number starting with 8 or 9."
-                value={toPhone} 
-                onChange={e => updateFields({ toPhone: e.target.value })} 
+                value={toPhoneNo} 
+                onChange={e => updateFields({ toPhoneNo: e.target.value })} 
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
         </FormWrapper>

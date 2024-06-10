@@ -141,9 +141,9 @@ export function CourierDashboard() {
                 <div style={{ padding: "10px", alignItems: "center" }}>
                 <button
                     type="button"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5" //, marginRight:"10px"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5"
                     onClick={() => {
-                      navigate(CourierUrl.VIEW_ORDER, { state: { allowUpdate: false }})
+                      navigate(CourierUrl.VIEW_ORDER, { state: { allowUpdate: false, orderId: item.orderId }})
                     }}
                   >
                     View
