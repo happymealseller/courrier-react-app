@@ -2,8 +2,10 @@ import { FormWrapper } from "./FormWrapper";
 import { ShipToFormProps } from "../../utilities/type-aliases/order-form/ShipToFormProps";
 import { FormEvent, useEffect, useState } from "react";
 import axios from "axios";
+import { FormEvent, useEffect, useState } from "react";
+import axios from "axios";
 
-export function ShipToForm({ toAddress, toFullName, toEmail, toPhoneNo, updateFields }: ShipToFormProps) {
+export function ShipToForm({ toAddress, toFullName, toEmail, toPhone, updateFields }: ShipToFormProps) {
     const [address, setAddress] = useState(toAddress.address);
     const [city, setCity] = useState(toAddress.city);
     const [country, setCountry] = useState(toAddress.country);
@@ -23,6 +25,7 @@ export function ShipToForm({ toAddress, toFullName, toEmail, toPhoneNo, updateFi
 
     return (
         <FormWrapper title="Ship To (Receipient)">
+        <FormWrapper title="Ship To (Receipient)">
             <label className="font-bold">Contact Name</label>
             <input 
                 autoFocus 
@@ -37,7 +40,7 @@ export function ShipToForm({ toAddress, toFullName, toEmail, toPhoneNo, updateFi
                 autoFocus 
                 required 
                 type="text" 
-                value={toAddress.address}
+                value={address}
                 onChange={e => setAddress(e.target.value)}
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
@@ -66,7 +69,7 @@ export function ShipToForm({ toAddress, toFullName, toEmail, toPhoneNo, updateFi
                 autoFocus 
                 required 
                 type="text" 
-                value={toAddress.city}
+                value={city}
                 onChange={e => setCity(e.target.value)}
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
@@ -75,7 +78,7 @@ export function ShipToForm({ toAddress, toFullName, toEmail, toPhoneNo, updateFi
                 autoFocus 
                 required 
                 type="text" 
-                value={toAddress.country}
+                value={country}
                 onChange={e => setCountry(e.target.value)}
                 className="border-2 px-2 rounded-md bg-gray-200"
             />
