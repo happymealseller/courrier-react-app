@@ -17,37 +17,83 @@ import { RootState } from "../App"
 import { RequestHeaderKey } from "../utilities/enums/RequestHeaderKey"
 
 const INITIAL_DATA: FormData = {
-	fromCompanyName: "",
-	fromAddress: "",
+	fromAddress: {
+		address: "",
+		postalCode: "",
+		country: "",
+		city: ""
+	},
 	fromFullName: "",
 	fromEmail: "",
-	fromPhone: "",
-	toCompanyName: "",
-	toAddress: "",
+	fromPhoneNo: "",
+	toAddress: {
+		address: "",
+		postalCode: "",
+		country: "",
+		city: ""
+	},
 	toFullName: "",
 	toEmail: "",
-	toPhone: "",
+	toPhoneNo: "",
 	parcelType: ParcelType.Custom,
 	length: "",
 	width: "",
 	height: "",
 	weight: "",
-	parcelDescription: "Bomb"
+	parcelDescription: ""
 }  // to replace with retrieved data from local storage
 // pls preload dummy b4 testing, validation kicks in
+
+interface Address {
+	address: string;
+	postalCode: string;
+	country: string;
+	city: string;
+  }
+
+interface senderDetails {
+	fromFullName: string
+	fromEmail: string
+	fromPhone: string
+	fromAddress: Address
+}
+
+interface receipientDeatails {
+	toFullName: string
+	toEmail: string
+	toPhone: string
+	toAddress: Address
+}
+
+interface orderDetails {
+	sender: senderDetails
+	recipient: receipientDeatails
+}
 
 export function ViewUpdateOrderPage() {
 
 	const username = useSelector((state: RootState) => state.authentication.username)
-	
+	const navigate = useNavigate();
+	const [data, setData] = useState(INITIAL_DATA);
+	const location = useLocation();
+	const allowUpdate = location.state !== null ? location.state.allowUpdate : { allowUpdate: false };
+	const orderId  = location.state.orderId;
+
 	useEffect(() => {
 		config.headers[RequestHeaderKey.Username] = username
 	}, [])
 
-	const navigate = useNavigate();
-	const [data, setData] = useState(INITIAL_DATA);
-	const location = useLocation();
-	const { allowUpdate } = location.state || { allowUpdate: false };
+	useEffect(() => {
+		const url = CustomerEndpoint.TRACK_ORDER.replace("{orderId}", orderId)
+		axiosInstance
+			.get(url, config)
+			.then((res) => {
+				setData(res.data.orderDetails)
+			})
+			.catch((err => {
+				console.log(err)
+			}))
+	}, [])
 
 	const pageTitle = allowUpdate ? "Update Order" : "View Order";
 
@@ -58,11 +104,12 @@ export function ViewUpdateOrderPage() {
 			});
 		}
 	}
+	const noOp = () => {};
 
 	const { currentStepIndex, isFirstStep, isLastStep, step, steps, next, back } = useMultistepForm([
 		<ShipFromForm {...data} updateFields={updateFields} />,
 		<ShipToForm {...data} updateFields={updateFields} />,
-		<ParcelInformationForm {...data} updateFields={updateFields} />,
+		<ParcelInformationForm {...data} updateFields={ noOp } />,   // future fix: to prevent update of parcel info
 		//<ShippingServiceForm />,
 		//<PaymentForm {...data} updateFields={updateFields} />
 	])
@@ -72,18 +119,44 @@ export function ViewUpdateOrderPage() {
 		if (!isLastStep) {
 			return next()
 		} else if(allowUpdate){
-			const endpoint = CustomerEndpoint.NEW_ORDER;
-			axiosInstance.post(endpoint, JSON.stringify(data), config)
+			const endpoint = CustomerEndpoint.UPDATE_ORDER.replace("{orderId}", orderId)
+
+			const orderDetails: orderDetails = {
+				sender: {
+					fromFullName: data.fromFullName,
+					fromEmail: data.fromEmail,
+					fromPhone: data.fromPhoneNo,
+					fromAddress: {
+						address: data.fromAddress!.address!,
+						postalCode: data.fromAddress!.postalCode!,
+						country: data.fromAddress!.country!,
+						city: data.fromAddress!.city!
+					}
+				},
+				recipient: {
+					toFullName: data.toFullName,
+					toEmail: data.toEmail,
+					toPhone: data.toPhoneNo,
+					toAddress: {
+						address: data.toAddress!.address!,
+						postalCode: data.toAddress!.postalCode!,
+						country: data.toAddress!.country!,
+						city: data.toAddress!.city!
+					}
+				}
+			}
+	
+			axiosInstance.put(endpoint, JSON.stringify(orderDetails), config)
 				.then(response => {
 					if (response.data.status === ResponseStatus.Success) {
 						navigate(
 							CustomerUrl.NEW_ORDER_SUMMARY,
-							{ state: response.data.orderDetails as OrderSummary}
+							{ state: response.data.updatedOrderDetails as OrderSummary }
 						)
-					} else if (response.data.status === ResponseStatus.Failure) {
-						alert(`Error ${response.data.message}`)
-					}
-				})
+				} else if (response.data.status === ResponseStatus.Failure) {
+					alert(`Error ${response.data.message}`)
+				}
+			})
 		}
 	}	
 

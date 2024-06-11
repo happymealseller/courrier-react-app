@@ -5,7 +5,7 @@ type ShipToData = {
     toAddress: Partial<Address>,
     toFullName: string,
     toEmail: string,
-    toPhone: string
+    toPhoneNo: string
 }
 
 export type ShipToFormProps = ShipToData & {
