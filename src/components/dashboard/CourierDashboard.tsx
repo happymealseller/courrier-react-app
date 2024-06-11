@@ -72,6 +72,7 @@ export function CourierDashboard() {
                   <option value="COMPLETED">Complete</option>
                 </select>
                 <button
+                  disabled={e.orderStatus === "COMPLETED"}
                   onClick={() => handleUpdate(e.id)}
                   className="ml-2 px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-700">
                   Update
@@ -82,7 +83,7 @@ export function CourierDashboard() {
           ))}
         </tbody>
       </table>
-      })}
+
     </div>
   )
 }
