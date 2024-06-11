@@ -11,7 +11,10 @@ import { axiosInstance } from "../security/axiosInstance";
 */
 
 /*
-- Add region column add a later date
+- Add region column at a later date
+- Talk to Venessa about the POST request
+  - Should also return Courier details
+  - Currently request body is very specific ie. can only show ASSIGN, INBOUND etc. Trip doesnt show if the params are diff
 */
 interface PartyAddress {
   id: number;
@@ -37,7 +40,7 @@ interface Trip {
   route: string;
   partyAddress: PartyAddress;
   sortingWarehouse: SortingWarehouse;
-  courierId?: number | null; // Courier ID, which may be null
+  courierName?: number | null; // Courier ID, which may be null
 }
 
 const filterData = (data: any[], keys: any[]) => {
@@ -72,7 +75,7 @@ const mapTripStatus = (status: string): string => {
     case 'UNASSIGNED':
       return 'Unassigned';
     case 'ASSIGNED':
-      return 'ASSIGNED';
+      return 'Assigned';
     case 'RETRIEVED':
       return 'Retrieved';
     case 'COMPLETED':
@@ -109,7 +112,7 @@ export function AdminDashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const hardcodedToken = 'eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MTgwMDIyMDcsImV4cCI6MTcxODA4ODYwNywidXNlcm5hbWUiOiJBZG1pbjAwMSIsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiJ9.7SZtPvLahOsdkJZ7ef-IpuOs0OfejRFRaSwty7y_iUoR5zAxXZla5LxOISYOXh7s';
+      const hardcodedToken = 'eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MTgxMTkyNzAsImV4cCI6MTcxODIwNTY3MCwidXNlcm5hbWUiOiJBZG1pbjAwMSIsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiJ9.uYrUU6_6YudRntnl-oOaVJJA7eQTU1Th47Q9oL0Q0sojTvljOR6vm-4ZdFwu5b6q';
   
       const config = {
         headers: {
@@ -119,16 +122,28 @@ export function AdminDashboard() {
         },
       };
   
+      const requestBody = [
+        {
+          "columnKey": "tripStatus",
+          "columnValue": "ASSIGNED"
+        },
+        {
+          "columnKey": "route",
+          "columnValue": "INBOUND"
+        },
+        {
+          "columnKey": "tripDate",
+          "columnValue": "2024-06-14"
+        }
+      ];
+  
       try {
-        const response = await axiosInstance.get('/admin/trips', config);
+        const response = await axiosInstance.post('/admin/trips', requestBody, config);
+
         if (response.data && response.data.trips) {
           const filteredData = filterData(response.data.trips, displayKeys);
           setOrders(filteredData);
           setFilteredOrders(filteredData);
-        } else {
-          console.log('No trips found in response.');
-          setOrders([]);
-          setFilteredOrders([]);
         }
       } catch (error) {
         console.error('Error fetching trip data:', error);
@@ -144,12 +159,6 @@ export function AdminDashboard() {
 
   function handleStatusChange(e: React.ChangeEvent<HTMLSelectElement>) {
     setSelectedStatus(e.target.value);
-  }
-
-  function handleClick(e: React.FormEvent) {
-    e.preventDefault();
-    console.log("Courier assigned to order successfully!");
-    navigate("/");
   }
 
   return (
@@ -196,13 +205,13 @@ export function AdminDashboard() {
                 {mapTripStatus(trip.tripStatus)}
               </td>
               <td className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
-                {trip.courierId ?? "N/A"}
+                {trip.courierName ?? "N/A"}
               </td>
               <td
                 className="border px-5 py-2 border-black"
                 style={{ textAlign: "center" }}
               >
-                <div style={{ padding: "10px", alignItems: "center" }}>
+                {/* <div style={{ padding: "10px", alignItems: "center" }}>
                   <button
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5"
@@ -212,13 +221,13 @@ export function AdminDashboard() {
                   >
                     View
                   </button>
-                </div>
+                </div> */}
                 <div>
                   <button
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mt-2" style={{ width: '130px' }}
                     onClick={() => {
-                      navigate("/update-order", { state: { allowUpdate: true } });
+                      navigate("/assign", { state: { allowUpdate: true } });
                     }}
                   >
                     Update
