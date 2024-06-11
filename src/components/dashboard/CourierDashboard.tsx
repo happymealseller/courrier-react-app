@@ -1,7 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
-import { format } from "date-fns";
-import { CourierUrl } from "../../utilities/enums/Url";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { RequestHeaderKey } from "../../utilities/enums/RequestHeaderKey";
 import { useSelector } from "react-redux";
 import { RootState } from "../../App";
@@ -9,204 +6,84 @@ import { config } from "../../utilities/constants/config";
 import { axiosInstance } from "../security/axiosInstance";
 import { OrderHistoryItem } from "./OrderHistoryItem";
 
-const filterData = (data: any[], keys: any[]) => {
-  return data.map((item) => {
-    const filteredItem: any = {}; // Add type annotation here
-    keys.forEach((key) => {
-      filteredItem[key] = key.includes("Date")
-        ? format(new Date(item[key]), "yyyy-MM-dd")
-        : item[key];
-    });
-    return filteredItem as OrderHistoryItem;
-  });
-};
-
-const allowedStatuses = ["PICKED_UP", "SORTING", "DELIVERING", "DELIVERED"];
-
 export function CourierDashboard() {
   const [orders, setOrders] = useState<OrderHistoryItem[]>([]);
-  const [editingOrderId, setEditingOrderId] = useState<string>("");
-  const [selectedStatus, setSelectedStatus] = useState<string>('');
-  const navigate = useNavigate();
+  const [inputStatus, setInputStatus] = useState("");
   const username = useSelector((state: RootState) => state.authentication.username);
 
-  const order_headers = [
-    "Tracking ID",
-    "Sender Name",
-    "Recipient Name",
-    "Date of Delivery",
-    "Sending Address",
-    "Delivery Address",
-    "Order Status",
-  ];
-
-  const displayKeys = [
-    "orderId",
-    "fromFullName",
-    "toFullName",
-    "deliveryDate",
-    "fromAddress",
-    "toAddress",
-    "currentStatus",
-  ];
-
-	useEffect(() => {
-		config.headers[RequestHeaderKey.Username] = username
-	}, [])
+  useEffect(() => {
+    config.headers[RequestHeaderKey.Username] = username
+  }, [])
 
   useEffect(() => {
     axiosInstance
-      .get("/courier/orders", config) 
-      .then((res) => filterData(res.data.orderHistoryList, displayKeys))
-      .then((data: OrderHistoryItem[]) => setOrders(data))
+      .get("/courier/trips", config)
+      .then((res) => {
+        setOrders(res.data?.tripDetailsList.map((e) => ({
+          id: e.tripId,
+          date: new Date(e.tripDate).toLocaleDateString('en-US'),
+          from: e.sortingWarehouse.address,
+          to: e.partyAddress.address,
+          status: e.tripStatus,
+        })));
+      })
       .catch((err) => console.log(err));
-  }, [setOrders]); // to filter only for undelivered items next time
+  }, [setOrders]);
 
-  const handleStatusUpdate = async (orderId: string) => {
-    console.log(config);
-    try {
-      const response = await axiosInstance.put(`/courier/${orderId}`, {
-        status: selectedStatus,
-        remarks: 'Status updated by courier',
-      }, config);
-      // Update status on dashboard
-      setOrders(orders.map(order => order.orderId === parseInt(orderId) ? { ...order, currentStatus: selectedStatus } : order));
-      setEditingOrderId("");
-      console.log(`Order ${orderId} updated successfully to status: ${selectedStatus}`);
-    } catch (error) {
-      console.error(`Failed to update order ${orderId}:`, error);
-    }
-  };
-
-  function handleClick(e: FormEvent) {
-    e.preventDefault();
-    console.log("Courier assigned to order successfully!");
-    navigate("/");
+  const handleChange = (e) => {
+    setInputStatus(e.target.value)
   }
 
-  interface TableCellProps {
-    key: number;
-    value: any;
-    isAddress: boolean;
+  const handleUpdate = (id) => {
+    axiosInstance
+      .put(`/courier/${id}`, {
+        "tripStatus": inputStatus,
+        "remarks": "n/a"
+      }, config)
+      .then((res) => { console.log(res) })
+      .catch((error => { console.log(error) }))
   }
-  
-  const TableCell: React.FC<TableCellProps> = ({ key, value, isAddress }) => {
-    const displayValue = isAddress
-      ? `${value.address.toString()}, ${value.postalCode.toString()}`
-      : value.toString();
-  
-    return (
-      <td
-        key={key}
-        className="border border-black px-5 py-2 border-solid"
-        style={{ textAlign: "center" }}
-      >
-        {displayValue}
-      </td>
-    );
-  };
-
-
 
   return (
-    <div className="bg-white p-12 rounded-3xl border-2 border-gray-200">
-      <h1 className="text-2xl font-semibold underline underline-offset-1">Courier Dashboard</h1>
-      <br />
-      <h2 className="text-lg font-semibold px-4 py-2 text-bright-red">Welcome {username} !</h2>
-      <br />
-      <table className="table-auto w-full" style={{ height: '200px' }}> 
-        <thead>
-          <tr className="border border-black px-5 py-2">
-            {order_headers.map((header, idx) => (
-              <th key={idx} className="border border-black px-5 py-2" style={{ width: '165px' }}>{header}</th>
-            ))}
-            <th className="border border-black px-5 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map((item, index) => (
-            <tr key={index} className="bg-white border border-black px-5 py-2 border-solid">
-              {Object.entries(item).map(([key, value], idx) => (
-                <TableCell
-                  key={idx}
-                  value={value}
-                  isAddress={key === "toAddress" || key === "fromAddress"}
-                />
-              ))}
-              {/* Button in the last column, to fix issue with last column header borders next time */}
-              <td
-                className="border px-5 py-2 border-black"
-                style={{ textAlign: "center" }}
-              >
-                <div style={{ padding: "10px", alignItems: "center" }}>
-                <button
-                    type="button"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5" //, marginRight:"10px"
-                    onClick={() => {
-                      navigate(CourierUrl.VIEW_ORDER, { state: { allowUpdate: false }})
-                    }}
-                  >
-                    View
-                  </button>
-                </div>
-                {editingOrderId === item.orderId.toString() ? (
-                  <div>
-                    <select
-                      value={selectedStatus}
-                      onChange={(e) => setSelectedStatus(e.target.value)}
-                      className="border-2 rounded-md px-2 mb-2"
-                    >
-                      <option value="">Select Status</option>
-                      {allowedStatuses.map((status) => (
-                        <option key={status} value={status}>{status}</option>
-                      ))}
+    <div className="p-20">
+      {orders.map((e) => {
+        return <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">ID</th>
+              <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">Date</th>
+              <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">From</th>
+              <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">To</th>
+              <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider"></th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {orders.map((e) => (
+              <tr key={e.id}>
+                <td className="px-6 py-4 text-center text-sm whitespace-nowrap">{e.id}</td>
+                <td className="px-6 py-4 text-center text-sm whitespace-nowrap">{e.date}</td>
+                <td className="px-6 py-4 text-center text-sm whitespace-nowrap">{e.from}</td>
+                <td className="px-6 py-4 text-center text-sm whitespace-nowrap">{e.to}</td>
+                <td className="px-6 py-4 text-center text-sm whitespace-nowrap">{e.status}</td>
+                <td className="px-6 py-4 text-center text-sm whitespace-nowrap">
+                  <td className="px-6 py-4 text-center text-sm whitespace-nowrap">
+                    <select onChange={handleChange} className="border border-gray-300 rounded px-3 py-1 text-gray-700">
+                      <option value="RETRIEVED">Retrieve</option>
+                      <option value="COMPLETED">Complete</option>
                     </select>
-                    <div className="flex space-x-2">
-                      <button
-                        type="button"
-                        className="bg-green-500 hover:bg-green-700 text-white font-semibold py-1 px-2 rounded"
-                        onClick={() => handleStatusUpdate(item.orderId.toString())}
-                      >
-                        Save
-                      </button>
-                      <button
-                        type="button"
-                        className="bg-red-500 hover:bg-red-700 text-white font-semibold py-1 px-2 rounded"
-                        onClick={() => setEditingOrderId(null)}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
                     <button
-                      type="button"
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mt-2" style={{ width: '130px' }}
-                      onClick={() => { setEditingOrderId(item.orderId.toString()); setSelectedStatus(item.orderStatus); }}
-                      // Below is to opn a new page
-                      // onClick={() => {
-                      //   navigate(CourierUrl.UPDATE_ORDER, { state: { allowUpdate: true }})
-                      // }}
-                    >
+                      onClick={() => handleUpdate(e.id)}
+                      className="ml-2 px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-700">
                       Update
                     </button>
-                  </div>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="mt-8 gap-y-6">
-        <button
-          type="button"
-          className="active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-slate-500 text-white text-lg font-bold px-8 py-3 text-center m-2"
-          onClick={handleClick}
-        >
-          Back
-        </button>
-      </div>
+                  </td>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      })}
     </div>
-  );
+  )
 }
