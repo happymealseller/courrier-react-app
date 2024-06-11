@@ -67,17 +67,20 @@ export function CourierDashboard() {
               <td className="px-6 py-4 text-center text-sm whitespace-nowrap">{e.status}</td>
 
               <td className="px-6 py-4 text-center text-sm whitespace-nowrap">
-                <select onChange={handleChange} className="border border-gray-300 rounded px-3 py-1 text-gray-700">
-                  <option value="RETRIEVED">Retrieve</option>
-                  <option value="COMPLETED">Complete</option>
-                </select>
-                <button
-                  disabled={e.orderStatus === "COMPLETED"}
-                  onClick={() => handleUpdate(e.id)}
-                  className="ml-2 px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-700">
-                  Update
-                </button>
-
+                {e.status !== "COMPLETED" &&
+                  <div>
+                    <select onChange={handleChange} className="border border-gray-300 rounded px-3 py-1 text-gray-700">
+                      <option value="RETRIEVED">Retrieve</option>
+                      <option value="COMPLETED">Complete</option>
+                    </select>
+                    <button
+                      disabled={e.orderStatus === "COMPLETED"}
+                      onClick={() => handleUpdate(e.id)}
+                      className="ml-2 px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-700">
+                      Update
+                    </button>
+                  </div>
+                }
               </td>
             </tr>
           ))}
