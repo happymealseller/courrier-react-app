@@ -8,7 +8,7 @@ import { OrderHistoryItem } from "./OrderHistoryItem";
 
 export function CourierDashboard() {
   const [orders, setOrders] = useState<OrderHistoryItem[]>([]);
-  const [inputStatus, setInputStatus] = useState("");
+  const [inputStatus, setInputStatus] = useState("RETRIEVED");
   const username = useSelector((state: RootState) => state.authentication.username);
 
   useEffect(() => {
