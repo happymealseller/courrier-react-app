@@ -23,8 +23,9 @@ export enum PublicUrl {
     ORDER_STATUS = "/order-status"
 }
 
-// Check url again
+
 export enum AdminUrl {
     DASHBOARD = "/dashboard/admin",
+    ASSIGN_COURIER = "/assign",
     REGISTER_COURIER = "regcourier"
 }

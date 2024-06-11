@@ -1,94 +1,96 @@
-import React, { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { axiosInstance } from '../security/axiosInstance';
+
+// Trip is assigned to specific courier, cannot chain filters yet
+// Currently can only assign, and cannot unassign
 
 export function CourierAssign() {
-    const [courierId, setCourierId] = useState("");
-    const [orderId, setOrderId] = useState("");
+  const navigate = useNavigate();
+  
+  const assignCourier = async () => {
+    const hardcodedToken = 'eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MTgxMTkyNzAsImV4cCI6MTcxODIwNTY3MCwidXNlcm5hbWUiOiJBZG1pbjAwMSIsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiJ9.uYrUU6_6YudRntnl-oOaVJJA7eQTU1Th47Q9oL0Q0sojTvljOR6vm-4ZdFwu5b6q';
+  
+    const config = {
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${hardcodedToken}`, // Hardcoded JWT token here
+        // 'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+    },
+    };
 
-    const navigate = useNavigate();
+    const requestBodyAssign = {
+    assignedCourierId: 1,
+    };
 
-    //overall function need to update
-    // function handleSubmit(e: FormEvent) {
-    //     e.preventDefault()
-    //     const orderInformation = { courierId, orderId };
-    //     const url = "http://localhost:8081/courier";  //update this url
-    //     const options = {
-    //         "method": "POST",
-    //         "headers": {
-    //             "Content-Type": "application/json"
-    //         },
-    //         "body": JSON.stringify(orderInformation)
-    //     }
-    //     fetch(url, options)
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         console.log("registered successfully", data);
-    //         navigate('/');
-    //     })
-    //     .catch(error => console.log("error", error))
-    // }
-
-    function handleSubmit(e: FormEvent) {
-        e.preventDefault();
-        console.log("Courier assigned to order successfully!")
-        navigate('/');
+    try {
+      await axiosInstance.put('/admin/trips/3', requestBodyAssign, config);
+      alert('Courier assigned successfully');
+      navigate('/dashboard/admin');
+    } catch (error) {
+      console.error('Error assigning courier:', error);
+      alert('Failed to assign courier');
     }
+  };
 
-    return (
-        <div className="bg-white px-10 py-20 rounded-3xl border-2 border-gray-200">
-            <h1 className="text-2xl font-semibold">Assign Courier to Order</h1>
-            <br></br>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label className="text-base font-normal" >Courier ID:</label>
-                </div>
-                <input 
-                    type="text"
-                    value={courierId}
-                    style={{border: '1px solid black', padding: '5px'}} 
-                    id="courier-id" 
-                    name="courier-id" 
-                    placeholder="Courier ID" 
-                    required 
-                    onChange={e => setCourierId(e.target.value)}
-                >
-                </input>
-                <div>
-                    <label className="text-base font-normal">Order ID:</label>
-                </div>
-                <input 
-                    type="text"
-                    value={orderId}
-                    style={{border: '1px solid black', padding: '5px'}} 
-                    id="order-id" 
-                    name="order-id" 
-                    placeholder="Order ID" 
-                    required 
-                    onChange={e => setOrderId(e.target.value)}
-                >
-                </input>
-                {/* <div>
-                    <label className="text-base font-normal">Order Status:</label>
-                </div>
-                <input 
-                    type="text"
-                    value="order-status"
-                    style={{border: '1px solid black', padding: '5px'}} 
-                    id="order-status" 
-                    name="order-status" 
-                    placeholder="Order Status" 
-                    required 
-                >
-                </input> */}
-                <div className="mt-8 flex flex-col gap-y-4">
-                    <button 
-                        type="submit"
-                        className="active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-slate-500 text-white text-lg font-bold"
-                    >
-                        Update Order
-                    </button>
-                </div>
-            </form>
+  const unassignCourier = async () => {
+    const hardcodedToken = 'eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MTgxMTkyNzAsImV4cCI6MTcxODIwNTY3MCwidXNlcm5hbWUiOiJBZG1pbjAwMSIsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiJ9.uYrUU6_6YudRntnl-oOaVJJA7eQTU1Th47Q9oL0Q0sojTvljOR6vm-4ZdFwu5b6q';
+  
+    const config = {
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${hardcodedToken}`, // Hardcoded JWT token here
+        // 'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+    },
+    };
+
+    const requestBodyUnassign = {
+    assignedCourierId: null,
+    };
+
+    try {
+      await axiosInstance.put('/admin/trips/3', requestBodyUnassign, config);
+      alert('Courier unassigned successfully');
+      navigate('/dashboard/admin');
+    } catch (error) {
+      console.error('Error unassigning courier:', error);
+      alert('Failed to unassign courier');
+    }
+  };
+
+  return (
+    <div className="bg-white p-12 rounded-3xl border-2 border-gray-200">
+      <h1 className="text-2xl font-semibold underline underline-offset-1">Assign Courier</h1>
+      {/* <div className="mt-4">
+        <p><strong>Trip ID:</strong> {trip.tripId}</p>
+        <p><strong>Recipient Address:</strong> {trip.partyAddress.address}, {trip.partyAddress.city}, {trip.partyAddress.country}</p>
+        <p><strong>Trip Date:</strong> {trip.tripDate}</p>
+        <p><strong>Route Type:</strong> {trip.route}</p>
+        <p><strong>Trip Status:</strong> {trip.tripStatus}</p>
+        <p><strong>Current Courier ID:</strong> {trip.courierId ?? "N/A"}</p>
+      </div>
+      {trip.tripStatus === 'UNASSIGNED' ? ( */}
+        <button
+          className="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded mt-4"
+          onClick={() => assignCourier()}
+        >
+          Assign Courier
+        </button>
+      {/* ) : ( */}
+        <div className="mt-4">
+          {/* <button
+            className="bg-yellow-500 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded mr-4"
+            onClick={() => assignCourier()} 
+          >
+            Change Courier
+          </button> */}
+          {/* <button
+            className="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded"
+            onClick={() => unassignCourier()}
+          >
+            Unassign Courier
+          </button> */}
         </div>
-    )
+      {/* )} */}
+    </div>
+  );
 }
