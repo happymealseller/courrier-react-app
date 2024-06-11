@@ -28,7 +28,7 @@ export function CourierDashboard() {
         })));
       })
       .catch((err) => console.log(err));
-  }, [setOrders]);
+  }, [orders, inputStatus]);
 
   const handleChange = (e) => {
     setInputStatus(e.target.value)
@@ -54,7 +54,7 @@ export function CourierDashboard() {
             <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">From</th>
             <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">To</th>
             <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">Status</th>
-            <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider"></th>
+            <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">Update Trip Status</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -75,6 +75,7 @@ export function CourierDashboard() {
                     </select>
                     <button
                       disabled={e.orderStatus === "COMPLETED"}
+                      
                       onClick={() => handleUpdate(e.id)}
                       className="ml-2 px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-700">
                       Update
