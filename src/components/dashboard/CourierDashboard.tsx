@@ -4,44 +4,53 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../App";
 import { config } from "../../utilities/constants/config";
 import { axiosInstance } from "../security/axiosInstance";
-import { OrderHistoryItem } from "./OrderHistoryItem";
+import { TripData } from "./TripData";
+import { CourierEndpoint } from "../../utilities/enums/Endpoint";
+
 
 export function CourierDashboard() {
-  const [orders, setOrders] = useState<OrderHistoryItem[]>([]);
-  const [inputStatus, setInputStatus] = useState("RETRIEVED");
+  const [trips, setTrips] = useState<TripData[]>([]);
+  const [inputStatus, setInputStatus] = useState("");
   const username = useSelector((state: RootState) => state.authentication.username);
 
-  useEffect(() => {
+  const getTripDetails =  () => {
     config.headers[RequestHeaderKey.Username] = username
-  }, [])
-
-  useEffect(() => {
     axiosInstance
-      .get("/courier/trips", config)
+      .get(CourierEndpoint.TRIPS, config)
       .then((res) => {
-        setOrders(res.data?.tripDetailsList.map((e) => ({
+        setTrips(res.data?.tripDetailsList.map((e) => ({
           id: e.tripId,
           date: new Date(e.tripDate).toLocaleDateString('en-US'),
           from: e.sortingWarehouse.address,
           to: e.partyAddress.address,
           status: e.tripStatus,
         })));
+        console.log("[RESPONSE - COURIER_APP backend] REQUEST_URL: ", 
+          CourierEndpoint.TRIPS + " | Response: ", res)
       })
       .catch((err) => console.log(err));
-  }, [orders, inputStatus]);
+  }
+
+  useEffect(() => {
+    getTripDetails()
+  },[]);
 
   const handleChange = (e) => {
     setInputStatus(e.target.value)
   }
 
-  const handleUpdate = (id) => {
-    axiosInstance
+  const handleUpdate = async (id: string) => {
+      try {
+      console.log(`order id: ${id}`)
+      await axiosInstance
       .put(`/courier/${id}`, {
         "tripStatus": inputStatus,
-        "remarks": "n/a"
+        "remarks": ""
       }, config)
-      .then((res) => { console.log(res) })
-      .catch((error => { console.log(error) }))
+      await getTripDetails()
+    } catch (error) {
+        error => { console.log(error) }
+      }
   }
 
   return (
@@ -58,7 +67,7 @@ export function CourierDashboard() {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {orders.map((e) => (
+          {trips.map((e) => (
             <tr key={e.id}>
               <td className="px-6 py-4 text-center text-sm whitespace-nowrap">{e.id}</td>
               <td className="px-6 py-4 text-center text-sm whitespace-nowrap">{e.date}</td>
@@ -70,12 +79,12 @@ export function CourierDashboard() {
                 {e.status !== "COMPLETED" &&
                   <div>
                     <select onChange={handleChange} className="border border-gray-300 rounded px-3 py-1 text-gray-700">
+                    <option value="" selected disabled hidden>Please Select</option>
                       <option value="RETRIEVED">Retrieve</option>
                       <option value="COMPLETED">Complete</option>
                     </select>
                     <button
-                      disabled={e.orderStatus === "COMPLETED"}
-                      
+                      disabled={e.status === "COMPLETED"}                      
                       onClick={() => handleUpdate(e.id)}
                       className="ml-2 px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-700">
                       Update
@@ -87,7 +96,6 @@ export function CourierDashboard() {
           ))}
         </tbody>
       </table>
-
     </div>
   )
 }
