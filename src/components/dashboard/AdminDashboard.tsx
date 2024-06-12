@@ -15,6 +15,7 @@ import { axiosInstance } from "../security/axiosInstance";
 - Talk to Venessa about the POST request
   - Should also return Courier details
   - Currently request body is very specific ie. can only show ASSIGN, INBOUND etc. Trip doesnt show if the params are diff
+  - Update trip table to display region as well
 */
 interface PartyAddress {
   id: number;
@@ -38,6 +39,7 @@ interface Trip {
   tripDate: string;
   tripStatus: string;
   route: string;
+  region: string;
   partyAddress: PartyAddress;
   sortingWarehouse: SortingWarehouse;
   courierName?: number | null; // Courier ID, which may be null
@@ -49,7 +51,7 @@ const filterData = (data: any[], keys: any[]) => {
     keys.forEach((key) => {
       filteredItem[key] = key.includes("Date")
         ? item[key] ? format(new Date(item[key]), "yyyy-MM-dd") : "N/A"
-        : item[key];
+        : item[key] || "N/A";
     });
     return filteredItem as Trip;
   });
@@ -97,6 +99,7 @@ export function AdminDashboard() {
     "Recipient Address",
     "Date of Delivery",
     "Route Type",
+    "Region",
     "Trip Status",
     "Courier Name",
   ];
@@ -106,6 +109,7 @@ export function AdminDashboard() {
     "tripDate",
     "tripStatus",
     "route",
+    "region",
     "partyAddress",
     "courierId",
   ];
@@ -134,6 +138,10 @@ export function AdminDashboard() {
         {
           "columnKey": "tripDate",
           "columnValue": "2024-06-14"
+        },
+        {
+          "columnKey": "region",
+          "columnValue": "CENTRAL"
         }
       ];
   
@@ -160,6 +168,10 @@ export function AdminDashboard() {
   function handleStatusChange(e: React.ChangeEvent<HTMLSelectElement>) {
     setSelectedStatus(e.target.value);
   }
+
+  const handleUpdateClick = (tripId: number) => {
+    navigate('/assign', { state: { tripId } });
+  };
 
   return (
     <div className="bg-white p-12 rounded-3xl border-2 border-gray-200">
@@ -202,6 +214,9 @@ export function AdminDashboard() {
                 {mapRouteType(trip.route)}
               </td>
               <td className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
+                {trip.region}
+              </td>
+              <td className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
                 {mapTripStatus(trip.tripStatus)}
               </td>
               <td className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
@@ -226,9 +241,7 @@ export function AdminDashboard() {
                   <button
                     type="button"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mt-2" style={{ width: '130px' }}
-                    onClick={() => {
-                      navigate("/assign", { state: { allowUpdate: true } });
-                    }}
+                    onClick={() => handleUpdateClick(trip.tripId)}
                   >
                     Update
                   </button>
