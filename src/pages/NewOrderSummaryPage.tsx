@@ -1,12 +1,16 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import "../css/NewOrderSummary.css"
 import { MeasurementUnit } from '../utilities/enums/MeasurementUnit';
+import { CustomerUrl } from '../utilities/enums/Url';
 
 export function NewOrderSummaryPage() {
     const location = useLocation();
     const order = location.state || null;
+    const navigate = useNavigate();
+
     return (
-        order ? (
+      <div>
+        { order ? (
         <div className="order-details-container">
           <div className="order-details">
             <div className="order-section">
@@ -45,7 +49,15 @@ export function NewOrderSummaryPage() {
           </div>
         </div>
         ) : (
-            <p>order id not found</p>
-        )
+            <p className='grid place-content-center'>order id not found</p>
+        )}
+          <div className="container py-8 px-8 mx-0 min-w-full flex flex-col items-center">       
+            <button onClick={() => navigate(CustomerUrl.DASHBOARD)}
+            type="submit" 
+            className="border-2 p-4 rounded-lg bg-green-400 hover:bg-slate-300 hover:text-gray-500 hover:border-slate-300">
+              Return to Dashboard 
+            </button>
+          </div>
+      </div>
       );
 }

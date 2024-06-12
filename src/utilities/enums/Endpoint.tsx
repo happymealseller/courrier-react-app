@@ -5,7 +5,8 @@ export enum AuthenticationEndpoint {
 
 export enum CustomerEndpoint {
     NEW_ORDER = "/orders/create-order",
-    TRACK_ORDER = "/track/"
+    UPDATE_ORDER = "/customer/{orderId}",
+    TRACK_ORDER = "/track/{orderId}"
 }
 
 export enum CourierEndpoint {

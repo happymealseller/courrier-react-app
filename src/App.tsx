@@ -40,8 +40,7 @@ function App() {
 				<Routes>
 					<Route element={<ProtectedRoutes />}>
 						<Route path={CustomerUrl.CREATE_A_SHIPMENT} element={<ShippingFormPage />} />
-						{/* <Route path={CourierUrl.UPDATE_ORDER} element={<ViewUpdateOrderPage />} />
-						<Route path={CourierUrl.VIEW_ORDER} element={<ViewUpdateOrderPage />}/>        To activate after status page desgined*/}
+						<Route path={CourierUrl.VIEW_ORDER} element={<ViewUpdateOrderPage />}/>
 						<Route path={CustomerUrl.UPDATE_ORDER} element={<ViewUpdateOrderPage />} />
 						<Route path={CustomerUrl.VIEW_ORDER} element={<ViewUpdateOrderPage />} />
 						<Route path={CourierUrl.DASHBOARD} element={<CourierDashboardPage />} />
