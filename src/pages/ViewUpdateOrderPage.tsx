@@ -88,6 +88,35 @@ interface orderDetails {
 	recipient: receipientDeatails
 }
 
+interface senderDetails {
+	fromFullName: string
+	fromEmail: string
+	fromPhone: string
+	fromAddress: {
+		address: string,
+		postalCode: string,
+		country: string,
+		city: string
+	}
+}
+
+interface receipientDeatails {
+	toFullName: string
+	toEmail: string
+	toPhone: string
+	toAddress: {
+		address: string,
+		postalCode: string,
+		country: string,
+		city: string
+	}
+}
+
+interface orderDetails {
+	sender: senderDetails
+	recipient: receipientDeatails
+}
+
 export function ViewUpdateOrderPage() {
 
 	const username = useSelector((state: RootState) => state.authentication.username)
@@ -184,10 +213,39 @@ export function ViewUpdateOrderPage() {
 			}
 	
 			axiosInstance.put(endpoint, JSON.stringify(orderDetails), config)
+			const endpoint = CustomerEndpoint.UPDATE_ORDER.replace("{orderId}", orderId)
+
+			const orderDetails: orderDetails = {
+				sender: {
+					fromFullName: "John Doe",
+					fromEmail: "johndoe1@mail.com",
+					fromPhone: "98765432",
+					fromAddress: {
+						address: "Woodlands",
+						postalCode: "739089",
+						country: "Singapore",
+						city: "Singapore"
+					}
+				},
+				recipient: {
+					toFullName: "Jane Doe",
+					toEmail: "janedoe@mail.com",
+					toPhone: "87654321",
+					toAddress: {
+						address: "Woodlands",
+						postalCode: "739090",
+						country: "Singapore",
+						city: "Singapore"
+					}
+				}
+			}
+	
+			axiosInstance.put(endpoint, JSON.stringify(orderDetails), config)
 				.then(response => {
 					if (response.data.status === ResponseStatus.Success) {
 						navigate(
 							CustomerUrl.NEW_ORDER_SUMMARY,
+							{ state: response.data.orderDetails as OrderSummary }
 							{ state: response.data.orderDetails as OrderSummary }
 						)
 				} else if (response.data.status === ResponseStatus.Failure) {
