@@ -10,48 +10,52 @@ import { CourierEndpoint } from "../../utilities/enums/Endpoint";
 
 export function CourierDashboard() {
   const [trips, setTrips] = useState<TripData[]>([]);
-  const [inputStatus, setInputStatus] = useState("");
+  const [inputStatus, setInputStatus] = useState({});
   const username = useSelector((state: RootState) => state.authentication.username);
 
-  const getTripDetails =  () => {
+  const getTripDetails = async () => {
     config.headers[RequestHeaderKey.Username] = username
     axiosInstance
       .get(CourierEndpoint.TRIPS, config)
       .then((res) => {
-        setTrips(res.data?.tripDetailsList.map((e) => ({
-          id: e.tripId,
-          date: new Date(e.tripDate).toLocaleDateString('en-US'),
-          from: e.sortingWarehouse.address,
-          to: e.partyAddress.address,
-          status: e.tripStatus,
+        setTrips(res.data?.tripDetailsList.map((tripDetails) => ({
+          id: tripDetails.tripId,
+          date: new Date(tripDetails.tripDate).toLocaleDateString('en-US'),
+          from: tripDetails.sortingWarehouse.address,
+          to: tripDetails.partyAddress.address,
+          status: tripDetails.tripStatus,
         })));
-        console.log("[RESPONSE - COURIER_APP backend] REQUEST_URL: ", 
+        console.log("[RESPONSE - COURIER_APP backend] REQUEST_URL: ",
           CourierEndpoint.TRIPS + " | Response: ", res)
       })
       .catch((err) => console.log(err));
   }
 
   useEffect(() => {
-    getTripDetails()
-  },[]);
+    getTripDetails();
+  }, []);
 
-  const handleChange = (e) => {
-    setInputStatus(e.target.value)
+  const handleChange = (e, tripId) => {
+    const chosenStatus = e.target.value;
+    console.log(`chosenStatus for trip ${tripId}: ${chosenStatus}`);
+    setInputStatus({
+      ...inputStatus,
+      [tripId]: chosenStatus,
+    });
   }
 
   const handleUpdate = async (id: string) => {
-      try {
-      console.log(`order id: ${id}`)
-      await axiosInstance
-      .put(`/courier/${id}`, {
-        "tripStatus": inputStatus,
+    try {
+      console.log(`order id: ${id}`);
+    await axiosInstance.put(`/courier/${id}`, {
+        "tripStatus": inputStatus[id],
         "remarks": ""
-      }, config)
-      await getTripDetails()
+      }, config);
+      await getTripDetails();
     } catch (error) {
-        error => { console.log(error) }
-      }
-  }
+      console.log(error);
+    }
+  };
 
   return (
     <div className="p-20">
@@ -78,15 +82,16 @@ export function CourierDashboard() {
               <td className="px-6 py-4 text-center text-sm whitespace-nowrap">
                 {e.status !== "COMPLETED" &&
                   <div>
-                    <select onChange={handleChange} className="border border-gray-300 rounded px-3 py-1 text-gray-700">
-                    <option value="" selected disabled hidden>Please Select</option>
+                    <select  defaultValue={"DEFAULT_STATUS"}
+                      onChange={(event) => handleChange(event, e.id)} className="border border-gray-300 rounded px-3 py-1 text-gray-700">
+                      <option value="DEFAULT_STATUS" disabled hidden>Select Status</option>
                       <option value="RETRIEVED">Retrieve</option>
                       <option value="COMPLETED">Complete</option>
                     </select>
                     <button
-                      disabled={e.status === "COMPLETED"}                      
+                      disabled={inputStatus[e.id] === undefined}
                       onClick={() => handleUpdate(e.id)}
-                      className="ml-2 px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-700">
+                      className="ml-2 px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-700 disabled:bg-gray-100">
                       Update
                     </button>
                   </div>
