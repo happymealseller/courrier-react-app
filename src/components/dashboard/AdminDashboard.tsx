@@ -12,9 +12,8 @@ import { axiosInstance } from "../security/axiosInstance";
 
 /*
 - Add region column at a later date
-- Talk to Venessa about the POST request
+- the POST request
   - Should also return Courier details
-  - Currently request body is very specific ie. can only show ASSIGN, INBOUND etc. Trip doesnt show if the params are diff
   - Update trip table to display region as well
 */
 interface PartyAddress {
@@ -42,7 +41,7 @@ interface Trip {
   region: string;
   partyAddress: PartyAddress;
   sortingWarehouse: SortingWarehouse;
-  courierName?: number | null; // Courier ID, which may be null
+  courierId?: number | null; // Courier ID, which may be null
 }
 
 const filterData = (data: any[], keys: any[]) => {
@@ -51,7 +50,7 @@ const filterData = (data: any[], keys: any[]) => {
     keys.forEach((key) => {
       filteredItem[key] = key.includes("Date")
         ? item[key] ? format(new Date(item[key]), "yyyy-MM-dd") : "N/A"
-        : item[key] || "N/A";
+        : item[key]|| "N/A";
     });
     return filteredItem as Trip;
   });
@@ -91,8 +90,12 @@ export function AdminDashboard() {
   const [orders, setOrders] = useState<Trip[]>([]);
   const [filteredOrders, setFilteredOrders] = useState<Trip[]>([]);
   const [selectedStatus, setSelectedStatus] = useState("All");
+  const [selectedTripStatus, setSelectedTripStatus] = useState<string>("");
+  const [selectedRoute, setSelectedRoute] = useState<string>("");
+  const [selectedTripDate, setSelectedTripDate] = useState<string>("");
+  const [selectedRegion, setSelectedRegion] = useState<string>("");
   const navigate = useNavigate();
-  const username = useSelector((state: RootState) => state.authentication.username);
+  const username = useSelector((state: any) => state.authentication.username);
 
   const order_headers = [
     "Trip ID",
@@ -101,50 +104,45 @@ export function AdminDashboard() {
     "Route Type",
     "Region",
     "Trip Status",
-    "Courier Name",
+    // "Courier ID",
   ];
 
   const displayKeys = [
     "tripId",
+    "partyAddress",
     "tripDate",
-    "tripStatus",
     "route",
     "region",
-    "partyAddress",
-    "courierId",
+    "tripStatus",
+    // "courierId",
   ];
 
   useEffect(() => {
     const fetchData = async () => {
       const hardcodedToken = 'eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MTgxMTkyNzAsImV4cCI6MTcxODIwNTY3MCwidXNlcm5hbWUiOiJBZG1pbjAwMSIsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiJ9.uYrUU6_6YudRntnl-oOaVJJA7eQTU1Th47Q9oL0Q0sojTvljOR6vm-4ZdFwu5b6q';
-  
+
       const config = {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${hardcodedToken}`, // Hardcoded JWT token here
-          // 'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+          'Authorization': `Bearer ${hardcodedToken}`,
         },
       };
-  
-      const requestBody = [
-        {
-          "columnKey": "tripStatus",
-          "columnValue": "ASSIGNED"
-        },
-        {
-          "columnKey": "route",
-          "columnValue": "INBOUND"
-        },
-        {
-          "columnKey": "tripDate",
-          "columnValue": "2024-06-14"
-        },
-        {
-          "columnKey": "region",
-          "columnValue": "CENTRAL"
-        }
-      ];
-  
+
+      const requestBody: { columnKey: string, columnValue: string }[] = [];
+
+      if (selectedTripStatus) {
+        requestBody.push({ columnKey: 'tripStatus', columnValue: selectedTripStatus });
+      }
+      if (selectedRoute) {
+        requestBody.push({ columnKey: 'route', columnValue: selectedRoute });
+      }
+      if (selectedTripDate) {
+        requestBody.push({ columnKey: 'tripDate', columnValue: selectedTripDate });
+      }
+      if (selectedRegion) {
+        requestBody.push({ columnKey: 'region', columnValue: selectedRegion });
+      }
+
       try {
         const response = await axiosInstance.post('/admin/trips', requestBody, config);
 
@@ -159,15 +157,11 @@ export function AdminDashboard() {
     };
 
     fetchData();
-  }, [username]);
+  }, [username, selectedTripStatus, selectedRoute, selectedTripDate, selectedRegion]);
 
   useEffect(() => {
     setFilteredOrders(filterOrdersByStatus(orders, selectedStatus));
   }, [selectedStatus, orders]);
-
-  function handleStatusChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    setSelectedStatus(e.target.value);
-  }
 
   const handleUpdateClick = (tripId: number) => {
     navigate('/assign', { state: { tripId } });
@@ -180,16 +174,39 @@ export function AdminDashboard() {
       <h2 className="text-lg font-semibold px-4 py-2 text-bright-red">Welcome {username}!</h2>
       <br />
       <div className="mb-4">
-        <label htmlFor="statusFilter" className="mr-2">Filter by status:</label>
-        <select id="statusFilter" value={selectedStatus} onChange={handleStatusChange} className="border-2 border-gray-300 p-2 rounded-md">
-          <option value="All">All</option>
+        <label htmlFor="statusFilter" className="mr-2">Filter by trip status:</label>
+        <select id="statusFilter" value={selectedTripStatus} onChange={(e) => setSelectedTripStatus(e.target.value)} className="border-2 border-gray-300 p-2 rounded-md">
+          <option value="">All</option>
           <option value="UNASSIGNED">Unassigned</option>
           <option value="ASSIGNED">Assigned</option>
           <option value="RETRIEVED">Retrieved</option>
           <option value="COMPLETED">Completed</option>
         </select>
       </div>
-      <table className="table-auto w-full" style={{ height: '200px' }}> 
+      <div className="mb-4">
+        <label htmlFor="routeFilter" className="mr-2">Filter by route type:</label>
+        <select id="routeFilter" value={selectedRoute} onChange={(e) => setSelectedRoute(e.target.value)} className="border-2 border-gray-300 p-2 rounded-md">
+          <option value="">All</option>
+          <option value="INBOUND">Pick up</option>
+          <option value="OUTBOUND">Delivery</option>
+        </select>
+      </div>
+      <div className="mb-4">
+        <label htmlFor="dateFilter" className="mr-2">Filter by date:</label>
+        <input type="date" id="dateFilter" value={selectedTripDate} onChange={(e) => setSelectedTripDate(e.target.value)} className="border-2 border-gray-300 p-2 rounded-md" />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="regionFilter" className="mr-2">Filter by region:</label>
+        <select id="regionFilter" value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)} className="border-2 border-gray-300 p-2 rounded-md">
+          <option value="">All</option>
+          <option value="CENTRAL">Central</option>
+          <option value="EAST">East</option>
+          <option value="WEST">West</option>
+          <option value="NORTH">North</option>
+          <option value="SOUTH">South</option>
+        </select>
+      </div>
+      <table className="table-auto w-full">
         <thead>
           <tr className="border border-black px-5 py-2">
             {order_headers.map((header, idx) => (
@@ -219,24 +236,10 @@ export function AdminDashboard() {
               <td className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
                 {mapTripStatus(trip.tripStatus)}
               </td>
-              <td className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
-                {trip.courierName ?? "N/A"}
-              </td>
-              <td
-                className="border px-5 py-2 border-black"
-                style={{ textAlign: "center" }}
-              >
-                {/* <div style={{ padding: "10px", alignItems: "center" }}>
-                  <button
-                    type="button"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mr-2.5"
-                    onClick={() => {
-                      navigate("/view-order", { state: { allowUpdate: false } });
-                    }}
-                  >
-                    View
-                  </button>
-                </div> */}
+              {/* <td className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
+                {trip.courierId ?? "N/A"}
+              </td> */}
+              <td className="border px-5 py-2 border-black" style={{ textAlign: "center" }}>
                 <div>
                   <button
                     type="button"
