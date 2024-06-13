@@ -2,8 +2,6 @@ import { FormWrapper } from "./FormWrapper";
 import { ShipToFormProps } from "../../utilities/type-aliases/order-form/ShipToFormProps";
 import { FormEvent, useEffect, useState } from "react";
 import axios from "axios";
-import { FormEvent, useEffect, useState } from "react";
-import axios from "axios";
 
 export function ShipToForm({ toAddress, toFullName, toEmail, toPhoneNo, updateFields }: ShipToFormProps) {
     const [address, setAddress] = useState(toAddress.address);
@@ -24,7 +22,6 @@ export function ShipToForm({ toAddress, toFullName, toEmail, toPhoneNo, updateFi
     }, [address, city, country])
 
     return (
-        <FormWrapper title="Ship To (Receipient)">
         <FormWrapper title="Ship To (Receipient)">
             <label className="font-bold">Contact Name</label>
             <input 
