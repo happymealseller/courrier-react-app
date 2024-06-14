@@ -20,7 +20,9 @@ export enum CourierUrl {
 
 export enum PublicUrl {
     TRACK_A_PACKAGE = "/track-a-package",
-    ORDER_STATUS = "/order-status"
+    ORDER_STATUS = "/order-status",
+    ABOUT = "/about-us",
+    CONTACT = "/contact-us"
 }
 
 
