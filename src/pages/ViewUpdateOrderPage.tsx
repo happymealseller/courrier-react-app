@@ -44,25 +44,57 @@ const INITIAL_DATA: FormData = {
 }  // to replace with retrieved data from local storage
 // pls preload dummy b4 testing, validation kicks in
 
-interface Address {
-	address: string;
-	postalCode: string;
-	country: string;
-	city: string;
-  }
-
 interface senderDetails {
 	fromFullName: string
 	fromEmail: string
 	fromPhone: string
-	fromAddress: Address
+	fromAddress: {
+		address: string,
+		postalCode: string,
+		country: string,
+		city: string
+	}
 }
 
 interface receipientDeatails {
 	toFullName: string
 	toEmail: string
 	toPhone: string
-	toAddress: Address
+	toAddress: {
+		address: string,
+		postalCode: string,
+		country: string,
+		city: string
+	}
+}
+
+interface orderDetails {
+	sender: senderDetails
+	recipient: receipientDeatails
+}
+
+interface senderDetails {
+	fromFullName: string
+	fromEmail: string
+	fromPhone: string
+	fromAddress: {
+		address: string,
+		postalCode: string,
+		country: string,
+		city: string
+	}
+}
+
+interface receipientDeatails {
+	toFullName: string
+	toEmail: string
+	toPhone: string
+	toAddress: {
+		address: string,
+		postalCode: string,
+		country: string,
+		city: string
+	}
 }
 
 interface orderDetails {
@@ -96,6 +128,17 @@ export function ViewUpdateOrderPage() {
 	}, [])
 
 	const pageTitle = allowUpdate ? "Update Order" : "View Order";
+	useEffect(() => {
+		const url = CustomerEndpoint.TRACK_ORDER.replace("{orderId}", orderId)
+		axiosInstance
+			.get(url, config)
+			.then((res) => {
+				setData(res.data.orderDetails)
+			})
+			.catch((err => {
+				console.log(err)
+			}))
+	}, [])
 
 	function updateFields(fields: Partial<FormData>) {
 		if (allowUpdate){
@@ -123,25 +166,25 @@ export function ViewUpdateOrderPage() {
 
 			const orderDetails: orderDetails = {
 				sender: {
-					fromFullName: data.fromFullName,
-					fromEmail: data.fromEmail,
-					fromPhone: data.fromPhoneNo,
+					fromFullName: "John Doe",
+					fromEmail: "johndoe1@mail.com",
+					fromPhone: "98765432",
 					fromAddress: {
-						address: data.fromAddress!.address!,
-						postalCode: data.fromAddress!.postalCode!,
-						country: data.fromAddress!.country!,
-						city: data.fromAddress!.city!
+						address: "Woodlands",
+						postalCode: "739089",
+						country: "Singapore",
+						city: "Singapore"
 					}
 				},
 				recipient: {
-					toFullName: data.toFullName,
-					toEmail: data.toEmail,
-					toPhone: data.toPhoneNo,
+					toFullName: "Jane Doe",
+					toEmail: "janedoe@mail.com",
+					toPhone: "87654321",
 					toAddress: {
-						address: data.toAddress!.address!,
-						postalCode: data.toAddress!.postalCode!,
-						country: data.toAddress!.country!,
-						city: data.toAddress!.city!
+						address: "Woodlands",
+						postalCode: "739090",
+						country: "Singapore",
+						city: "Singapore"
 					}
 				}
 			}
@@ -151,7 +194,7 @@ export function ViewUpdateOrderPage() {
 					if (response.data.status === ResponseStatus.Success) {
 						navigate(
 							CustomerUrl.NEW_ORDER_SUMMARY,
-							{ state: response.data.updatedOrderDetails as OrderSummary }
+							{ state: response.data.orderDetails as OrderSummary }
 						)
 				} else if (response.data.status === ResponseStatus.Failure) {
 					alert(`Error ${response.data.message}`)

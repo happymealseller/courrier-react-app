@@ -136,9 +136,12 @@ export function NavBar() {
                                     </>
                                 ) : (
                                     <>
-                                        <NavBarItemWithoutDropdown navBarItems={[{ title: "Dashboard", navLink: dashboardLink }]}/>
-                                        <NavBarItemWithoutDropdown navBarItems={[{ title: "Logout", navLink: "logout" }]}/>
-                                    </>
+                                    <NavBarItemWithoutDropdown navBarItems={[{ title: "Dashboard", navLink: dashboardLink }]} />
+                                    {role === AccountType.Admin && (
+                                      <NavBarItemWithoutDropdown navBarItems={[{ title: "Register Courier Account", navLink: "regcourier" }]} />
+                                    )}
+                                    <NavBarItemWithoutDropdown navBarItems={[{ title: "Logout", navLink: "logout" }]} />
+                                  </>
                                 )}
                             </ul>
                         </div>

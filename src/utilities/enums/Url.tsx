@@ -24,3 +24,10 @@ export enum PublicUrl {
     ABOUT = "/about-us",
     CONTACT = "/contact-us"
 }
+
+
+export enum AdminUrl {
+    DASHBOARD = "/dashboard/admin",
+    ASSIGN_COURIER = "/assign",
+    REGISTER_COURIER = "regcourier"
+}
