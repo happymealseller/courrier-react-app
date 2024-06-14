@@ -22,3 +22,10 @@ export enum PublicUrl {
     TRACK_A_PACKAGE = "/track-a-package",
     ORDER_STATUS = "/order-status"
 }
+
+
+export enum AdminUrl {
+    DASHBOARD = "/dashboard/admin",
+    ASSIGN_COURIER = "/assign",
+    REGISTER_COURIER = "regcourier"
+}
