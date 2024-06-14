@@ -22,6 +22,7 @@ interface PartyAddress {
   postalCode: string;
   country: string;
   city: string;
+  region: string;
 }
 
 interface SortingWarehouse {
@@ -50,7 +51,7 @@ const filterData = (data: any[], keys: any[]) => {
     keys.forEach((key) => {
       filteredItem[key] = key.includes("Date")
         ? item[key] ? format(new Date(item[key]), "yyyy-MM-dd") : "N/A"
-        : item[key]|| "N/A";
+        : item[key] || "N/A";
     });
     return filteredItem as Trip;
   });
@@ -119,8 +120,8 @@ export function AdminDashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const hardcodedToken = 'eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MTgxMTkyNzAsImV4cCI6MTcxODIwNTY3MCwidXNlcm5hbWUiOiJBZG1pbjAwMSIsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiJ9.uYrUU6_6YudRntnl-oOaVJJA7eQTU1Th47Q9oL0Q0sojTvljOR6vm-4ZdFwu5b6q';
-
+      const hardcodedToken = 'eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MTgzMzg1MzIsImV4cCI6MTcxODQyNDkzMiwidXNlcm5hbWUiOiJBZG1pbjAwMSIsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiJ9.ixFnyX0jHzQp5NCyCDYtuorMf7Kd_EWWQczycHdB2YDOD55GGxFmUApi0AD5diDZ';
+      
       const config = {
         headers: {
           'Content-Type': 'application/json',
@@ -231,7 +232,7 @@ export function AdminDashboard() {
                 {mapRouteType(trip.route)}
               </td>
               <td className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
-                {trip.region}
+                {trip.partyAddress.region}
               </td>
               <td className="border border-black px-5 py-2 border-solid" style={{ textAlign: 'center' }}>
                 {mapTripStatus(trip.tripStatus)}
