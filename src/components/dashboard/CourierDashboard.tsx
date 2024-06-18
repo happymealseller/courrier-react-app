@@ -63,7 +63,7 @@ export function CourierDashboard() {
         <thead className="bg-gray-50">
           <tr>
             <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">ID</th>
-            <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">Date</th>
+            <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">Trip Date</th>
             <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">From</th>
             <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">To</th>
             <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">Status</th>
