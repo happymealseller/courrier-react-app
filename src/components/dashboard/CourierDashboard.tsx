@@ -47,7 +47,7 @@ export function CourierDashboard() {
   const handleUpdate = async (id: string) => {
     try {
       console.log(`order id: ${id}`);
-    await axiosInstance.put(`/courier/${id}`, {
+      await axiosInstance.put(`/courier/${id}`, {
         "tripStatus": inputStatus[id],
         "remarks": ""
       }, config);
@@ -59,6 +59,7 @@ export function CourierDashboard() {
 
   return (
     <div className="p-20">
+      <h2 className="text-2xl font-semibold underline underline-offset-1 m-5">Courier Dashboard</h2>
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
@@ -82,7 +83,7 @@ export function CourierDashboard() {
               <td className="px-6 py-4 text-center text-sm whitespace-nowrap">
                 {e.status !== "COMPLETED" &&
                   <div>
-                    <select  defaultValue={"DEFAULT_STATUS"}
+                    <select defaultValue={"DEFAULT_STATUS"}
                       onChange={(event) => handleChange(event, e.id)} className="border border-gray-300 rounded px-3 py-1 text-gray-700">
                       <option value="DEFAULT_STATUS" disabled hidden>Select Status</option>
                       <option value="RETRIEVED">Retrieve</option>
