@@ -24,6 +24,7 @@ export function CourierDashboard() {
           from: tripDetails.sortingWarehouse.address,
           to: tripDetails.partyAddress.address,
           status: tripDetails.tripStatus,
+          orderId: tripDetails.orderId,
         })));
         console.log("[RESPONSE - COURIER_APP backend] REQUEST_URL: ",
           CourierEndpoint.TRIPS + " | Response: ", res)
@@ -58,29 +59,36 @@ export function CourierDashboard() {
   };
 
   return (
-    <div className="p-20">
-      <h2 className="text-2xl font-semibold underline underline-offset-1 m-5">Courier Dashboard</h2>
+
+    <div className="bg-white p-12 rounded-3xl border-2 border-gray-200">
+      <h2 className="text-2xl font-semibold underline underline-offset-1 m5">Courier Dashboard</h2>
+      <br></br>
+      <h2 className="text-lg font-semibold px-4 py-2 text-bright-red">
+        Welcome {username}!
+      </h2>
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">ID</th>
-            <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">Date</th>
-            <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">From</th>
-            <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">To</th>
-            <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">Status</th>
-            <th className="px-6 py-4 text-center text-md text-gray-500 uppercase tracking-wider">Update Trip Status</th>
+          <tr className="border border-black px-5 py-2">
+            <th className="border border-black px-6 py-4 text-center text-md tracking-wider">Trip ID</th>
+            <th className="border border-black px-6 py-4 text-center text-md tracking-wider">Trip Date</th>
+            <th className="border border-black px-6 py-4 text-center text-md tracking-wider">From</th>
+            <th className="border border-black px-6 py-4 text-center text-md tracking-wider">To</th>
+            <th className="border border-black px-6 py-4 text-center text-md tracking-wider">Status</th>
+            <th className="border border-black px-6 py-4 text-center text-md tracking-wider">Order ID</th>
+            <th className="border border-black px-6 py-4 text-center text-md tracking-wider">Update Trip Status</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {trips.map((e) => (
-            <tr key={e.id}>
-              <td className="px-6 py-4 text-center text-sm whitespace-nowrap">{e.id}</td>
-              <td className="px-6 py-4 text-center text-sm whitespace-nowrap">{e.date}</td>
-              <td className="px-6 py-4 text-center text-sm whitespace-nowrap">{e.from}</td>
-              <td className="px-6 py-4 text-center text-sm whitespace-nowrap">{e.to}</td>
-              <td className="px-6 py-4 text-center text-sm whitespace-nowrap">{e.status}</td>
+            <tr key={e.id} className="border border-black px-5 py-2">
+              <td className="border border-black px-6 py-4 text-center text-sm whitespace-nowrap">{e.id}</td>
+              <td className="border border-black px-6 py-4 text-center text-sm whitespace-nowrap">{e.date}</td>
+              <td className="border border-black px-6 py-4 text-center text-sm whitespace-nowrap">{e.from}</td>
+              <td className="border border-black px-6 py-4 text-center text-sm whitespace-nowrap">{e.to}</td>
+              <td className="border border-black px-6 py-4 text-center text-sm whitespace-nowrap">{e.status}</td>
+              <td className="border border-black px-6 py-4 text-center text-sm whitespace-nowrap">{e.orderId}</td>
 
-              <td className="px-6 py-4 text-center text-sm whitespace-nowrap">
+              <td className="border border-black px-6 py-4 text-center text-sm whitespace-nowrap">
                 {e.status !== "COMPLETED" &&
                   <div>
                     <select defaultValue={"DEFAULT_STATUS"}
