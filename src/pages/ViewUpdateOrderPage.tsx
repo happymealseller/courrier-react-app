@@ -170,10 +170,10 @@ export function ViewUpdateOrderPage() {
 					fromEmail: data.fromEmail,
 					fromPhone: data.fromPhoneNo,
 					fromAddress: {
-						address: data.fromAddress!.address!,
-						postalCode: data.fromAddress!.postalCode!,
-						country: data.fromAddress!.country!,
-						city: data.fromAddress!.city!
+						address: data.fromAddress.address!,
+						postalCode: data.fromAddress.postalCode!,
+						country: data.fromAddress.country!,
+						city: data.fromAddress.city!
 					}
 				},
 				recipient: {
@@ -181,10 +181,10 @@ export function ViewUpdateOrderPage() {
 					toEmail: data.toEmail,
 					toPhone: data.toPhoneNo,
 					toAddress: {
-						address: data.toAddress!.address!,
-						postalCode: data.toAddress!.postalCode!,
-						country: data.toAddress!.country!,
-						city: data.toAddress!.city!
+						address: data.toAddress.address!,
+						postalCode: data.toAddress.postalCode!,
+						country: data.toAddress.country!,
+						city: data.toAddress.city!
 					}
 				}
 			}
