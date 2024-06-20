@@ -62,7 +62,7 @@ function TrackSearchBarPage() {
                     <form onSubmit={handleSubmit}>
                         <div className="flex justify-center">
                             <input
-                                className="w-96 border-2 border-black p-2"
+                                className="w-96 border-2 border-black p-2 text-center"
                                 type="text"
                                 id="trackingNo"
                                 placeholder="Tracking No"
@@ -71,7 +71,7 @@ function TrackSearchBarPage() {
                             />
                             <br />
                             <button
-                                className="w-20 border-2 border-l-0 border-black p-2 bg-orange-500 hover:bg-orange-400"
+                                className="w-20 border-2 border-l-0 border-black p-2 bg-orange-500 hover:bg-orange-400 font-bold"
                                 type="submit">
                                 Track
                             </button>

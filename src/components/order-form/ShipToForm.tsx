@@ -8,13 +8,22 @@ export function ShipToForm({ toAddress, toFullName, toEmail, toPhoneNo, updateFi
     const [city, setCity] = useState(toAddress.city);
     const [country, setCountry] = useState(toAddress.country);
 
-    const handleAddressRetrieval = (event: FormEvent, postalCode: string) => {
-        const url = `http://localhost:3001/${postalCode}`
-        axios.get(url).then(response => {
-            setAddress(response.data.address);
-            setCountry(response.data.country);
-            setCity(response.data.city);
-        })
+    const getAddressFromPostalCode = (event: FormEvent, postalCode: string) => {
+        const url = `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${postalCode}&returnGeom=Y&getAddrDetails=Y&pageNum=1`;
+
+        axios.get(url)
+            .then(response => {
+                if (response.data.found > 0) {
+                    setAddress(response.data.results[0]["ADDRESS"])
+                    setCountry("SINGAPORE")
+                    setCity("SINGAPORE")
+                } else {
+                    alert("No address found for this postal code.")
+                }
+            })
+            .catch(error => {
+                console.error(error.message);
+            })
     }
 
     useEffect(() => {
@@ -56,7 +65,7 @@ export function ShipToForm({ toAddress, toFullName, toEmail, toPhoneNo, updateFi
                 <button
                     type="button"
                     className="bg-slate-500 rounded-md w-1/2 text-sm text-white ml-1 p-1"
-                    onClick={(e) => handleAddressRetrieval(e, toAddress.postalCode || "")}
+                    onClick={(e) => getAddressFromPostalCode(e, toAddress.postalCode || "")}
                 >
                     Retrieve address
                 </button>

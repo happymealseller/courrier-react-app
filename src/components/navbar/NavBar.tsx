@@ -33,7 +33,7 @@ export function NavBar() {
         { title: "Calculate Shipping Cost", navLink: "calculate-shipping-cost" },
     ];
 
-    const dashboardLink = role === AccountType.Customer ? "dashboard/customer" : "dashboard/courier";
+    const dashboardLink = role === AccountType.Customer ? "dashboard/customer" : role === AccountType.Courier ? "dashboard/courier": "dashboard/admin";
 
     const [shippingData, setShippingData] = useState<DropdownItemData[]>(initialShippingData);
 
@@ -41,12 +41,6 @@ export function NavBar() {
         {title: "Track a Package", navLink: "track-a-package"},
         // {title: "Change a Delivery", navLink: "change-a-delivery"},
     ]
-
-    // const supportData: DropdownItemData[] = [
-    //     {title: "Shipping Support", navLink: "shipping-support"},
-    //     {title: "Tracking Support", navLink: "tracking-support"},
-    //     {title: "Contact Us", navLink: "contact-us"},
-    // ]
     
     const [isNavbarOpen, setIsNavbarOpen] = useState(true);
     
@@ -127,7 +121,6 @@ export function NavBar() {
                     { isNavbarOpen && (
                         <div className={`w-full lg:inline-flex lg:w-auto my-2 ${!isNavbarOpen ? 'hidden' : ''}`}>
                             <ul className="nav-list w-full lg:w-auto flex flex-col lg:flex-row space-x-2 space-y-2 lg:space-y-0">
-                                {/* {<NavBarItemWithoutDropdown navBarItems={[{title: "About FDMx", navLink: "about"}]}/>} */}
                                 {<NavBarItemWithDropdown navBarItems={navBarItemsWithDropdown} />}
                                 {!isLoggedIn ? (
                                     <>
@@ -136,12 +129,12 @@ export function NavBar() {
                                     </>
                                 ) : (
                                     <>
-                                    <NavBarItemWithoutDropdown navBarItems={[{ title: "Dashboard", navLink: dashboardLink }]} />
-                                    {role === AccountType.Admin && (
-                                      <NavBarItemWithoutDropdown navBarItems={[{ title: "Register Courier Account", navLink: "regcourier" }]} />
-                                    )}
-                                    <NavBarItemWithoutDropdown navBarItems={[{ title: "Logout", navLink: "logout" }]} />
-                                  </>
+                                        <NavBarItemWithoutDropdown navBarItems={[{ title: "Dashboard", navLink: dashboardLink }]} />
+                                        {role === AccountType.Admin && (
+                                        <NavBarItemWithoutDropdown navBarItems={[{ title: "Register Courier Account", navLink: "regcourier" }]} />
+                                        )}
+                                        <NavBarItemWithoutDropdown navBarItems={[{ title: "Logout", navLink: "logout" }]} />
+                                    </>
                                 )}
                             </ul>
                         </div>
