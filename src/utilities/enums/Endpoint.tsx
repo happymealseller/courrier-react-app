@@ -1,14 +1,24 @@
-export enum AuthenticationEndpoint {
-    REGISTER = "/register",
-    LOGIN = "/login"
+export {AuthenticationEndpoint, 
+    CustomerEndpoint, 
+    CourierEndpoint,
+    PathParams};
+
+enum PathParams {
+ORDER_ID = "{orderId}"
 }
 
-export enum CustomerEndpoint {
-    NEW_ORDER = "/orders/create-order",
-    UPDATE_ORDER = "/customer/{orderId}",
-    TRACK_ORDER = "/track/{orderId}"
+enum AuthenticationEndpoint {
+REGISTER = "/register",
+LOGIN = "/login"
 }
 
-export enum CourierEndpoint {
-    TRIPS = "/courier/trips"
+enum CustomerEndpoint {
+NEW_ORDER = "/orders/create-order",
+UPDATE_ORDER = `/customer/${PathParams.ORDER_ID}`,
+TRACK_ORDER = `/track/${PathParams.ORDER_ID}`
+}
+
+
+enum CourierEndpoint {
+TRIPS = "/courier/trips"
 }
