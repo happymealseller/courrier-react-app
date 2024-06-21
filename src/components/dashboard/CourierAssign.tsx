@@ -1,6 +1,8 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { axiosInstance } from '../security/axiosInstance';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../App';
 
 
 interface Courier {
@@ -19,15 +21,14 @@ export function CourierAssign() {
   const navigate = useNavigate();
   const location = useLocation();
   const { tripId } = location.state as LocationState;
+  const username = useSelector((state: RootState) => state.authentication.username);
 
   useEffect(() => {
     const fetchCouriers = async () => {
-      const hardcodedToken = 'eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MTgxMTkyNzAsImV4cCI6MTcxODIwNTY3MCwidXNlcm5hbWUiOiJBZG1pbjAwMSIsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiJ9.uYrUU6_6YudRntnl-oOaVJJA7eQTU1Th47Q9oL0Q0sojTvljOR6vm-4ZdFwu5b6q';
-
       const config = {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${hardcodedToken}`,
+          'Authorization': `Bearer ${username}`,
         },
       };
 
@@ -42,7 +43,7 @@ export function CourierAssign() {
     };
 
     fetchCouriers();
-  }, []);
+  }, [username]);
 
   const assignCourier = async () => {
     if (selectedCourierId === null) {
@@ -50,12 +51,10 @@ export function CourierAssign() {
       return;
     }
 
-    const hardcodedToken = 'eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MTgxMTkyNzAsImV4cCI6MTcxODIwNTY3MCwidXNlcm5hbWUiOiJBZG1pbjAwMSIsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiJ9.uYrUU6_6YudRntnl-oOaVJJA7eQTU1Th47Q9oL0Q0sojTvljOR6vm-4ZdFwu5b6q';
-
     const config = {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${hardcodedToken}`,
+        'Authorization': `Bearer ${username}`,
       },
     };
 
@@ -74,12 +73,10 @@ export function CourierAssign() {
   };
 
   const unassignCourier = async () => {
-    const hardcodedToken = 'eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MTgxMTkyNzAsImV4cCI6MTcxODIwNTY3MCwidXNlcm5hbWUiOiJBZG1pbjAwMSIsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiJ9.uYrUU6_6YudRntnl-oOaVJJA7eQTU1Th47Q9oL0Q0sojTvljOR6vm-4ZdFwu5b6q';
-
     const config = {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${hardcodedToken}`, // Hardcoded JWT token here
+        'Authorization': `Bearer ${username}`,
       },
     };
 
