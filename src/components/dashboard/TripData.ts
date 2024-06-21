@@ -4,4 +4,5 @@ export interface TripData {
     from: string;
     to: string; 
     status: string; 
+    orderId: string;
   }

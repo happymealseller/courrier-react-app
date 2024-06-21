@@ -9,7 +9,7 @@ import { axiosInstance } from "../components/security/axiosInstance"
 import { ResponseStatus } from "../utilities/enums/ResponseStatus"
 import { useLocation, useNavigate } from "react-router-dom"
 import { OrderSummary } from "../utilities/api-models/OrderSummary"
-import { CustomerEndpoint } from "../utilities/enums/Endpoint"
+import { CustomerEndpoint, PathParams } from "../utilities/enums/Endpoint"
 import { config } from "../utilities/constants/config"
 import { CustomerUrl } from "../utilities/enums/Url"
 import { useSelector } from "react-redux"
@@ -116,7 +116,7 @@ export function ViewUpdateOrderPage() {
 	}, [])
 
 	useEffect(() => {
-		const url = CustomerEndpoint.TRACK_ORDER.replace("{orderId}", orderId)
+		const url = CustomerEndpoint.TRACK_ORDER.replace(PathParams.ORDER_ID, orderId)
 		axiosInstance
 			.get(url, config)
 			.then((res) => {
@@ -129,7 +129,7 @@ export function ViewUpdateOrderPage() {
 
 	const pageTitle = allowUpdate ? "Update Order" : "View Order";
 	useEffect(() => {
-		const url = CustomerEndpoint.TRACK_ORDER.replace("{orderId}", orderId)
+		const url = CustomerEndpoint.TRACK_ORDER.replace(PathParams.ORDER_ID, orderId)
 		axiosInstance
 			.get(url, config)
 			.then((res) => {
@@ -162,7 +162,7 @@ export function ViewUpdateOrderPage() {
 		if (!isLastStep) {
 			return next()
 		} else if(allowUpdate){
-			const endpoint = CustomerEndpoint.UPDATE_ORDER.replace("{orderId}", orderId)
+			const endpoint = CustomerEndpoint.UPDATE_ORDER.replace(PathParams.ORDER_ID, orderId)
 
 			const orderDetails: orderDetails = {
 				sender: {
