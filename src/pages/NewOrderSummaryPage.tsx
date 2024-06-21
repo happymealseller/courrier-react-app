@@ -38,9 +38,9 @@ export function NewOrderSummaryPage() {
               <p><strong>Email:</strong> {order.toEmail}</p>
               <p><strong>Phone Number:</strong> {order.toPhoneNo}</p>
               <p><strong>Address:</strong> {order.toAddress.address}</p>
-              <p><strong>City:</strong> {order.fromAddress.city}</p>
-              <p><strong>Country:</strong> {order.fromAddress.country}</p>
-              <p><strong>Postal Code:</strong> {order.fromAddress.postalCode}</p>
+              <p><strong>City:</strong> {order.toAddress.city}</p>
+              <p><strong>Country:</strong> {order.toAddress.country}</p>
+              <p><strong>Postal Code:</strong> {order.toAddress.postalCode}</p>
             </div>
             <div className="order-section">
               <h2>Delivery Information</h2>

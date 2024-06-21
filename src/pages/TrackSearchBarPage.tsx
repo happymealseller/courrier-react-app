@@ -2,8 +2,10 @@ import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PublicUrl } from '../utilities/enums/Url';
 import { axiosInstance } from '../components/security/axiosInstance';
-import { CustomerEndpoint } from '../utilities/enums/Endpoint';
+import { CustomerEndpoint, PathParams } from '../utilities/enums/Endpoint';
 import { ResponseStatus } from '../utilities/enums/ResponseStatus';
+
+export default TrackSearchBarPage;
    
 function TrackSearchBarPage() {
     const [trackingNo, setTrackingNo] = useState("");
@@ -12,12 +14,12 @@ function TrackSearchBarPage() {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
         console.log("[USER INPUT] Tracking No. : ", trackingNo);
-        axiosInstance.get(`${CustomerEndpoint.TRACK_ORDER}${trackingNo}`)
+        const trackingUrl = `${CustomerEndpoint.TRACK_ORDER.replace(PathParams.ORDER_ID, trackingNo)}`;
+        axiosInstance.get(trackingUrl)
             .then((response) => {
                 console.log("[RESPONSE - COURIER_APP backend] REQUEST_URL: ",
-                    (CustomerEndpoint.TRACK_ORDER + trackingNo) + " | Response: ", response)
+                    trackingUrl + " | Response: ", response)
                 if (response.data.status === ResponseStatus.Success) {
                     navigate(PublicUrl.ORDER_STATUS, {
                         state: response.data.orderDetails
@@ -25,13 +27,10 @@ function TrackSearchBarPage() {
                 } else if (response.data.status === ResponseStatus.Failure) {
                     setError(response.data.message);
                 }
-
             })
             .catch((error) => {
                 alert(`Error: ${error.message}`);
             })
-
-
     };
 
     const renderButton = (title: string, url: PublicUrl) => {
@@ -56,8 +55,6 @@ function TrackSearchBarPage() {
         ">
             <div className="flex-row content-center bg-slate-700 bg-opacity-50 p-20 rounded-lg">
                 <p className="text-center text-white text-4xl font-bold">Welcome to FDM<span className="text-orange-500">X</span></p>
-
-
                 <div className="flex justify-center p-10">
                     <form onSubmit={handleSubmit}>
                         <div className="flex justify-center">
@@ -79,20 +76,11 @@ function TrackSearchBarPage() {
                         {error && <div className="text-red-600 text-center">{error}</div>}
                     </form>
                 </div>
-
                 <div className="flex justify-center items-center gap-10">
                     {renderButton("About Us", PublicUrl.ABOUT)}
                     {renderButton("Contact Us", PublicUrl.CONTACT)}
                 </div>
-
-
-
-
-
-
-
             </div>
         </div>
     </>);
 }
-export default TrackSearchBarPage;
