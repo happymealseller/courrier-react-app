@@ -74,7 +74,7 @@ export function SenderDashboard() {
   
   const TableCell: React.FC<TableCellProps> = ({ key, value, isAddress }) => {
     const displayValue = isAddress
-      ? `${value.address.toString()}, ${value.postalCode.toString()}`
+      ? `${value.address.toString()}`
       : value.toString();
   
     return (
@@ -92,28 +92,28 @@ export function SenderDashboard() {
   
   return (
     <div className="bg-white p-12 rounded-3xl border-2 border-gray-200">
-      <h1 className="text-2xl font-semibold  underline underline-offset-1">
+      <h2 className="text-2xl font-semibold underline underline-offset-1 m5">
         Customer Dashboard
-      </h1>
+      </h2>
       <br></br>
       <h2 className="text-lg font-semibold px-4 py-2 text-bright-red">
         Welcome {username}!
       </h2>
       <br></br>
       <table className="table-auto w-full">
-        <thead>
+        <thead className="bg-gray-50">
           <tr className="border border-black px-5 py-2">
             {order_headers.map((header, idx) => (
-              <th key={idx} className="border border-black px-5 py-2">
+              <th key={idx} className="border border-black px-6 py-4 text-center text-md tracking-wider">
                 {header}
               </th>
             ))}
-            <th className="px-5 py-2 border-none">Actions</th>
+            <th className="px-6 py-4 border-none">Actions</th>
           </tr>
         </thead>
         <tbody>
           {orders.map((item, index) => (
-            <tr key={index} className="bg-white border border-black px-5 py-2 border-solid">
+            <tr key={index} className="bg-white border border-black px-5 py-2 border-solid text-center text-sm whitespace-nowrap"> 
               {Object.entries(item).map(([key, value], idx) => (
                 <TableCell
                   key={idx}
@@ -123,7 +123,7 @@ export function SenderDashboard() {
               ))}
 
               <td
-                className="px-5 py-2 border-none"
+                className="px-6 py-4 border-none"
                 style={{ textAlign: "center" }}
               >
                 <div style={{ padding: "10px", alignItems: "center"}}>
@@ -133,17 +133,15 @@ export function SenderDashboard() {
                     onClick={() => {
                       navigate(CustomerUrl.VIEW_ORDER, { state: { allowUpdate: false, orderId: item.orderId }})
                     }}
-
                   >
                     View
                   </button>
                   <button
                     type="button"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+                    className="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
                     onClick={() => {
                       navigate(CustomerUrl.UPDATE_ORDER, { state: { allowUpdate: true, orderId: item.orderId }})
                     }}
-
                   >
                     Update
                   </button>
@@ -153,15 +151,6 @@ export function SenderDashboard() {
           ))}
         </tbody>
       </table>
-      <div className="mt-8 gap-y-6">
-        <button
-          type="button"
-          className="active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-slate-500 text-white text-lg font-bold px-8 py-3 text-center m-2 "
-          onClick={handleClick}
-        >
-          Back
-        </button>
-      </div>
     </div>
   );
 }

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { RootState } from "../../App";
 import { axiosInstance } from "../security/axiosInstance";
 
 /* Admin should be able to do
@@ -120,12 +119,10 @@ export function AdminDashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const hardcodedToken = 'eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MTgzMzg1MzIsImV4cCI6MTcxODQyNDkzMiwidXNlcm5hbWUiOiJBZG1pbjAwMSIsImF1dGhvcml0aWVzIjoiUk9MRV9BRE1JTiJ9.ixFnyX0jHzQp5NCyCDYtuorMf7Kd_EWWQczycHdB2YDOD55GGxFmUApi0AD5diDZ';
-      
       const config = {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${hardcodedToken}`,
+          'Authorization': `Bearer ${username}`,
         },
       };
 
