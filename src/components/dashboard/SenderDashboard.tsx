@@ -2,7 +2,7 @@ import { useState, FormEvent, useEffect } from "react";
 import { axiosInstance } from "../security/axiosInstance";
 import { format } from "date-fns";
 import { CustomerUrl } from "../../utilities/enums/Url";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { config } from "../../utilities/constants/config";
 import { RequestHeaderKey } from "../../utilities/enums/RequestHeaderKey";
 import { useSelector } from "react-redux";
@@ -25,9 +25,6 @@ export function SenderDashboard() {
   const [orders, setOrders] = useState<OrderHistoryItem[]>([]);
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const [allowUpdate, setAllowUpdate] = useState(false);
-
 
   const order_headers = [
     "Tracking ID",
@@ -60,11 +57,6 @@ export function SenderDashboard() {
       .then((data: OrderHistoryItem[]) => setOrders(data))
       .catch((err) => console.log(err));
   }, [setOrders]);
-
-  function handleClick(e: FormEvent) {
-    e.preventDefault();
-    navigate("/");
-  }
 
   interface TableCellProps {
     key: number;

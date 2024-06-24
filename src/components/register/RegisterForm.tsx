@@ -59,8 +59,8 @@ export function RegisterForm() {
 	}
 
 	return (
-		<div style={{ marginTop: '200px' }} className="bg-white px-10 py-12 rounded-3xl border-2 border-gray-200">
-			<h1 className="text-5xl font-semibold">FDMx</h1>
+		<div className="bg-white px-8 py-8 rounded-3xl border-2 border-gray-200">
+			<h1 className="text-3xl font-semibold">FDMx</h1>
 			<p className="font-medium text-lg text-gray-500 mt-4">
 			Please enter your registration details.
 			</p>
@@ -162,10 +162,10 @@ export function RegisterForm() {
 					</>
 					)}
 					{error && <p className="text-red-500">{error}</p>}
-					<div className="mt-8 flex flex-col gap-y-4">
+					<div className="mt-8 flex flex-col w-32 h-12 gap-y-4">
 						<button
 							type="submit"
-							className="active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-slate-500 text-white text-lg font-bold"
+							className="active:scale-[.98] active:duration-75 hover:scale-[1.00] ease-in-out transition-all py-3 rounded-lg bg-slate-500 text-white text-base font-bold"
 						>
 							Register
 						</button>
