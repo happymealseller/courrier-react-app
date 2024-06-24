@@ -43,7 +43,8 @@ const INITIAL_DATA: FormData = {
 	width: "",
 	height: "",
 	weight: "",
-	parcelDescription: ""
+	parcelDescription: "",
+	price: 0.00
 	/*nameOnCard: "",
 	cardNumber: "",
 	expiryDate: "",
@@ -71,7 +72,7 @@ export function ShippingFormPage() {
 		<ShipFromForm {...data} updateFields={updateFields} />,
 		<ShipToForm {...data} updateFields={updateFields} />,
 		<ParcelInformationForm {...data} updateFields={updateFields} />,
-		<ShippingServiceForm />,
+		<ShippingServiceForm {...data} updateFields={updateFields} />,
 		//<PaymentForm {...data} updateFields={updateFields} />
 	])
 
@@ -80,20 +81,21 @@ export function ShippingFormPage() {
 		if (!isLastStep) {
 			return next()
 		} else {
-			const endpoint = CustomerEndpoint.NEW_ORDER;
-			console.log(data);
-			console.log(data);
-			axiosInstance.post(endpoint, JSON.stringify(data), config)
-				.then(response => {
-					if (response.data.status === ResponseStatus.Success) {
-						navigate(
-							CustomerUrl.NEW_ORDER_SUMMARY,
-							{ state: response.data.orderDetails as OrderSummary}
-						)
-					} else if (response.data.status === ResponseStatus.Failure) {
-						alert(`Error ${response.data.message}`)
-					}
-				})
+			navigate(CustomerUrl.CHECKOUT, { state: data });
+			// const endpoint = CustomerEndpoint.NEW_ORDER;
+			// console.log(data);
+			// console.log(data);
+			// axiosInstance.post(endpoint, JSON.stringify(data), config)
+			// 	.then(response => {
+			// 		if (response.data.status === ResponseStatus.Success) {
+			// 			navigate(
+			// 				CustomerUrl.NEW_ORDER_SUMMARY,
+			// 				{ state: response.data.orderDetails as OrderSummary}
+			// 			)
+			// 		} else if (response.data.status === ResponseStatus.Failure) {
+			// 			alert(`Error ${response.data.message}`)
+			// 		}
+			// 	})
 		}
 	}	
 

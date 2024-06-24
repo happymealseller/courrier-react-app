@@ -1,13 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DeliveryServiceCard } from "./DeliveryServiceCard";
 import { DeliveryServiceType } from "../../utilities/enums/DeliveryServiceType";
 
-export function DeliveryServiceCardContainer() {
+type DeliveryPriceProps = {
+    handleDeliveryPrice: (deliveryPrice: number) => void
+}
+
+export function DeliveryServiceCardContainer({ handleDeliveryPrice }: DeliveryPriceProps) {
     const [selectedCard, setSelectedCard] = useState(DeliveryServiceType.Normal);
 
     const handleCardSelect = (title: string) => {
         setSelectedCard(title === DeliveryServiceType.Normal ? DeliveryServiceType.Normal : DeliveryServiceType.Express);
     };
+
+    useEffect(() => {
+        handleDeliveryPrice(selectedCard === DeliveryServiceType.Normal ? 3.50 : 5.00)
+    },[selectedCard])
 
     const cardsData = [
         { title: "Normal", estimatedTimeArrival: "Wednesday 01/05", deliveryCharge: "3.50"},
