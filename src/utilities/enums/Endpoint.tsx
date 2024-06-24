@@ -7,7 +7,7 @@ export enum CustomerEndpoint {
     NEW_ORDER = "/orders/create-order",
     UPDATE_ORDER = "/customer/{orderId}",
     TRACK_ORDER = "/track/{orderId}",
-    PAYMENT_INTENT = "/customer/create-payment-intent"
+    COMPLETE_PAYMENT = "/orders/payment"
 }
 
 export enum CourierEndpoint {

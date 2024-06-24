@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import {
   PaymentElement,
   useStripe,
-  useElements
+  useElements,
 } from "@stripe/react-stripe-js";
 import { StripePaymentElementOptions } from "@stripe/stripe-js";
 
 type CheckoutProps = {
-    onSuccess: (clientSecret: string) => void
-}
+  onSuccess: (paymentReference: string) => void;
+};
 
 export default function CheckoutForm({ onSuccess }: CheckoutProps) {
   const stripe = useStripe();
@@ -62,26 +62,25 @@ export default function CheckoutForm({ onSuccess }: CheckoutProps) {
       confirmParams: {
         return_url: "http://localhost:3000/checkout",
       },
-      redirect: "if_required"
+      redirect: "if_required",
     });
 
-
     if (error) {
-        setMessage(error.message || "")
+      setMessage(error.message || "");
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
-        console.log("Payment succeeded");
-        onSuccess(paymentIntent.client_secret!);
+      console.log("Payment succeeded");
+      onSuccess(paymentIntent.id!);
     } else {
-        console.log("Payment failed");
-        setMessage("An unexpected error occurred.");
+      console.log("Payment failed");
+      setMessage("An unexpected error occurred.");
     }
 
     setIsLoading(false);
   };
 
   const paymentElementOptions: StripePaymentElementOptions = {
-    layout: "tabs"
-  }
+    layout: "tabs",
+  };
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>

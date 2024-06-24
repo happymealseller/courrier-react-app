@@ -8,7 +8,8 @@ export function ShippingServiceForm({ price, updateFields }: PaymentDataProps) {
 
     const [selectedOption, setSelectedOption] = useState(HandoffType.DropOff);
     const handleDeliveryPrice = (deliveryPrice: number) => {
-        updateFields({price: deliveryPrice})
+        //stripe price, no decimal, * 100
+        updateFields({price: deliveryPrice * 100})
     }
 
     function handleChange(event: ChangeEvent<HTMLInputElement>) {
