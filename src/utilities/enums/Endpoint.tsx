@@ -17,9 +17,9 @@ enum AuthenticationEndpoint {
 enum CustomerEndpoint {
     NEW_ORDER = "/orders/create-order",
     UPDATE_ORDER = `/customer/${PathParams.ORDER_ID}`,
-    TRACK_ORDER = `/track/${PathParams.ORDER_ID}`
+    TRACK_ORDER = `/track/${PathParams.ORDER_ID}`,
+    COMPLETE_PAYMENT = "/orders/payment"
 }
-
 
 enum CourierEndpoint {
     TRIPS = "/courier/trips"

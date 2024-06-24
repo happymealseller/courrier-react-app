@@ -9,7 +9,8 @@ export enum CustomerUrl {
     CREATE_A_SHIPMENT = "/create-a-shipment",
     NEW_ORDER_SUMMARY = "/dashboard/customer/new-order-summary",
     UPDATE_ORDER = "/update/customer",
-    VIEW_ORDER = "/view/customer"
+    VIEW_ORDER = "/view/customer",
+    CHECKOUT = "/checkout/customer"
 }
 
 export enum CourierUrl {

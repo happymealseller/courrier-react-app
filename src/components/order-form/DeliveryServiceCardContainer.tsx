@@ -1,17 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DeliveryServiceCard } from "./DeliveryServiceCard";
 import { DeliveryServiceType } from "../../utilities/enums/DeliveryServiceType";
 
-export function DeliveryServiceCardContainer() {
+type DeliveryPriceProps = {
+    handleDeliveryPrice: (deliveryPrice: number) => void
+}
+
+export function DeliveryServiceCardContainer({ handleDeliveryPrice }: DeliveryPriceProps) {
     const [selectedCard, setSelectedCard] = useState(DeliveryServiceType.Normal);
 
     const handleCardSelect = (title: string) => {
         setSelectedCard(title === DeliveryServiceType.Normal ? DeliveryServiceType.Normal : DeliveryServiceType.Express);
     };
 
+    useEffect(() => {
+        handleDeliveryPrice(selectedCard === DeliveryServiceType.Normal ? 3.50 : 5.00)
+    },[selectedCard])
+
+    var etaNormal = new Date();
+    var etaExpress = new Date();
+    etaExpress.setDate(etaExpress.getDate() + 5);
+    etaNormal.setDate(etaNormal.getDate() + 7);
+
     const cardsData = [
-        { title: "Normal", estimatedTimeArrival: "Wednesday 01/05", deliveryCharge: "3.50"},
-        { title: "Express", estimatedTimeArrival: "Thursday 25/04", deliveryCharge: "5.00"}
+        { title: "Normal", estimatedTimeArrival: etaNormal.toLocaleString('default', { day: "numeric", month: "short", year: "numeric" }), deliveryCharge: "3.50"},
+        { title: "Express", estimatedTimeArrival: etaExpress.toLocaleString('default', { day: "numeric", month: "short", year: "numeric" }), deliveryCharge: "5.00"}
     ];
 
     return (
