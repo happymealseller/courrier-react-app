@@ -8,17 +8,38 @@ import { AdminUrl, AuthenticationUrl, CourierUrl, CustomerUrl } from "../../util
 import { AuthenticationEndpoint } from "../../utilities/enums/Endpoint";
 import { config } from "../../utilities/constants/config";
 import { useDispatch } from "react-redux";
-import { login } from "../../redux/authentication/authenticationSlice";
+import { login, logout } from "../../redux/authentication/authenticationSlice";
 import { AuthenticationActionPayload } from "../../redux/authentication/AuthenticationAction";
 
 export function LoginForm() {
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
-    const { prepopulatedUsername, prepopulatedPassword } = location.state || { prepopulatedUsername: "", prepopulatedPassword: ""};
+    const { prepopulatedUsername, prepopulatedPassword } = location.state || { prepopulatedUsername: "", prepopulatedPassword: "" };
     const [username, setUsername] = useState(prepopulatedUsername);
     const [password, setPassword] = useState(prepopulatedPassword);
     const [error, setError] = useState("");
+
+    // we can prob extract this into utils...
+    const timer = () => {
+        let timeoutId: NodeJS.Timeout;
+
+        const startTimer = () => {
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
+
+            timeoutId = setTimeout(() => {
+                const userResponse = confirm("Your session is about to expire. Do you want to remain logged in?");
+                if (userResponse) {
+                    startTimer()
+                } else {
+                    dispatch(logout());
+                }
+            }, 150_000);
+        };
+        return startTimer;
+    };
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
@@ -36,14 +57,17 @@ export function LoginForm() {
                         case AccountType.Customer:
                             dispatch(login(userData));
                             navigate(CustomerUrl.DASHBOARD);
+                            timer()() // closures in js im calling the returned function hence ()()
                             break;
                         case AccountType.Courier:
                             dispatch(login(userData));
                             navigate(CourierUrl.DASHBOARD);
+                            timer()()
                             break;
                         case AccountType.Admin:
                             dispatch(login(userData));
                             navigate(AdminUrl.DASHBOARD);
+                            timer()()
                             break;
                     }
                 } else if (response.data.status === ResponseStatus.Failure) {
@@ -62,22 +86,22 @@ export function LoginForm() {
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label className="text-lg font-medium">Username</label>
-                        <input 
+                        <input
                             className="w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
                             placeholder="Enter your username"
                             type="text"
                             value={username}
                             onChange={e => setUsername(e.target.value)}
-                            required 
+                            required
                         />
                     </div>
                     <br></br>
                     <div>
                         <label className="text-lg font-medium">Password</label>
-                        <input 
+                        <input
                             className="w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
                             placeholder="Enter your password"
-                            type="password" 
+                            type="password"
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                             required
@@ -85,7 +109,7 @@ export function LoginForm() {
                     </div>
                     <div className="mt-8 flex justify-between items-center">
                         <div>
-                            <input 
+                            <input
                                 type="checkbox"
                                 id="remember"
                             />
@@ -93,11 +117,11 @@ export function LoginForm() {
                         </div>
                         <button className="font-medium text-base text-slate-500">Forgot password</button>  {/* onClick={() => navigate to reset pw page} */}
                     </div>
-                    { error && (
+                    {error && (
                         <p className="text-red-500">{error}</p>
                     )}
                     <div className="mt-8 flex flex-col w-32 h-12 gap-y-4">
-                        <button 
+                        <button
                             type="submit"
                             className="active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-slate-500 text-white text-lg font-bold"
                         >
