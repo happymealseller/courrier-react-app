@@ -22,21 +22,32 @@ export function LoginForm() {
 
     // we can prob extract this into utils...
     const timer = () => {
-        let timeoutId: NodeJS.Timeout;
+        let sessionTimeRef: NodeJS.Timeout;
+        let delay = 900_000
 
         const startTimer = () => {
-            if (timeoutId) {
-                clearTimeout(timeoutId);
+            if (sessionTimeRef) {
+                clearTimeout(sessionTimeRef);
+                delay = 3_600_000
             }
 
-            timeoutId = setTimeout(() => {
+            sessionTimeRef = setTimeout(() => {
                 const userResponse = confirm("Your session is about to expire. Do you want to remain logged in?");
+
+                setTimeout(() => {
+                    if (!userResponse) {
+                        alert("Session auto-declined due to no response.");
+                        dispatch(logout());
+                    }
+                }, 45_000);
+
                 if (userResponse) {
                     startTimer()
                 } else {
                     dispatch(logout());
                 }
-            }, 150_000);
+            }, delay);
+
         };
         return startTimer;
     };
