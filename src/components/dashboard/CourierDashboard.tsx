@@ -96,7 +96,7 @@ export function CourierDashboard() {
                       <select
                         value={inputStatus[e.id] || ''}
                         onChange={(event) => handleChange(event, e.id)}
-                        className="border border-gray-300 rounded px-3 py-1 text-gray-700 focus:outline-none focus:border-blue-500"
+                        className="border border-gray-300 rounded px-4 py-2 text-gray-700 focus:outline-none focus:border-blue-500 font-semibold"
                       >
                         <option value="" disabled hidden>Select Status</option>
                         <option value="RETRIEVED">Retrieve</option>
@@ -105,8 +105,8 @@ export function CourierDashboard() {
                       <button
                         disabled={!inputStatus[e.id]}
                         onClick={() => handleUpdate(e.id)}
-                        className={`px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-700 ${!inputStatus[e.id] ? 'opacity-50 cursor-not-allowed' : ''}`}
-                      >
+                        className={`px-4 py-2 text-sm bg-blue-500 text-white rounded font-semibold hover:bg-blue-700 ${!inputStatus[e.id] ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      > 
                         Update
                       </button>
                     </div>
