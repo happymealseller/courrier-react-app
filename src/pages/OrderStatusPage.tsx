@@ -4,9 +4,10 @@ import { BoxIcon } from "../components/icons/black-white-icons/BoxIcon";
 import { TickIcon } from "../components/icons/black-white-icons/TickIcon";
 import { TruckIcon } from "../components/icons/black-white-icons/TruckIcon";
 import { HouseIcon } from "../components/icons/black-white-icons/HouseIcon";
-import { OrderStatusType, statusDescriptionRecord } from "../utilities/enums/OrderStatusType";
+import { OrderStatusType } from "../utilities/enums/OrderStatusType";
 import { LetterXIcon } from "../components/icons/black-white-icons/LetterXIcon";
 import { InformationIcon } from "../components/icons/black-white-icons/InformationIcon";
+import { DollarSignIcon } from "../components/icons/black-white-icons/DollarSignIcon";
 
 export { OrderStatusPage };
 
@@ -17,6 +18,7 @@ interface statusProperty {
 }
 
 const statusComponentsRecord: Record<OrderStatusType, () => JSX.Element> = {
+    [OrderStatusType.AwaitingPayment]: DollarSignIcon,
     [OrderStatusType.OrderCreated]: ClipBoardIcon,
     [OrderStatusType.Processing]: BoxIcon,
     [OrderStatusType.PickedUp]: TickIcon,
@@ -34,6 +36,7 @@ const hiddenUIStatuses = [
 
 
 let sampleStatuses = JSON.parse(`[
+    {"status": "AWAITING_PAYMENT", "remarks": "", "statusUpdateDate": "2024-04-28T04:00:22.769+00:00"},
     {"status": "ORDER_CREATED", "remarks": "", "statusUpdateDate": "2024-05-01T04:00:22.769+00:00"},
     {"status": "PROCESSING", "remarks": "", "statusUpdateDate": "2024-05-10T05:50:22.769+00:00"},
     {"status": "PICKED_UP", "remarks": "some remark", "statusUpdateDate": "2024-05-11T06:15:22.769+00:00"},
@@ -157,7 +160,7 @@ function OrderStatusPage() {
                                                 <span className="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800">
                                                     <Component />
                                                 </span>
-                                                <h4 className={`mb-0.5 text-base font-semibold whitespace-pre-line ${listItemClass} dark:text-white`}>{`${formattedDatetime}\n${statusDescriptionRecord[orderStatus]}`}</h4>
+                                                <h4 className={`mb-0.5 text-base font-semibold whitespace-pre-line ${listItemClass} dark:text-white`}>{`${formattedDatetime}\n${OrderStatusType.statusDescriptionRecord[orderStatus]}`}</h4>
                                                 <p className={`text-sm font-normal whitespace-pre-line ${listItemClass} dark:text-gray-400`}>{`${element.remarks}`}</p>
                                             </li>
                                         </>);
