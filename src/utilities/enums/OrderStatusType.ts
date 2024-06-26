@@ -28,7 +28,7 @@ namespace OrderStatusType {
     }
 
     /** Converts string input to OrderStatusType if string corresponds to a valid OrderStatusType 
-        Otherwise, returns a default OrderStatusType of Other.*/
+        Otherwise, throws TypeError*/
     export function valueOf(inputStatus: string) {
         if (Object.values(OrderStatusType).some((status) => status === inputStatus)) {
             return inputStatus as OrderStatusType;
