@@ -8,6 +8,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
+  
   return {
     define: {
       'process.env': env
@@ -15,6 +16,11 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
       server: {
         port: 3000
-    }
+    },
+    test: {
+      environment: 'jsdom', // add jsdom to vite
+      global: true,
+      setupFiles: 'src/tests/setup.ts'
+    },
   }
 })

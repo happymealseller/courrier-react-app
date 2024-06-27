@@ -8,14 +8,11 @@ import { OrderStatusType } from "../utilities/enums/OrderStatusType";
 import { LetterXIcon } from "../components/icons/black-white-icons/LetterXIcon";
 import { InformationIcon } from "../components/icons/black-white-icons/InformationIcon";
 import { DollarSignIcon } from "../components/icons/black-white-icons/DollarSignIcon";
+import { sampleStatuses } from "../tests/resources/sampleStatuses";
+import { formatTimestamp } from "../utilities/date-time/formatTimeStamp";
+import { statusProperty } from "../utilities/interfaces/statusProperty";
 
-export { OrderStatusPage };
-
-interface statusProperty {
-    status: string,
-    remarks: string,
-    statusUpdateDate: string
-}
+export { OrderStatusPage, hiddenUIStatuses, removeUIStatuses };
 
 const statusComponentsRecord: Record<OrderStatusType, () => JSX.Element> = {
     [OrderStatusType.AwaitingPayment]: DollarSignIcon,
@@ -34,28 +31,11 @@ const hiddenUIStatuses = [
     OrderStatusType.Sorting
 ];
 
-
-let sampleStatuses = JSON.parse(`[
-    {"status": "AWAITING_PAYMENT", "remarks": "", "statusUpdateDate": "2024-04-28T04:00:22.769+00:00"},
-    {"status": "ORDER_CREATED", "remarks": "", "statusUpdateDate": "2024-05-01T04:00:22.769+00:00"},
-    {"status": "PROCESSING", "remarks": "", "statusUpdateDate": "2024-05-10T05:50:22.769+00:00"},
-    {"status": "PICKED_UP", "remarks": "some remark", "statusUpdateDate": "2024-05-11T06:15:22.769+00:00"},
-    {"status": "SORTING", "remarks": "some remark", "statusUpdateDate": "2024-05-12T07:20:22.769+00:00"},
-    {"status": "READY_FOR_DELIVERY", "remarks": "some remark", "statusUpdateDate": "2024-05-13T08:25:22.769+00:00"},
-    {"status": "DELIVERING", "remarks": "some remark", "statusUpdateDate": "2024-05-14T09:44:22.769+00:00"},
-    {"status": "DELIVERED", "remarks": "some remark", "statusUpdateDate": "2024-05-15T10:40:22.769+00:00"},
-    {"status": "CANCELLED", "remarks": "some remark", "statusUpdateDate": "2024-05-16T11:10:22.769+00:00"},
-    {"status": "OTHER", "remarks": "Some kind of remark for other category Some kind of remark for other category Some kind of remark for other category Some kind of remark for other category", "statusUpdateDate": "2024-05-17T04:12:22.769+00:00"}
-]`);
-sampleStatuses.reverse();
-sampleStatuses = removeUIStatuses(sampleStatuses, hiddenUIStatuses);
-
-function formatTimestamp(timestamp: string, includeTime: boolean) {
-    return includeTime ? (new Date(timestamp)).toLocaleString('default', { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "numeric", hourCycle: "h24" })
-        .replace(/AM|PM/, "")
-        :
-        (new Date(timestamp)).toLocaleString('default', { day: "numeric", month: "short", year: "numeric" });
-}
+let mockStatuses = sampleStatuses.reverse();
+mockStatuses = removeUIStatuses(sampleStatuses, hiddenUIStatuses);
+sampleStatuses.map((status: { status: any; }) => status.status).forEach((element: any) => {
+    console.log(element);
+});;
 
 function removeUIStatuses(statuses: statusProperty[], statusesToRemove: string[]) {
     return statuses.filter((statusProperty) =>
@@ -139,7 +119,6 @@ function OrderStatusPage() {
                                 </ul>
                             </div>
                         </div>
-
 
                         <div className="mt-6 grow sm:mt-8 lg:mt-0">
                             <div className="space-y-6 rounded-lg border pb-0 border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
