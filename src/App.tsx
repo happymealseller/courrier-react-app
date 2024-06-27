@@ -19,6 +19,7 @@ import { AdminDashboardPage } from "./pages/AdminDashboardPage"
 import { CourierAssignPage } from "./pages/CourierAssignPage"
 import AboutUsPage from "./pages/AboutUsPage"
 import ContactUsPage from "./pages/ContactUsPage"
+import { CheckoutPage } from "./pages/CheckoutPage"
 
 
 export type RootState = {
@@ -48,6 +49,7 @@ function App() {
 						<Route path={CourierUrl.DASHBOARD} element={<CourierDashboardPage />} />
 						<Route path={CustomerUrl.DASHBOARD} element={<SenderDashboardPage />} />
 						<Route path={CustomerUrl.NEW_ORDER_SUMMARY} element={(<NewOrderSummaryPage />)} />
+						<Route path={CustomerUrl.CHECKOUT} element={<CheckoutPage />} />
 						<Route path={AdminUrl.DASHBOARD} element={<AdminDashboardPage />} />
 						<Route path={AdminUrl.ASSIGN_COURIER} element={<CourierAssignPage />} />
 						<Route path={AdminUrl.REGISTER_COURIER} element={<RegisterPage />} />

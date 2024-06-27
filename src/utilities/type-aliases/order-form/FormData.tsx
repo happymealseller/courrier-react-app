@@ -14,7 +14,8 @@ export type FormData = {
     width: string,
     height: string,
     weight: string,
-    parcelDescription: string
+    parcelDescription: string,
+    price: number
     /*nameOnCard: string,
     cardNumber: string,
     expiryDate: string,

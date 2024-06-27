@@ -1,8 +1,9 @@
-export interface TripData {
-    id: string; 
-    date: string; 
+export type {TripData};
+
+interface TripData {
+    tripId: string;
+    tripDate: string;
     from: string;
-    to: string; 
-    status: string; 
-    orderId: string;
-  }
+    to: string;
+    tripStatus: string;
+}
