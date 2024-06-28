@@ -6,6 +6,7 @@ import { CourierDashboard } from '../src/components/dashboard/CourierDashboard';
 import { describe, assert, it, beforeEach, afterEach, test, expect, vi } from 'vitest';
 import axios from 'axios';
 import '@testing-library/jest-dom';
+import container from 'postcss/lib/container';
 
 vi.mock('axios', () => {
   const mockAxios = {
@@ -118,7 +119,7 @@ describe('CourierDashboard Component', () => {
     renderWithProviders(<CourierDashboard />);
     await waitFor(() => expect(mockAxiosInstance.get).toHaveBeenCalledTimes(0));
 
-    const select = screen.getAllByText('RETRIEVED')[0];
+    const select = screen.getByDisplayValue('Retrieve');
     fireEvent.change(select, { target: { value: 'COMPLETED' } });
 
     const button = screen.getByText('Update');
